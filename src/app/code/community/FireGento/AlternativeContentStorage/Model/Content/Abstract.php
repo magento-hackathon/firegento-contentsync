@@ -32,45 +32,36 @@ abstract class FireGento_AlternativeContentStorage_Model_Content_Abstract
     }
 
     /**
-     * @return FireGento_AlternativeContentStorage_Model_Storage_Abstract[]
+     * @return FireGento_AlternativeContentStorage_Model_Storage_Abstract
      */
-    public function getStorages()
+    public function getStorage()
     {
-        $result = array();
-        $storages = explode(',', $this->getConfig('storages') );
-        foreach($storages as $storageName)
-        {
-            if (!$storageName) {
-                continue;
-            }
-            $storage = Mage::getModel('acs/storage_'.$storageName);
-            if ($storage) {
-                $result[] = $storage;
-            }
+        $storageName = $this->getConfig('storage');
+        if (!$storageName) {
+            return Mage::getModel('acs/storage_void');
         }
-        return $result;
+        $storage = Mage::getModel('acs/storage_'.$storageName);
+        if (!$storage) {
+            return Mage::getModel('acs/storage_void');
+        }
+        return $storage;
     }
 
     /**
      * @param array $data
      * @param string $entityType
      */
-    protected function storeDataInStorages($data, $entityType)
+    protected function storeDataInStorage($data, $entityType)
     {
-        foreach($this->getStorages() as $storage) {
-            $storage->storeData($data, $entityType);
-        }
+        $this->getStorage()->storeData($data, $entityType);
     }
 
     /**
      * @param string $entityType
      * @return array
-     * @todo refactor to use main and secondary storage
      */
-    protected function loadDataFromStorages($entityType)
+    protected function loadDataFromStorage($entityType)
     {
-        foreach($this->getStorages() as $storage) {
-            return $storage->loadData($entityType);
-        }
+        return $this->getStorage()->loadData($entityType);
     }
 }

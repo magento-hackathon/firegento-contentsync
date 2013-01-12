@@ -21,35 +21,21 @@
  * @since     0.1.0
  */
 
-class FireGento_AlternativeContentStorage_Model_Content_Cms_Page extends FireGento_AlternativeContentStorage_Model_Content_Cms_Abstract
+class FireGento_AlternativeContentStorage_Model_Storage_Void extends FireGento_AlternativeContentStorage_Model_Storage_Abstract
 {
-    protected $_configPath = 'cms_page';
-
-    protected  $entityType = 'cms_page';
-
-    public function storeData()
+    /**
+     * @param array $data
+     * @param string $entityType
+     */
+    public function storeData($data, $entityType)
     {
-        $data = array();
-
-        $cmsPages = Mage::getResourceModel('cms/page_collection');
-
-        foreach($cmsPages as $cmsPage) {
-
-            $data[] = $cmsPage->getData();
-        }
-
-        $this->storeDataInStorage(
-            $data,
-            $this->entityType
-        );
     }
 
-    public function loadData()
+    /**
+     * @param string $entityType
+     * @return array
+     */
+    public function loadData($entityType)
     {
-        $data = $this->loadDataFromStorage(
-            $this->entityType
-        );
-
-        Mage::log($data);
     }
 }

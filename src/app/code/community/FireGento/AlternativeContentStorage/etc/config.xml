@@ -66,15 +66,15 @@
         <acs>
             <content_cms_block>
                 <trigger>2</trigger>
-                <storages>file</storages>
+                <storage>file</storage>
             </content_cms_block>
             <content_cms_page>
                 <trigger>2</trigger>
-                <storages>file</storages>
+                <storage>file</storage>
             </content_cms_page>
             <content_email_trans>
                 <trigger>2</trigger>
-                <storages>file</storages>
+                <storage>file</storage>
             </content_email_trans>
             <storage_file>
                 <directory></directory>
