@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-
-<layout>
-    <default>
-        <reference name="notifications">
-            <block type="acs/notice" name="acs_notice" as="acs_notice" template="acs/notice.phtml" />
-        </reference>
-    </default>
-</layout>
