@@ -34,7 +34,7 @@ class FireGento_AlternativeContentStorage_Helper_Data extends Mage_Core_Helper_A
      */
     public function getCmsBlockTrigger()
     {
-        Mage::getStoreConfig(self::XML_PAHT_ACS_CONTENT_CMS_BLOCK_TRIGGER);
+        return Mage::getStoreConfig(self::XML_PAHT_ACS_CONTENT_CMS_BLOCK_TRIGGER);
     }
 
 
@@ -43,7 +43,7 @@ class FireGento_AlternativeContentStorage_Helper_Data extends Mage_Core_Helper_A
      */
     public function getCmsPageTrigger()
     {
-        Mage::getStoreConfig(self::XML_PAHT_ACS_CONTENT_CMS_PAGE_TRIGGER);
+        return Mage::getStoreConfig(self::XML_PAHT_ACS_CONTENT_CMS_PAGE_TRIGGER);
     }
 
 
@@ -52,7 +52,7 @@ class FireGento_AlternativeContentStorage_Helper_Data extends Mage_Core_Helper_A
      */
     public function getEmailTransTrigger()
     {
-        Mage::getStoreConfig(self::XML_PAHT_ACS_CONTENT_EMAIL_TRANS_TRIGGER);
+        return Mage::getStoreConfig(self::XML_PAHT_ACS_CONTENT_EMAIL_TRANS_TRIGGER);
     }
 
 }
