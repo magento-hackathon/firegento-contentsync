@@ -3,9 +3,9 @@
 class FireGento_AlternativeContentStorage_Model_Source_Trigger
 {
 
-    const TRIGGER_DISABLED = 0;
-    const TRIGGER_AUTO = 1;
-    const TRIGGER_MANUALLY = 2;
+    const TRIGGER_DISABLED = 'disabled';
+    const TRIGGER_AUTO = 'auto';
+    const TRIGGER_MANUALLY = 'manual';
 
     /**
      * Options getter
