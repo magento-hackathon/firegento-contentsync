@@ -37,6 +37,11 @@ class FireGento_AlternativeContentStorage_Test_Config_Main extends EcomDev_PHPUn
     public function testModelAlias()
     {
         $this->assertModelAlias('acs/storage_file', 'FireGento_AlternativeContentStorage_Model_Storage_File');
+	    $this->assertModelAlias('acs/observer', 'FireGento_AlternativeContentStorage_Model_Observer');
+	    $this->assertModelAlias('acs/source_storage', 'FireGento_AlternativeContentStorage_Model_Source_Storage');
+	    $this->assertModelAlias('acs/email', 'FireGento_AlternativeContentStorage_Model_Email');
+	    $this->assertModelAlias('acs/cms_block', 'FireGento_AlternativeContentStorage_Model_Cms_Block');
+	    $this->assertModelAlias('acs/cms_page', 'FireGento_AlternativeContentStorage_Model_Cms_Page');
     }
 
     public function testHelperAlias()
