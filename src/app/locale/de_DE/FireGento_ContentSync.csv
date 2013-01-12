@@ -12,3 +12,12 @@
 "Disabled","Deaktiviert"
 "Automatically","Automatisch"
 "Manually","Manuell"
+
+"Changes on %s","Änderungen bei %s"
+"Content Sync set to manual export.","Content Sync ist auf manuellen Export eingestellt."
+"Start Export","Export starten"
+"Close","Schließen"
+"Static Blocks","Statische Blocks"
+"CMS Pages","CMS-Seiten"
+"Email Templates","Email Templates"
+"Configuration","Konfiguration"

@@ -125,8 +125,8 @@ class FireGento_ContentSync_Model_Notice
 
         $labels = array(
             self::NOTICE_TYPE_CMS_BLOCK => $helper->__('Static Blocks'),
-            self::NOTICE_TYPE_CMS_PAGE => $helper->__('Pages'),
-            self::NOTICE_TYPE_EMAIL_TRANS => $helper->__('Transactional Emails'),
+            self::NOTICE_TYPE_CMS_PAGE => $helper->__('CMS Pages'),
+            self::NOTICE_TYPE_EMAIL_TRANS => $helper->__('Email Templates'),
             self::NOTICE_TYPE_CORE_CONFIG => $helper->__('Configuration'),
         );
 
