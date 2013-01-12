@@ -46,10 +46,18 @@ class FireGento_AlternativeContentStorage_Model_Content_Cms_Page extends FireGen
 
     public function loadData()
     {
+        /** @var $data array[] */
         $data = $this->loadDataFromStorage(
             $this->entityType
         );
 
-        Mage::log($data);
+        foreach($data as $itemData) {
+            /* @var $cmsPage Mage_Cms_Model_Page */
+            $cmsPage = Mage::getModel('cms/page')->load($itemData['page_id']);
+
+            $cmsPage
+                ->addData($itemData)
+                ->save();
+        }
     }
 }
