@@ -80,11 +80,11 @@ class FireGento_AlternativeContentStorage_Model_Storage_File extends FireGento_A
         $fileName = $this->_getStorageDirectory() . $entityType . '.json';
 
         if (!is_file($fileName)) {
-            return;
+            return array();
         }
 
         if (($fileContents = file_get_contents($fileName)) === false) {
-            return;
+            return array();
         }
 
         return Zend_Json::decode($fileContents);
