@@ -47,6 +47,10 @@ class FireGento_AlternativeContentStorage_Model_Storage_File extends FireGento_A
             );
         }
 
+        if (!in_array(substr($directoryPath, -1 , 1), array('/', '\\'))) {
+            $directoryPath .= DS;
+        }
+
         return $directoryPath;
     }
 
@@ -57,6 +61,14 @@ class FireGento_AlternativeContentStorage_Model_Storage_File extends FireGento_A
     public function storeData($data, $entityType) {
 
         $fileContent = Zend_Json::encode($data);
+
+        $fileName = $this->_getStorageDirectory() . $entityType . '.json';
+
+        if (file_put_contents($fileName, $fileContent) === false) {
+            Mage::throwException(
+                Mage::helper('acs')->__('File "%s" could not be written.')
+            );
+        };
 
         Mage::log($fileContent);
     }
