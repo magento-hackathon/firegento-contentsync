@@ -34,88 +34,67 @@ class FireGento_AlternativeContentStorage_Test_Model_Content_Abstract extends Ec
 	}
 
 	/**
-	 * set getConfig method with one expected call, with "storages" as parameter
+	 * set getConfig method with one expected call, with "storage" as parameter
 	 * @param $returnValue which getConfig will return
 	 */
-	private function setConfigStorages($returnValue) {
+	private function setConfigStorage($returnValue) {
 		$this->model
 			->expects($this->once())
 			->method('getConfig')
-			->with('storages')
+			->with('storage')
 			->will($this->returnValue($returnValue));
 	}
 
-	private function setUpStorageMocks($amount) {
+	/**
+	 * @param $type storage type
+	 */
+	private function setUpStorageMock($type) {
 		$mockStorage = $this->getModelMock('acs/storage_abstract');
-		for ($i = 1; $i <= $amount; $i++) {
-			$this->replaceByMock('model', 'acs/storage_' . $i, $mockStorage);
-		}
+		$this->replaceByMock('model', 'acs/storage_' . $type, $mockStorage);
 	}
 
 	/**
 	 * sets up the config and storage mocks
-	 * @param $configStorages value which will be returned by getConfig('storages')
-	 * @param $amountOfStorageMocks amount of sotrage mocks to prepare
+	 * @param $configStorage value which will be returned by getConfig('storage')
+	 * @param $storageType storage type
 	 */
-	private function setUpStorages($configStorages, $amountOfStorageMocks) {
-		$this->setConfigStorages($configStorages);
-		$this->setUpStorageMocks($amountOfStorageMocks);
+	private function setUpStorage($configStorage, $storageType) {
+		$this->setConfigStorage($configStorage);
+		$this->setUpStorageMock($storageType);
 	}
 
-	public function testGetStoragesAmountOfStorages() {
-		$this->setUpStorages(',1,2,', 2);
-
-		$this->assertCount(
-			2,
-			$this->model->getStorages()
-		);
-	}
-
-	/**
-	 * @depends testGetStoragesAmountOfStorages
-	 */
-	public function testGetStoragesReturnInstance() {
-		$this->setUpStorages('1', 1);
+	public function testGetStorageReturnInstance() {
+		$this->setUpStorage('foobar', 'foobar');
 
 		$this->assertInstanceOf(
 			'FireGento_AlternativeContentStorage_Model_Storage_Abstract',
-			current($this->model->getStorages())
+			$this->model->getStorage()
 		);
 	}
 
-	/**
-	 * @param $dataValues which are expected as first parameter on method storeData
-	 * @return PHPUnit_Framework_MockObject_MockObject
-	 */
-	private function getStorageModelMock($dataValues) {
-		$mock = $this->getMock('Varien_Object', array('storeData'));
-		$mock
+	public function testStoreDataInStorage() {
+		$dataValues = array('11', '22');
+
+		$mockStorage = $this->getMock('Varien_Object', array('storeData'));
+		$mockStorage
 			->expects($this->once())
 			->method('storeData')
 			->with(
 				$dataValues,
 				'cms_page'
 			);
-		return $mock;
-	}
 
-	public function testStoreDataInStoragesIteration() {
-		$dataValues = array('11', '22');
-
-		// using a inherited class of Content_Abstract. protected storeDataInStorages is only called from them
+		// using a inherited class of Content_Abstract. protected storeDataInStorage is only called from them
 		$model = $this->getModelMock(
 			'acs/content_cms_page',
-			array('getStorages')
+			array('getStorage')
 		);
 		$model
 			->expects($this->once())
-			->method('getStorages')
+			->method('getStorage')
 			->will(
 				$this->returnValue(
-					array(
-					     $this->getStorageModelMock($dataValues),
-					     $this->getStorageModelMock($dataValues),
-					)
+				     $mockStorage
 				)
 			);
 
@@ -129,6 +108,35 @@ class FireGento_AlternativeContentStorage_Test_Model_Content_Abstract extends Ec
 
 		$this->assertNull(
 			$model->storeData()
+		);
+	}
+
+	public function testLoadDataFromStorage() {
+		$mockStorage = $this->getMock('Varien_Object', array('loadData'));
+		$mockStorage
+			->expects($this->once())
+			->method('loadData')
+			->with(
+				'cms_page'
+			)
+			->will($this->returnValue(array()));
+
+		// using a inherited class of Content_Abstract. protected storeDataInStorage is only called from them
+		$model = $this->getModelMock(
+			'acs/content_cms_page',
+			array('getStorage')
+		);
+		$model
+			->expects($this->once())
+			->method('getStorage')
+			->will(
+				$this->returnValue(
+				     $mockStorage
+				)
+			);
+
+		$this->assertNull(
+			$model->loadData()
 		);
 	}
 }
