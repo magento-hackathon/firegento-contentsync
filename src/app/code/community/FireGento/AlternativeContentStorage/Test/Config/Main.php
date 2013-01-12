@@ -50,4 +50,10 @@ class FireGento_AlternativeContentStorage_Test_Config_Main extends EcomDev_PHPUn
         $this->assertHelperAlias('acs', 'FireGento_AlternativeContentStorage_Helper_Data');
         $this->assertHelperAlias('acs/data', 'FireGento_AlternativeContentStorage_Helper_Data');
     }
+
+    public function testModuleVersion()
+    {
+        $this->assertModuleVersionGreaterThanOrEquals('0.1.0');
+        $this->assertModuleVersionGreaterThanOrEquals('0.2.0');
+    }
 }

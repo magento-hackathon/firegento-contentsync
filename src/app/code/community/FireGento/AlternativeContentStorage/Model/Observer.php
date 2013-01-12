@@ -95,4 +95,37 @@ class FireGento_AlternativeContentStorage_Model_Observer
             FireGento_AlternativeContentStorage_Model_Notice::showManuelCmsBlockUpdateNotice();
         }
     }
+
+    /**
+     * Listens to:
+     * - model_save_before
+     * 
+     * @param Varien_Event_Observer $observer
+     * @return void
+     */
+    public function beforeObjectSave(Varien_Event_Observer $observer)
+    {
+        $object = $observer->getEvent()->getObject();
+        if ($object && $object instanceof Varien_Object && $this->_isObservedObjectType($object)) {
+            $hash = Mage::helper('acs/hash')->calculateObjectHash($object);
+            $object->setData('acs_hash', $hash);
+        }
+    }
+    
+    protected function _isObservedObjectType(Varien_Object $object)
+    {
+        $objectTypes = array(
+            'Mage_Cms_Model_Page',
+            'Mage_Cms_Model_Block',
+            'Mage_Core_Model_Email_Template',
+        );
+
+        foreach ($objectTypes as $type) {
+            if ($object instanceof $type) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
