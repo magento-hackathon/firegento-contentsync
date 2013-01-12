@@ -6,7 +6,6 @@
             <codePool>community</codePool>
             <depends>
                 <Mage_Cms/>
-
             </depends>
         </FireGento_AlternativeContentStorage>
     </modules>
