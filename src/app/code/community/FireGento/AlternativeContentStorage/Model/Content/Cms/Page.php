@@ -25,6 +25,8 @@ class FireGento_AlternativeContentStorage_Model_Content_Cms_Page extends FireGen
 {
     protected $_configPath = 'cms_page';
 
+    protected  $entityType = 'cms_page';
+
     public function storeData()
     {
         $data = array();
@@ -36,9 +38,26 @@ class FireGento_AlternativeContentStorage_Model_Content_Cms_Page extends FireGen
             $data[] = $cmsPage->getData();
         }
 
-        $this->storeDataInStorages(
+        $this->storeDataInStorage(
             $data,
-            'cms_page'
+            $this->entityType
         );
+    }
+
+    public function loadData()
+    {
+        /** @var $data array[] */
+        $data = $this->loadDataFromStorage(
+            $this->entityType
+        );
+
+        foreach($data as $itemData) {
+            /* @var $cmsPage Mage_Cms_Model_Page */
+            $cmsPage = Mage::getModel('cms/page')->load($itemData['page_id']);
+
+            $cmsPage
+                ->addData($itemData)
+                ->save();
+        }
     }
 }

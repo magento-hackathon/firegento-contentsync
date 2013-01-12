@@ -21,47 +21,21 @@
  * @since     0.1.0
  */
 
-abstract class FireGento_AlternativeContentStorage_Model_Content_Abstract
+class FireGento_AlternativeContentStorage_Model_Storage_Void extends FireGento_AlternativeContentStorage_Model_Storage_Abstract
 {
-
-    protected $_configPath = '';
-
-    protected function getConfig($key)
-    {
-        return Mage::getStoreConfig('acs/content_'.$this->_configPath.'/'.$key);
-    }
-
-    /**
-     * @return FireGento_AlternativeContentStorage_Model_Storage_Abstract
-     */
-    public function getStorage()
-    {
-        $storageName = $this->getConfig('storage');
-        if (!$storageName) {
-            return Mage::getModel('acs/storage_void');
-        }
-        $storage = Mage::getModel('acs/storage_'.$storageName);
-        if (!$storage) {
-            return Mage::getModel('acs/storage_void');
-        }
-        return $storage;
-    }
-
     /**
      * @param array $data
      * @param string $entityType
      */
-    protected function storeDataInStorage($data, $entityType)
+    public function storeData($data, $entityType)
     {
-        $this->getStorage()->storeData($data, $entityType);
     }
 
     /**
      * @param string $entityType
      * @return array
      */
-    protected function loadDataFromStorage($entityType)
+    public function loadData($entityType)
     {
-        return $this->getStorage()->loadData($entityType);
     }
 }

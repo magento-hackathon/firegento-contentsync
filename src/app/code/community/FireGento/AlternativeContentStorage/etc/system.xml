@@ -59,17 +59,17 @@
                     <show_in_website>0</show_in_website>
                     <show_in_store>0</show_in_store>
                     <fields>
-                        <storages translate="label" module="acs">
-                            <label>Storages</label>
+                        <storage translate="label" module="acs">
+                            <label>Storage</label>
 
-                            <frontend_type>multiselect</frontend_type>
+                            <frontend_type>select</frontend_type>
                             <source_model>acs/source_storage</source_model>
 
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </storages>
+                        </storage>
                     </fields>
                 </content_cms_block>
 
@@ -81,17 +81,17 @@
                     <show_in_website>0</show_in_website>
                     <show_in_store>0</show_in_store>
                     <fields>
-                        <storages translate="label" module="acs">
-                            <label>Storages</label>
+                        <storage translate="label" module="acs">
+                            <label>Storage</label>
 
-                            <frontend_type>multiselect</frontend_type>
+                            <frontend_type>select</frontend_type>
                             <source_model>acs/source_storage</source_model>
 
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </storages>
+                        </storage>
                     </fields>
                 </content_cms_page>
 
