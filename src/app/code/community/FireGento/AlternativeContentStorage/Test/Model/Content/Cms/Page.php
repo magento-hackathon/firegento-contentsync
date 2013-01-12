@@ -55,7 +55,7 @@ class FireGento_AlternativeContentStorage_Test_Model_Content_Cms_Page extends Ec
 
 		$cmsPageMock = $this->getModelMock(
 			'cms/page',
-			array('load', 'addData', 'save')
+			array('load', 'setData', 'save')
 		);
 		$this->mockCmsPageMethods($cmsPageMock, 0, $dataValues[0]);
 		$this->mockCmsPageMethods($cmsPageMock, 1, $dataValues[1]);
@@ -75,7 +75,7 @@ class FireGento_AlternativeContentStorage_Test_Model_Content_Cms_Page extends Ec
 	}
 
 	/**
-	 * mocks the load, addData and save method of the cmsPageMock
+	 * mocks the load, setData and save method of the cmsPageMock
 	 * @param PHPUnit_Framework_MockObject_MockObject $cmsPageMock
 	 * @param                                         $numberIteration
 	 * @param                                         $data
@@ -91,7 +91,7 @@ class FireGento_AlternativeContentStorage_Test_Model_Content_Cms_Page extends Ec
 			);
 		$cmsPageMock
 			->expects($this->at($numberIteration++))
-			->method('addData')
+			->method('setData')
 			->with($data)
 			->will(
 				$this->returnSelf()
