@@ -41,6 +41,7 @@ class FireGento_AlternativeContentStorage_Model_Notice
         Mage::getSingleton('adminhtml/session')->setData(self::NOTICE_REGISTER_KEY, $type);
     }
 
+
     /**
      * @param string
      */
@@ -56,6 +57,42 @@ class FireGento_AlternativeContentStorage_Model_Notice
     static public function getManuelUpdateNoticeType()
     {
         return Mage::getSingleton('adminhtml/session')->getData(self::NOTICE_REGISTER_KEY);
+    }
+
+
+    /**
+     *
+     */
+    static public function showManuelCmsBlockUpdateNotice()
+    {
+        self::showManuelUpdateNotice(self::NOTICE_TYPE_CMS_BLOCK);
+    }
+
+
+    /**
+     *
+     */
+    static public function showManuelCmsPageUpdateNotice()
+    {
+        self::showManuelUpdateNotice(self::NOTICE_TYPE_CMS_PAGE);
+    }
+
+
+    /**
+     *
+     */
+    static public function showManuelEmailTransUpdateNotice()
+    {
+        self::showManuelUpdateNotice(self::NOTICE_TYPE_EMAIL_TRANS);
+    }
+
+
+    /**
+     *
+     */
+    static public function showManuelCoreConfigUpdateNotice()
+    {
+        self::showManuelUpdateNotice(self::NOTICE_TYPE_CORE_CONFIG);
     }
 
 

@@ -23,7 +23,11 @@
 
 class FireGento_AlternativeContentStorage_Model_Observer
 {
+
+
+    protected $_helper = null;
     protected $_isDisabled = false;
+
 
     /**
      * @return bool
@@ -33,10 +37,25 @@ class FireGento_AlternativeContentStorage_Model_Observer
         return $this->_isDisabled;
     }
 
+
+    /**
+     * @return FireGento_AlternativeContentStorage_Helper_Data|null
+     */
+    protected function getHelper()
+    {
+        if ($this->_helper === null) {
+            $this->_helper = Mage::helper('acs');
+        }
+
+        return $this->_helper;
+    }
+
+
     public function disableObservers()
     {
         $this->_isDisabled = true;
     }
+
 
     /**
      * @param Varien_Event_Observer $observer
@@ -50,8 +69,13 @@ class FireGento_AlternativeContentStorage_Model_Observer
             return;
         }
 
-        Mage::getSingleton('acs/content_cms_page')->storeData();
+        if ($this->getHelper()->getCmsPageTriggerAuto()) {
+            Mage::getSingleton('acs/content_cms_page')->storeData();
+        } elseif ($this->getHelper()->getCmsPageTriggerManually()) {
+            FireGento_AlternativeContentStorage_Model_Notice::showManuelCmsPageUpdateNotice();
+        }
     }
+
 
     /**
      * @param Varien_Event_Observer $observer
@@ -65,6 +89,10 @@ class FireGento_AlternativeContentStorage_Model_Observer
             return;
         }
 
-        Mage::getSingleton('acs/content_cms_block')->storeData();
+        if ($this->getHelper()->getCmsBlockTriggerAuto()) {
+            Mage::getSingleton('acs/content_cms_block')->storeData();
+        } elseif ($this->getHelper()->getCmsBlockTriggerManually()) {
+            FireGento_AlternativeContentStorage_Model_Notice::showManuelCmsBlockUpdateNotice();
+        }
     }
 }
