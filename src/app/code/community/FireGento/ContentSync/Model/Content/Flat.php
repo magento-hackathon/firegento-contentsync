@@ -34,6 +34,52 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
         return Mage::getStoreConfig('contentsync_entities');
     }
 
+    /**
+     * @param string $entityType
+     * @return string
+     */
+    protected function _getEntityTypeModelName($entityType)
+    {
+        $entityTypeData = $this->_getEntityTypes();
+
+        $modelName = $entityTypeData[$entityType]['model'];
+        return $modelName;
+    }
+
+    /**
+     * @param string $entityType
+     * @return string
+     */
+    protected function _getEntityTypeTableName($entityType)
+    {
+        $entityTypeData = $this->_getEntityTypes();
+
+        $tableName = $entityTypeData[$entityType]['table_name'];
+        return $tableName;
+    }
+
+    /**
+     * @param string $entityType
+     * @return Mage_Core_Model_Abstract
+     */
+    protected function _getEntityTypeModel($entityType)
+    {
+        return Mage::getModel($this->_getEntityTypeModelName($entityType));
+    }
+
+    /**
+     * @param $entityType
+     * @return string
+     */
+    protected function _getEntityTypePrimaryKey($entityType)
+    {
+        $mainKey = $this->_getEntityTypeModel($entityType)
+            ->getResource()
+            ->getIdFieldName();
+
+        return $mainKey;
+    }
+
     public function storeData($entityType = null)
     {
         if (!is_null($entityType)) {
@@ -50,12 +96,12 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
 
     public function storeDataForEntityType($entityType)
     {
-        $entityTypes = $this->_getEntityTypes();
+        $entityTypeData = $this->_getEntityTypes();
 
         $data = array();
 
         /* @var $collection Mage_Core_Model_Resource_Db_Collection_Abstract */
-        $collection = Mage::getModel($entityTypes[$entityType]['model'])->getCollection();
+        $collection = Mage::getModel($this->_getEntityTypeModelName($entityType))->getCollection();
 
         $collection->walk('afterLoad');
 
@@ -77,69 +123,93 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
         );
     }
 
-    public function loadData()
+    public function loadData($entityType = null)
     {
         Mage::getSingleton('contentsync/observer')->disableObservers();
 
-        $importedEmailTemplateIds = array();
+        if (!is_null($entityType)) {
+
+            $this->loadDataForEntityType($entityType);
+        } else {
+
+            foreach($this->_getEntityTypes() as $entityType => $entityTypeData) {
+
+                $this->loadDataForEntityType($entityType);
+            }
+        }
+    }
+
+    public function loadDataForEntityType($entityType)
+    {
+        $modelName = $this->_getEntityTypeModelName($entityType);
+
+        $mainKey = $this->_getEntityTypePrimaryKey($entityType);
+
+        $importedObjectIds = array();
 
         /** @var $data array[] */
         $data = $this->loadDataFromStorage(
-            $this->_entityType
+            $entityType
         );
 
-        foreach($data as $itemData) {
+        foreach ($data as $itemData) {
 
             $isNew = false;
 
-            $importedEmailTemplateIds[] = $itemData['template_id'];
+            $importedObjectIds[] = $itemData[$mainKey];
 
-            /* @var $emailTemplate Mage_Core_Model_Email_Template */
-            $emailTemplate = Mage::getModel('core/email_template')->load($itemData['template_id']);
+            /* @var $object Mage_Core_Model_Email_Template */
+            $object = Mage::getModel($modelName)->load($itemData[$mainKey]);
 
-            if (!$emailTemplate->getId()) {
+            if (!$object->getId()) {
 
-                // new email: insert with new id which will be changed later
-                $emailTemplateId = $itemData['template_id'];
-                unset($itemData['template_id']);
+                // new object: insert with new id which will be changed later
+                $objectId = $itemData[$mainKey];
+                unset($itemData[$mainKey]);
                 $isNew = true;
             }
 
-            $emailTemplate
+            $object
                 ->setData($itemData)
                 ->save();
 
             if ($isNew) {
 
-                $this->_updateEmailTemplateId($emailTemplateId, $emailTemplate->getId());
+                $this->_updateObjectId($entityType, $objectId, $object->getId());
             }
         }
 
-        $this->_deleteEmailTemplatesNotImported($importedEmailTemplateIds);
+        $this->_deleteObjectsNotImported($entityType, $importedObjectIds);
     }
 
     /**
-     * @param int[] $importedEmailTemplateIds
+     * @param string $entityType
+     * @param int[] $importedObjectIds
      */
-    protected function _deleteEmailTemplatesNotImported($importedEmailTemplateIds)
+    protected function _deleteObjectsNotImported($entityType, $importedObjectIds)
     {
-        $emailTemplatesToDelete = Mage::getResourceModel('core/email_template_collection')
-            ->addFieldToFilter('template_id', array('nin' => $importedEmailTemplateIds));
+        $primaryKey = $this->_getEntityTypePrimaryKey($entityType);
 
-        foreach ($emailTemplatesToDelete as $emailTemplate) {
-            $emailTemplate->delete();
+        $objectsToDelete = $this->_getEntityTypeModel($entityType)->getCollection()
+            ->addFieldToFilter($primaryKey, array('nin' => $importedObjectIds));
+
+        foreach ($objectsToDelete as $object) {
+            $object->delete();
         }
     }
 
     /**
-     * @param int $emailTemplateId
-     * @param int $newEmailTemplateId
+     * @param string $entityType
+     * @param int $objectId
+     * @param int $newObjectId
      */
-    protected function _updateEmailTemplateId($emailTemplateId, $newEmailTemplateId)
+    protected function _updateObjectId($entityType, $objectId, $newObjectId)
     {
-        if ($emailTemplateId == $newEmailTemplateId) {
+        if ($objectId == $newObjectId) {
             return;
         }
+
+        $primaryKey = $this->_getEntityTypePrimaryKey($entityType);
 
         /** @var $resource Mage_Core_Model_Resource */
         $resource = Mage::getSingleton('core/resource');
@@ -147,6 +217,9 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
         /** @var $connection Varien_Db_Adapter_Pdo_Mysql */
         $connection = $resource->getConnection('core/write');
 
-        $connection->update($resource->getTableName('core/email_template'), array('template_id' => $emailTemplateId), 'template_id = ' . $newEmailTemplateId);
+        $connection->update(
+            $resource->getTableName($this->_getEntityTypeTableName($entityType)),
+            array($primaryKey => $objectId),
+            $primaryKey . ' = ' . $newObjectId);
     }
 }

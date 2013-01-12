@@ -43,20 +43,8 @@ class FireGento_ContentSync_Shell extends Mage_Shell_Abstract
     {
         if ($this->getArg('import')) {
             try {
-                Mage::getSingleton('contentsync/content_cms_page')->loadData();
-                echo "CMS Page data imported.\n";
-            } catch (Exception $e) {
-                echo "Error: $e->getMessage().\n";
-            }
-            try {
-                Mage::getSingleton('contentsync/content_cms_block')->loadData();
-                echo "CMS Block data imported.\n";
-            } catch (Exception $e) {
-                echo "Error: $e->getMessage().\n";
-            }
-            try {
-                Mage::getSingleton('contentsync/content_email')->loadData();
-                echo "Email Template data imported.\n";
+                Mage::getSingleton('contentsync/content_flat')->loadData();
+                echo "Data imported.\n";
             } catch (Exception $e) {
                 echo "Error: $e->getMessage().\n";
             }

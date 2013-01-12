@@ -120,14 +120,17 @@
             <email_template>
                 <label>Email Templates</label>
                 <model>core/email_template</model>
+                <table_name>core/email_template</table_name>
             </email_template>
             <cms_page>
                 <label>CMS Pages</label>
                 <model>cms/page</model>
+                <table_name>cms/page</table_name>
             </cms_page>
             <cms_block>
                 <label>CMS Blocks</label>
                 <model>cms/block</model>
+                <table_name>cms/block</table_name>
             </cms_block>
         </contentsync_entities>
     </default>
