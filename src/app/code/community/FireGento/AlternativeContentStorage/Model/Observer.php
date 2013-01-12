@@ -21,21 +21,20 @@
  * @since     0.1.0
  */
 
-class FireGento_AlternativeContentStorage_Model_Content_Cms_Page extends FireGento_AlternativeContentStorage_Model_Content_Cms_Abstract
+class FireGento_AlternativeContentStorage_Model_Observer
 {
-    public function storeDataToFile()
+    /**
+     * @param Varien_Event_Observer $observer
+     */
+    public function afterCmsPageSave(Varien_Event_Observer $observer)
     {
-        $fileData = array();
+        /** @var $cmsPage Mage_Cms_Model_Page */
+        $cmsPage = $observer->getObject();
 
-        $cmsPages = Mage::getResourceModel('cms/page_collection');
-
-        foreach($cmsPages as $cmsPage) {
-
-            $fileData[] = $cmsPage->getData();
+        if (!$cmsPage->hasDataChanges()) {
+            return;
         }
 
-        $fileContent = Zend_Json::encode($fileData);
-
-        Mage::log($fileContent);
+        Mage::getSingleton('acs/content_cms_page')->storeDataToFile();
     }
 }

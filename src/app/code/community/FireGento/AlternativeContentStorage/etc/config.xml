@@ -39,6 +39,17 @@
                 <class>FireGento_AlternativeContentStorage_Helper</class>
             </acs>
         </helpers>
+        <events>
+            <cms_page_save_after>
+                <observers>
+                    <acs>
+                        <type>singleton</type>
+                        <class>acs/observer</class>
+                        <method>afterCmsPageSave</method>
+                    </acs>
+                </observers>
+            </cms_page_save_after>
+        </events>
     </global>
     <adminhtml>
         <translate>
