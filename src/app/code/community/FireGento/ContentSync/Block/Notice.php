@@ -15,7 +15,7 @@ class FireGento_ContentSync_Block_Notice extends Mage_Adminhtml_Block_Abstract
      */
     public function getNotices()
     {
-        return FireGento_ContentSync_Model_Notice::getManualUpdateNoticeType();
+        return Mage::getSingleton('contentsync/notice')->getNoticeFlag();
     }
 
 
@@ -25,7 +25,7 @@ class FireGento_ContentSync_Block_Notice extends Mage_Adminhtml_Block_Abstract
      */
     public function getLabel($type)
     {
-        return FireGento_ContentSync_Model_Notice::getManualUpdateNoticeTypeLabel($type);
+        return Mage::getSingleton('contentsync/notice')->getManuelUpdateNoticeTypeLabel($type);
     }
 
 
@@ -35,7 +35,7 @@ class FireGento_ContentSync_Block_Notice extends Mage_Adminhtml_Block_Abstract
      */
     public function getExportUrl($type)
     {
-        return FireGento_ContentSync_Model_Notice::getManualUpdateNoticeTypeUrl($type);
+        return Mage::getSingleton('contentsync/notice')->getManuelUpdateNoticeTypeUrl($type);
     }
 
 
