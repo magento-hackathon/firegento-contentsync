@@ -42,4 +42,62 @@ class FireGento_AlternativeContentStorage_Test_Model_Content_Cms_Page extends Ec
 
 		$model->storeData();
 	}
+
+	public function testLoadDataIteration() {
+		$dataValues = array(
+			array(
+				'page_id' => 1,
+			),
+		    array(
+			    'page_id' => 2,
+		    )
+		);
+
+		$cmsPageMock = $this->getModelMock(
+			'cms/page',
+			array('load', 'addData', 'save')
+		);
+		$this->mockCmsPageMethods($cmsPageMock, 0, $dataValues[0]);
+		$this->mockCmsPageMethods($cmsPageMock, 1, $dataValues[1]);
+		$this->replaceByMock('model', 'cms/page', $cmsPageMock);
+
+		$model = $this->getModelMock(
+			'acs/content_cms_page',
+			array('loadDataFromStorage')
+		);
+		$model
+			->expects($this->once())
+			->method('loadDataFromStorage')
+			->will(
+				$this->returnValue($dataValues)
+			);
+		$model->loadData();
+	}
+
+	/**
+	 * mocks the load, addData and save method of the cmsPageMock
+	 * @param PHPUnit_Framework_MockObject_MockObject $cmsPageMock
+	 * @param                                         $numberIteration
+	 * @param                                         $data
+	 */
+	private function mockCmsPageMethods(PHPUnit_Framework_MockObject_MockObject $cmsPageMock, $numberIteration, $data) {
+		$numberIteration *= 3;
+		$cmsPageMock
+			->expects($this->at($numberIteration++))
+			->method('load')
+			->with($data['page_id'])
+			->will(
+				$this->returnSelf()
+			);
+		$cmsPageMock
+			->expects($this->at($numberIteration++))
+			->method('addData')
+			->with($data)
+			->will(
+				$this->returnSelf()
+			);
+		$cmsPageMock
+			->expects($this->at($numberIteration))
+			->method('save');
+	}
 }

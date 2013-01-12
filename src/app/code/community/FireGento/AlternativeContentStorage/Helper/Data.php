@@ -30,29 +30,56 @@ class FireGento_AlternativeContentStorage_Helper_Data extends Mage_Core_Helper_A
 
 
     /**
-     * @return int
+     * @return boolean
      */
-    public function getCmsBlockTrigger()
+    public function getCmsBlockTriggerAuto()
     {
-        return Mage::getStoreConfig(self::XML_PAHT_ACS_CONTENT_CMS_BLOCK_TRIGGER);
+        return (Mage::getStoreConfig(self::XML_PAHT_ACS_CONTENT_CMS_BLOCK_TRIGGER) == FireGento_AlternativeContentStorage_Model_Source_Trigger::TRIGGER_AUTO);
     }
 
 
     /**
-     * @return int
+     * @return boolean
      */
-    public function getCmsPageTrigger()
+    public function getCmsBlockTriggerManually()
     {
-        return Mage::getStoreConfig(self::XML_PAHT_ACS_CONTENT_CMS_PAGE_TRIGGER);
+        return (Mage::getStoreConfig(self::XML_PAHT_ACS_CONTENT_CMS_BLOCK_TRIGGER) == FireGento_AlternativeContentStorage_Model_Source_Trigger::TRIGGER_MANUALLY);
     }
 
 
     /**
-     * @return int
+     * @return boolean
      */
-    public function getEmailTransTrigger()
+    public function getCmsPageTriggerAuto()
     {
-        return Mage::getStoreConfig(self::XML_PAHT_ACS_CONTENT_EMAIL_TRANS_TRIGGER);
+        return (Mage::getStoreConfig(self::XML_PAHT_ACS_CONTENT_CMS_PAGE_TRIGGER) == FireGento_AlternativeContentStorage_Model_Source_Trigger::TRIGGER_AUTO);
+    }
+
+
+    /**
+     * @return boolean
+     */
+    public function getCmsPageTriggerManually()
+    {
+        return (Mage::getStoreConfig(self::XML_PAHT_ACS_CONTENT_CMS_PAGE_TRIGGER) == FireGento_AlternativeContentStorage_Model_Source_Trigger::TRIGGER_MANUALLY);
+    }
+
+
+    /**
+     * @return boolean
+     */
+    public function getEmailTransTriggerAuto()
+    {
+        return (Mage::getStoreConfig(self::XML_PAHT_ACS_CONTENT_EMAIL_TRANS_TRIGGER) == FireGento_AlternativeContentStorage_Model_Source_Trigger::TRIGGER_AUTO);
+    }
+
+
+    /**
+     * @return boolean
+     */
+    public function getEmailTransTriggerManually()
+    {
+        return (Mage::getStoreConfig(self::XML_PAHT_ACS_CONTENT_EMAIL_TRANS_TRIGGER) == FireGento_AlternativeContentStorage_Model_Source_Trigger::TRIGGER_MANUALLY);
     }
 
 }

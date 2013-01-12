@@ -1,0 +1,13 @@
+<?php /** @var $this FireGento_AlternativeContentStorage_Block_Notice */ ?>
+<?php if($this->getLabel() && $this->getActionUrl()) : ?>
+    <div class="notification-global">
+        <span class="f-left">
+            <strong class="label"><?php echo $this->__('Changes on %s', $this->getLabel()) ?></strong>
+            <?php echo $this->__('Alternative Content Storage set on manuel trigger mode.') ?>
+            <a href="<?php echo $this->getActionUrl() ?>"><?php echo $this->__('Start Export') ?></a>
+        </span>
+        <span class="f-right">
+            <a href="#" onclick="$(this).up(1).remove()"><?php echo $this->__('Close') ?></a>
+        </span>
+    </div>
+<?php endif; ?>
