@@ -34,6 +34,8 @@ class FireGento_ContentSync_Model_Content_Cms_Page extends FireGento_ContentSync
         /* @var $cmsPages Mage_Cms_Model_Resource_Page_Collection */
         $cmsPages = Mage::getResourceModel('cms/page_collection');
 
+        $cmsPages->walk('afterLoad');
+
         foreach($cmsPages as $cmsPage) {
 
             /** @var $cmsPage Mage_Cms_Model_Page */

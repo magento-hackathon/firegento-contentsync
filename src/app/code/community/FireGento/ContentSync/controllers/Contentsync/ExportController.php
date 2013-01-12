@@ -38,7 +38,7 @@ class FireGento_ContentSync_Contentsync_ExportController extends Mage_Adminhtml_
     {
         $type = $this->getRequest()->getParam('content');
 
-        FireGento_ContentSync_Model_Notice::unsetManuelUpdateNotice($type);
+        FireGento_ContentSync_Model_Notice::unsetManualUpdateNotice($type);
 
         $this->_goBack();
     }

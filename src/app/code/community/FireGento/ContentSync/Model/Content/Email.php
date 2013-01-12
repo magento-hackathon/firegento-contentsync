@@ -33,6 +33,8 @@ class FireGento_ContentSync_Model_Content_Email extends FireGento_ContentSync_Mo
         /* @var $emailTemplates Mage_Core_Model_Resource_Email_Template_Collection */
         $emailTemplates = Mage::getResourceModel('core/email_template_collection');
 
+        $emailTemplates->walk('afterLoad');
+
         foreach($emailTemplates as $emailTemplate) {
 
             /** @var $emailTemplate Mage_Core_Model_Email_Template */

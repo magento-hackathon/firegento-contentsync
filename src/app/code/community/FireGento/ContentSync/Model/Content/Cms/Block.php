@@ -34,6 +34,8 @@ class FireGento_ContentSync_Model_Content_Cms_Block extends FireGento_ContentSyn
         /* @var $cmsBlocks Mage_Cms_Model_Resource_Block_Collection */
         $cmsBlocks = Mage::getResourceModel('cms/block_collection');
 
+        $cmsBlocks->walk('afterLoad');
+
         foreach($cmsBlocks as $cmsBlock) {
 
             /** @var cmsBlock Mage_Cms_Model_Block */

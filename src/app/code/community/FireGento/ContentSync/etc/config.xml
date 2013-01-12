@@ -61,24 +61,15 @@
                     </contentsync_observer>
                 </observers>
             </model_save_before>
-            <cms_page_save_after>
+            <model_save_after>
                 <observers>
                     <contentsync>
                         <type>singleton</type>
                         <class>contentsync/observer</class>
-                        <method>afterCmsPageSave</method>
+                        <method>afterObjectSave</method>
                     </contentsync>
                 </observers>
-            </cms_page_save_after>
-            <cms_block_save_after>
-                <observers>
-                    <contentsync>
-                        <type>singleton</type>
-                        <class>contentsync/observer</class>
-                        <method>afterCmsBlockSave</method>
-                    </contentsync>
-                </observers>
-            </cms_block_save_after>
+            </model_save_after>
         </events>
     </global>
     <admin>

@@ -46,6 +46,16 @@ class FireGento_ContentSync_Helper_Data extends Mage_Core_Helper_Abstract
         return (Mage::getStoreConfig(self::XML_PATH_CONTENTSYNC_CONTENT_CMS_BLOCK_TRIGGER) == FireGento_ContentSync_Model_Source_Trigger::TRIGGER_MANUALLY);
     }
 
+    public function isTriggerManually($code)
+    {
+        return (Mage::getStoreConfig('contentsync/content_' . $code . '/trigger') == FireGento_ContentSync_Model_Source_Trigger::TRIGGER_MANUALLY);
+    }
+
+    public function isTriggerAuto($code)
+    {
+        return (Mage::getStoreConfig('contentsync/content_' . $code . '/trigger') == FireGento_ContentSync_Model_Source_Trigger::TRIGGER_AUTO);
+    }
+
 
     /**
      * @return boolean

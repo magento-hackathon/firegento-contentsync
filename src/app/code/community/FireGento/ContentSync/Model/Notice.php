@@ -42,7 +42,7 @@ class FireGento_ContentSync_Model_Notice
     /**
      * @param string
      */
-    static public function showManuelUpdateNotice($type)
+    static public function showManualUpdateNotice($type)
     {
         $types = self::getSession()->getData(self::NOTICE_REGISTER_KEY);
         $types = is_array($types) ? $types : array();
@@ -55,7 +55,7 @@ class FireGento_ContentSync_Model_Notice
     /**
      * @param string
      */
-    static public function unsetManuelUpdateNotice($type)
+    static public function unsetManualUpdateNotice($type)
     {
         $types = self::getSession()->getData(self::NOTICE_REGISTER_KEY);
 
@@ -70,7 +70,7 @@ class FireGento_ContentSync_Model_Notice
     /**
      * @return array
      */
-    static public function getManuelUpdateNoticeType()
+    static public function getManualUpdateNoticeType()
     {
         $notices = self::getSession()->getData(self::NOTICE_REGISTER_KEY);
         $notices = is_array($notices) ? array_keys($notices) : array();
@@ -82,36 +82,36 @@ class FireGento_ContentSync_Model_Notice
     /**
      *
      */
-    static public function showManuelCmsBlockUpdateNotice()
+    static public function showManualCmsBlockUpdateNotice()
     {
-        self::showManuelUpdateNotice(self::NOTICE_TYPE_CMS_BLOCK);
+        self::showManualUpdateNotice(self::NOTICE_TYPE_CMS_BLOCK);
     }
 
 
     /**
      *
      */
-    static public function showManuelCmsPageUpdateNotice()
+    static public function showManualCmsPageUpdateNotice()
     {
-        self::showManuelUpdateNotice(self::NOTICE_TYPE_CMS_PAGE);
+        self::showManualUpdateNotice(self::NOTICE_TYPE_CMS_PAGE);
     }
 
 
     /**
      *
      */
-    static public function showManuelEmailTransUpdateNotice()
+    static public function showManualEmailTransUpdateNotice()
     {
-        self::showManuelUpdateNotice(self::NOTICE_TYPE_EMAIL_TRANS);
+        self::showManualUpdateNotice(self::NOTICE_TYPE_EMAIL_TRANS);
     }
 
 
     /**
      *
      */
-    static public function showManuelCoreConfigUpdateNotice()
+    static public function showManualCoreConfigUpdateNotice()
     {
-        self::showManuelUpdateNotice(self::NOTICE_TYPE_CORE_CONFIG);
+        self::showManualUpdateNotice(self::NOTICE_TYPE_CORE_CONFIG);
     }
 
 
@@ -119,7 +119,7 @@ class FireGento_ContentSync_Model_Notice
      * @param string $type
      * @return null|string
      */
-    static public function getManuelUpdateNoticeTypeLabel($type)
+    static public function getManualUpdateNoticeTypeLabel($type)
     {
         $helper = Mage::helper('contentsync');
 
@@ -142,7 +142,7 @@ class FireGento_ContentSync_Model_Notice
      * @param string $type
      * @return null|string Update action URL
      */
-    static public function getManuelUpdateNoticeTypeUrl($type)
+    static public function getManualUpdateNoticeTypeUrl($type)
     {
         $backUrl = Mage::helper('core/url')->getCurrentBase64Url();
 
