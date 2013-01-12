@@ -32,86 +32,149 @@ class FireGento_ContentSync_Model_Notice
     const NOTICE_TYPE_EMAIL_TRANS = 'email_trans';
     const NOTICE_TYPE_CORE_CONFIG = 'core_config';
 
+    /**
+     * @var Mage_Core_Model_Flag
+     */
+    protected $_flagModel = null;
 
-    static public function getSession()
+    /**
+     * @var array
+     */
+    protected $_flagData = null;
+
+
+    /**
+     *
+     */
+    public function __construct()
     {
-        return Mage::getSingleton('adminhtml/session');
+        $this->_flagModel = Mage::getModel('core/flag', array('flag_code' => self::NOTICE_REGISTER_KEY));
     }
 
 
     /**
-     * @param string
+     * @return Mage_Core_Model_Flag
      */
-    static public function showManualUpdateNotice($type)
+    protected function _getFlagModel()
     {
-        $types = self::getSession()->getData(self::NOTICE_REGISTER_KEY);
-        $types = is_array($types) ? $types : array();
-        $types[$type] = true;
-
-        self::getSession()->setData(self::NOTICE_REGISTER_KEY, $types);
+        return $this->_flagModel;
     }
 
 
     /**
-     * @param string
+     * @return Mage_Core_Model_Flag
      */
-    static public function unsetManualUpdateNotice($type)
+    protected function _loadFlagData()
     {
-        $types = self::getSession()->getData(self::NOTICE_REGISTER_KEY);
-
-        if (is_array($types)) {
-            unset($types[$type]);
+        if ($this->_flagData === null) {
+            $this->_getFlagModel()->loadSelf();
+            $this->_flagData = $this->_getFlagModel()->getFlagData();
+            $this->_flagData = @unserialize($this->_flagData);
+            $this->_flagData = is_array($this->_flagData) ? $this->_flagData : array();
         }
-
-        self::getSession()->setData(self::NOTICE_REGISTER_KEY, $types);
-    }
-
-
-    /**
-     * @return array
-     */
-    static public function getManualUpdateNoticeType()
-    {
-        $notices = self::getSession()->getData(self::NOTICE_REGISTER_KEY);
-        $notices = is_array($notices) ? array_keys($notices) : array();
-
-        return $notices;
     }
 
 
     /**
      *
      */
-    static public function showManualCmsBlockUpdateNotice()
+    protected function _saveFlagData()
     {
-        self::showManualUpdateNotice(self::NOTICE_TYPE_CMS_BLOCK);
+        $data = is_array($this->_flagData) ? $this->_flagData : array();
+        $data = @serialize($data);
+        $this->_getFlagModel()->setFlagData($data);
+        $this->_getFlagModel()->save();
     }
 
 
     /**
-     *
+     * @return array()
      */
-    static public function showManualCmsPageUpdateNotice()
+    public function getNoticeFlag()
     {
-        self::showManualUpdateNotice(self::NOTICE_TYPE_CMS_PAGE);
+        $this->_loadFlagData();
+
+        return $this->_flagData;
     }
 
 
     /**
-     *
+     * @param string $type
+     * @return FireGento_ContentSync_Model_Notice
      */
-    static public function showManualEmailTransUpdateNotice()
+    public function setNoticeFlag($type)
     {
-        self::showManualUpdateNotice(self::NOTICE_TYPE_EMAIL_TRANS);
+        $this->_loadFlagData();
+        $this->_flagData[$type] = $type;
+        $this->_saveFlagData();
+
+        return $this;
     }
 
 
     /**
-     *
+     * @param string $type
+     * @return bool
      */
-    static public function showManualCoreConfigUpdateNotice()
+    public function hasNoticeFlag($type)
     {
-        self::showManualUpdateNotice(self::NOTICE_TYPE_CORE_CONFIG);
+        $this->_loadFlagData();
+
+        return array_key_exists($type, $this->_flagData);
+    }
+
+
+    /**
+     * @param string $type
+     * @return FireGento_ContentSync_Model_Notice
+     */
+    public function unsetNoticeFlag($type)
+    {
+        $this->_loadFlagData();
+        unset($this->_flagData[$type]);
+        $this->_saveFlagData();
+
+        return $this;
+    }
+
+
+    /**
+     * @return FireGento_ContentSync_Model_Notice
+     */
+    public function showManuelCmsBlockUpdateNotice()
+    {
+        $this->setNoticeFlag(self::NOTICE_TYPE_CMS_BLOCK);
+        return $this;
+    }
+
+
+    /**
+     * @return FireGento_ContentSync_Model_Notice
+     */
+    public function showManuelCmsPageUpdateNotice()
+    {
+        $this->setNoticeFlag(self::NOTICE_TYPE_CMS_PAGE);
+        return $this;
+    }
+
+
+    /**
+     * @return FireGento_ContentSync_Model_Notice
+     */
+    public function showManuelEmailTransUpdateNotice()
+    {
+        $this->setNoticeFlag(self::NOTICE_TYPE_EMAIL_TRANS);
+        return $this;
+    }
+
+
+    /**
+     * @return FireGento_ContentSync_Model_Notice
+     */
+    public function showManuelCoreConfigUpdateNotice()
+    {
+        $this->setNoticeFlag(self::NOTICE_TYPE_CORE_CONFIG);
+        return $this;
     }
 
 
@@ -119,14 +182,14 @@ class FireGento_ContentSync_Model_Notice
      * @param string $type
      * @return null|string
      */
-    static public function getManualUpdateNoticeTypeLabel($type)
+    public function getManuelUpdateNoticeTypeLabel($type)
     {
         $helper = Mage::helper('contentsync');
 
         $labels = array(
             self::NOTICE_TYPE_CMS_BLOCK => $helper->__('Static Blocks'),
-            self::NOTICE_TYPE_CMS_PAGE => $helper->__('CMS Pages'),
-            self::NOTICE_TYPE_EMAIL_TRANS => $helper->__('Email Templates'),
+            self::NOTICE_TYPE_CMS_PAGE => $helper->__('Pages'),
+            self::NOTICE_TYPE_EMAIL_TRANS => $helper->__('Transactional Emails'),
             self::NOTICE_TYPE_CORE_CONFIG => $helper->__('Configuration'),
         );
 
@@ -142,7 +205,7 @@ class FireGento_ContentSync_Model_Notice
      * @param string $type
      * @return null|string Update action URL
      */
-    static public function getManualUpdateNoticeTypeUrl($type)
+    public function getManuelUpdateNoticeTypeUrl($type)
     {
         $backUrl = Mage::helper('core/url')->getCurrentBase64Url();
 
