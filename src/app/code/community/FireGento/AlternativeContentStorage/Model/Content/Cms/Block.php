@@ -21,7 +21,7 @@
  * @since     0.1.0
  */
 
-class FireGento_AlternativeContentStorage_Model_Content_Cms_Block extends FireGento_AlternativeContentStorage_Model_Content_Cms_Abstract {
+class FireGento_AlternativeContentStorage_Model_Content_Cms_Block extends FireGento_AlternativeContentStorage_Model_Content_Abstract {
 
     protected $_configPath = 'cms_block';
 
