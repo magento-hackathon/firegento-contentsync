@@ -69,7 +69,5 @@ class FireGento_AlternativeContentStorage_Model_Storage_File extends FireGento_A
                 Mage::helper('acs')->__('File "%s" could not be written.')
             );
         };
-
-        Mage::log($fileContent);
     }
 }

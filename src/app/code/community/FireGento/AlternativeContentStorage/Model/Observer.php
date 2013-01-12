@@ -35,6 +35,6 @@ class FireGento_AlternativeContentStorage_Model_Observer
             return;
         }
 
-        Mage::getSingleton('acs/content_cms_page')->storeDataToFile();
+        Mage::getSingleton('acs/content_cms_page')->storeData();
     }
 }
