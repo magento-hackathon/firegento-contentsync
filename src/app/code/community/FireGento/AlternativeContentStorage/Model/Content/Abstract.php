@@ -21,6 +21,6 @@
  * @since     0.1.0
  */
 
-class FireGento_AlternativeContentStorage_Model_Content_Abstract {
+abstract class FireGento_AlternativeContentStorage_Model_Content_Abstract {
 
 }
