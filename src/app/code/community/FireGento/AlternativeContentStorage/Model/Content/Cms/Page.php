@@ -24,7 +24,7 @@
 class FireGento_AlternativeContentStorage_Model_Content_Cms_Page extends FireGento_AlternativeContentStorage_Model_Content_Cms_Abstract
 {
 
-    protected $_config_path = 'page_block';
+    protected $_configPath = 'cms_page';
 
     public function storeDataToFile()
     {
@@ -36,9 +36,6 @@ class FireGento_AlternativeContentStorage_Model_Content_Cms_Page extends FireGen
 
             $data[] = $cmsPage->getData();
         }
-
-        Mage::log($data);
-        return;
 
         $this->storeDataInStorages(
             $data,

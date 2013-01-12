@@ -65,11 +65,11 @@
     <default>
         <acs>
             <content_cms_block>
-                <storages>File</storages>
+                <storages>file</storages>
             </content_cms_block>
-            <storage_file>
-                <directory></directory>
-            </storage_file>
+            <content_cms_page>
+                <storages>file</storages>
+            </content_cms_page>
         </acs>
     </default>
     <phpunit>

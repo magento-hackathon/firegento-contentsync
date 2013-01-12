@@ -24,11 +24,11 @@
 abstract class FireGento_AlternativeContentStorage_Model_Content_Abstract
 {
 
-    protected $_config_path = '';
+    protected $_configPath = '';
 
-    protected function getConfig( $key )
+    protected function getConfig($key)
     {
-        return Mage::getStoreConfig('acs/content_'.$this->_config_path.'/'.$key);
+        return Mage::getStoreConfig('acs/content_'.$this->_configPath.'/'.$key);
     }
 
     /**
@@ -38,10 +38,13 @@ abstract class FireGento_AlternativeContentStorage_Model_Content_Abstract
     {
         $result = array();
         $storages = explode(',', $this->getConfig('storages') );
-        foreach(  $storages AS $storage_name )
+        foreach($storages as $storageName)
         {
-            $storage = Mage::getModel('acs/storage_'.$storage_name);
-            if ( $storage ) {
+            if (!$storageName) {
+                continue;
+            }
+            $storage = Mage::getModel('acs/storage_'.$storageName);
+            if ($storage) {
                 $result[] = $storage;
             }
         }

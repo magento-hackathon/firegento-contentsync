@@ -23,5 +23,9 @@
 
 abstract class FireGento_AlternativeContentStorage_Model_Storage_Abstract
 {
+    /**
+     * @param array $data
+     * @param string $entityType
+     */
     abstract public function storeData($data, $entityType);
 }
