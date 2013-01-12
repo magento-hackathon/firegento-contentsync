@@ -33,30 +33,49 @@ class FireGento_AlternativeContentStorage_Model_Notice
     const NOTICE_TYPE_CORE_CONFIG = 'core_config';
 
 
+    static public function getSession()
+    {
+        return Mage::getSingleton('adminhtml/session');
+    }
+
+
     /**
      * @param string
      */
     static public function showManuelUpdateNotice($type)
     {
-        Mage::getSingleton('adminhtml/session')->setData(self::NOTICE_REGISTER_KEY, $type);
+        $types = self::getSession()->getData(self::NOTICE_REGISTER_KEY);
+        $types = is_array($types) ? $types : array();
+        $types[$type] = true;
+
+        self::getSession()->setData(self::NOTICE_REGISTER_KEY, $types);
     }
 
 
     /**
      * @param string
      */
-    static public function unsetManuelUpdateNotice()
+    static public function unsetManuelUpdateNotice($type)
     {
-        Mage::getSingleton('adminhtml/session')->unsetData(self::NOTICE_REGISTER_KEY);
+        $types = self::getSession()->getData(self::NOTICE_REGISTER_KEY);
+
+        if (is_array($types)) {
+            unset($types[$type]);
+        }
+
+        self::getSession()->setData(self::NOTICE_REGISTER_KEY, $types);
     }
 
 
     /**
-     * @return string
+     * @return array
      */
     static public function getManuelUpdateNoticeType()
     {
-        return Mage::getSingleton('adminhtml/session')->getData(self::NOTICE_REGISTER_KEY);
+        $notices = self::getSession()->getData(self::NOTICE_REGISTER_KEY);
+        $notices = is_array($notices) ? array_keys($notices) : array();
+
+        return $notices;
     }
 
 
@@ -125,11 +144,13 @@ class FireGento_AlternativeContentStorage_Model_Notice
      */
     static public function getManuelUpdateNoticeTypeUrl($type)
     {
+        $backUrl = Mage::helper('core/url')->getCurrentBase64Url();
+
         $urls = array(
-            self::NOTICE_TYPE_CMS_BLOCK => Mage_Adminhtml_Helper_Data::getUrl('acs/export/' . self::NOTICE_TYPE_CMS_BLOCK),
-            self::NOTICE_TYPE_CMS_PAGE => Mage_Adminhtml_Helper_Data::getUrl('acs/export/' . self::NOTICE_TYPE_CMS_PAGE),
-            self::NOTICE_TYPE_EMAIL_TRANS => Mage_Adminhtml_Helper_Data::getUrl('acs/export/' . self::NOTICE_TYPE_EMAIL_TRANS),
-            self::NOTICE_TYPE_CORE_CONFIG => Mage_Adminhtml_Helper_Data::getUrl('acs/export/' . self::NOTICE_TYPE_CORE_CONFIG),
+            self::NOTICE_TYPE_CMS_BLOCK => Mage_Adminhtml_Helper_Data::getUrl('adminhtml/acs_export/export', array('content' => self::NOTICE_TYPE_CMS_BLOCK, 'back' => $backUrl)),
+            self::NOTICE_TYPE_CMS_PAGE => Mage_Adminhtml_Helper_Data::getUrl('adminhtml/acs_export/export', array('content' => self::NOTICE_TYPE_CMS_PAGE, 'back' => $backUrl)),
+            self::NOTICE_TYPE_EMAIL_TRANS => Mage_Adminhtml_Helper_Data::getUrl('adminhtml/acs_export/export', array('content' => self::NOTICE_TYPE_EMAIL_TRANS, 'back' => $backUrl)),
+            self::NOTICE_TYPE_CORE_CONFIG => Mage_Adminhtml_Helper_Data::getUrl('adminhtml/acs_export/export', array('content' => self::NOTICE_TYPE_CORE_CONFIG, 'back' => $backUrl)),
         );
 
         if (array_key_exists($type, $urls)) {

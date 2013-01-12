@@ -70,9 +70,10 @@ class FireGento_AlternativeContentStorage_Model_Observer
         }
 
         if ($this->getHelper()->getCmsPageTriggerAuto()) {
-            Mage::getSingleton('acs/content_cms_page')->storeData();
+            //Mage::getSingleton('acs/content_cms_page')->storeData();
         } elseif ($this->getHelper()->getCmsPageTriggerManually()) {
             FireGento_AlternativeContentStorage_Model_Notice::showManuelCmsPageUpdateNotice();
+            FireGento_AlternativeContentStorage_Model_Notice::showManuelCmsBlockUpdateNotice();
         }
     }
 
