@@ -23,6 +23,21 @@
 
 class FireGento_AlternativeContentStorage_Model_Observer
 {
+    protected $_isDisabled = false;
+
+    /**
+     * @return bool
+     */
+    protected function _isDisabled()
+    {
+        return $this->_isDisabled;
+    }
+
+    public function disableObservers()
+    {
+        $this->_isDisabled = true;
+    }
+
     /**
      * @param Varien_Event_Observer $observer
      */
@@ -31,7 +46,7 @@ class FireGento_AlternativeContentStorage_Model_Observer
         /** @var $cmsPage Mage_Cms_Model_Page */
         $cmsPage = $observer->getObject();
 
-        if (!$cmsPage->hasDataChanges()) {
+        if (!$cmsPage->hasDataChanges() || $this->_isDisabled()) {
             return;
         }
 
@@ -46,7 +61,7 @@ class FireGento_AlternativeContentStorage_Model_Observer
         /** @var $cmsBlock Mage_Cms_Model_Block */
         $cmsBlock = $observer->getObject();
 
-        if (!$cmsBlock->hasDataChanges()) {
+        if (!$cmsBlock->hasDataChanges() || $this->_isDisabled()) {
             return;
         }
 
