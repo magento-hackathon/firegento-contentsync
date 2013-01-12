@@ -21,32 +21,59 @@
  * @since     0.1.0
  */
 
-class FireGento_ContentSync_Model_Content_Email extends FireGento_ContentSync_Model_Content_Abstract {
+class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Model_Content_Abstract {
 
     protected $_configPath = 'email_template';
     protected $_entityType = 'email_template';
 
-    public function storeData()
+    /**
+     * @return array
+     */
+    public function _getEntityTypes()
     {
+        return Mage::getStoreConfig('contentsync_entities');
+    }
+
+    public function storeData($entityType = null)
+    {
+        if (!is_null($entityType)) {
+
+            $this->storeDataForEntityType($entityType);
+        } else {
+
+            foreach($this->_getEntityTypes() as $entityType => $entityTypeData) {
+
+                $this->storeDataForEntityType($entityType);
+            }
+        }
+    }
+
+    public function storeDataForEntityType($entityType)
+    {
+        $entityTypes = $this->_getEntityTypes();
+
         $data = array();
 
-        /* @var $emailTemplates Mage_Core_Model_Resource_Email_Template_Collection */
-        $emailTemplates = Mage::getResourceModel('core/email_template_collection');
+        /* @var $collection Mage_Core_Model_Resource_Db_Collection_Abstract */
+        $collection = Mage::getModel($entityTypes[$entityType]['model'])->getCollection();
 
-        $emailTemplates->walk('afterLoad');
+        $collection->walk('afterLoad');
 
-        foreach($emailTemplates as $emailTemplate) {
+        foreach ($collection as $object) {
 
-            /** @var $emailTemplate Mage_Core_Model_Email_Template */
-            $emailData = $emailTemplate->getData();
-            unset($emailData['added_at']);
-            unset($emailData['modified_at']);
-            $data[] = $emailData;
+            /** @var $object Mage_Core_Model_Abstract */
+            $objectData = $object->getData();
+            foreach($objectData as $key => $value) {
+                if (in_array($key, Mage::helper('contentsync/hash')->getFieldBlacklist())) {
+                    unset($objectData[$key]);
+                }
+            }
+            $data[] = $objectData;
         }
 
         $this->storeDataInStorage(
             $data,
-            $this->_entityType
+            $entityType
         );
     }
 

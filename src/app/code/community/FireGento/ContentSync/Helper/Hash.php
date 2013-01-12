@@ -38,7 +38,7 @@ class FireGento_ContentSync_Helper_Hash extends Mage_Core_Helper_Abstract
      * 
      * @return array
      */
-    protected function _getFieldBlacklist()
+    public function getFieldBlacklist()
     {
         return array(
             'contentsync_hash',
@@ -60,7 +60,7 @@ class FireGento_ContentSync_Helper_Hash extends Mage_Core_Helper_Abstract
     {
         $hashData = array();
         foreach ($object->getData() as $key => $value) {
-            if (!in_array($key, $this->_getFieldBlacklist())) {
+            if (!in_array($key, $this->getFieldBlacklist())) {
                 $hashData[$key] = $value;
             }
         }

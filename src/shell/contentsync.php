@@ -62,20 +62,8 @@ class FireGento_ContentSync_Shell extends Mage_Shell_Abstract
             }
         } else if ($this->getArg('export')) {
             try {
-                Mage::getSingleton('contentsync/content_cms_page')->storeData();
-                echo "CMS Page data exported.\n";
-            } catch (Exception $e) {
-                echo "Error: $e->getMessage().\n";
-            }
-            try {
-                Mage::getSingleton('contentsync/content_cms_block')->storeData();
-                echo "CMS Block data exported.\n";
-            } catch (Exception $e) {
-                echo "Error: $e->getMessage().\n";
-            }
-            try {
-                Mage::getSingleton('contentsync/content_email')->storeData();
-                echo "Email Template data exported.\n";
+                Mage::getSingleton('contentsync/content_flat')->storeData();
+                echo "Data exported.\n";
             } catch (Exception $e) {
                 echo "Error: $e->getMessage().\n";
             }

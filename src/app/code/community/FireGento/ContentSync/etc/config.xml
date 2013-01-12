@@ -116,6 +116,20 @@
                 <storage>file</storage>
             </content_email_template>
         </contentsync>
+        <contentsync_entities>
+            <email_template>
+                <label>Email Templates</label>
+                <model>core/email_template</model>
+            </email_template>
+            <cms_page>
+                <label>CMS Pages</label>
+                <model>cms/page</model>
+            </cms_page>
+            <cms_block>
+                <label>CMS Blocks</label>
+                <model>cms/block</model>
+            </cms_block>
+        </contentsync_entities>
     </default>
     <phpunit>
         <suite>
