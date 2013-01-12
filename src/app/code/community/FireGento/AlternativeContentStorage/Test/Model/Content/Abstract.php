@@ -72,6 +72,13 @@ class FireGento_AlternativeContentStorage_Test_Model_Content_Abstract extends Ec
 		);
 	}
 
+	public function testGetStorageVoid() {
+		$this->assertInstanceOf(
+			'FireGento_AlternativeContentStorage_Model_Storage_Void',
+			$this->model->getStorage()
+		);
+	}
+
 	public function testStoreDataInStorage() {
 		$dataValues = array(
 			array(
