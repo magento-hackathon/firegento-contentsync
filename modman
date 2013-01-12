@@ -1,2 +1,3 @@
 src/app/code/community/FireGento/AlternativeContentStorage  app/code/community/FireGento/AlternativeContentStorage
 src/app/etc/modules/*   app/etc/modules/
+src/shell/acs.php   shell/acs.php
