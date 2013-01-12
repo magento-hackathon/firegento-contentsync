@@ -1,0 +1,5 @@
+<?php
+
+class FireGento_AlternativeContentStorage_Model_Content_Cms_Abstract extends FireGento_AlternativeContentStorage_Model_Content_Abstract {
+
+}
