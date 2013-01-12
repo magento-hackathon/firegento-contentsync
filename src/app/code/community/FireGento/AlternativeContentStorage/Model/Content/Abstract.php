@@ -52,13 +52,25 @@ abstract class FireGento_AlternativeContentStorage_Model_Content_Abstract
     }
 
     /**
-     * @param string $data
+     * @param array $data
      * @param string $entityType
      */
     protected function storeDataInStorages($data, $entityType)
     {
         foreach($this->getStorages() as $storage) {
             $storage->storeData($data, $entityType);
+        }
+    }
+
+    /**
+     * @param string $entityType
+     * @return array
+     * @todo refactor to use main and secondary storage
+     */
+    protected function loadDataFromStorages($entityType)
+    {
+        foreach($this->getStorages() as $storage) {
+            return $storage->loadData($entityType);
         }
     }
 }

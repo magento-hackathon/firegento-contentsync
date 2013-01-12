@@ -60,7 +60,7 @@ class FireGento_AlternativeContentStorage_Model_Storage_File extends FireGento_A
      */
     public function storeData($data, $entityType) {
 
-        $fileContent = $this->prettyPrint(Zend_Json::encode($data));
+        $fileContent = $this->_prettyPrint(Zend_Json::encode($data));
 
         $fileName = $this->_getStorageDirectory() . $entityType . '.json';
 
@@ -71,7 +71,31 @@ class FireGento_AlternativeContentStorage_Model_Storage_File extends FireGento_A
         };
     }
 
-    protected function prettyPrint( $json )
+    /**
+     * @param string $entityType
+     * @return array
+     */
+    public function loadData($entityType)
+    {
+        $fileName = $this->_getStorageDirectory() . $entityType . '.json';
+
+        if (!is_file($fileName)) {
+            return;
+        }
+
+        if (($fileContents = file_get_contents($fileName)) === false) {
+            return;
+        }
+
+        return Zend_Json::decode($fileContents);
+    }
+
+
+    /**
+     * @param string $json
+     * @return string
+     */
+    protected function _prettyPrint($json)
     {
         $result = '';
         $level = 0;
