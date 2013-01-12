@@ -23,6 +23,9 @@
 
 class FireGento_AlternativeContentStorage_Model_Storage_File extends FireGento_AlternativeContentStorage_Model_Storage_Abstract
 {
+
+    const DIRECTORY_CONFIG_PATH = 'acs/storage_file/directory';
+
     /**
      * Get directory to store files; create if necessary and test if it is writable.
      *
@@ -31,7 +34,7 @@ class FireGento_AlternativeContentStorage_Model_Storage_File extends FireGento_A
      */
     protected function _getStorageDirectory()
     {
-        $directoryPath = Mage::getStoreConfig('acs/storage_file/directory');
+        $directoryPath = Mage::getStoreConfig( self::DIRECTORY_CONFIG_PATH );
 
         if (!is_dir($directoryPath)) {
             if (!mkdir($directoryPath, 0777, true)) {
