@@ -39,6 +39,11 @@
                 <class>FireGento_AlternativeContentStorage_Helper</class>
             </acs>
         </helpers>
+        <blocks>
+            <acs>
+                <class>FireGento_AlternativeContentStorage_Block</class>
+            </acs>
+        </blocks>
         <events>
             <cms_page_save_after>
                 <observers>
@@ -70,6 +75,13 @@
                 </FireGento_AlternativeContentStorage>
             </modules>
         </translate>
+        <layout>
+            <updates>
+                <acs>
+                    <file>acs.xml</file>
+                </acs>
+            </updates>
+        </layout>
     </adminhtml>
     <default>
         <acs>
