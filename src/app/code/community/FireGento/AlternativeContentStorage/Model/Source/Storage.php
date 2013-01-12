@@ -13,8 +13,9 @@ class FireGento_AlternativeContentStorage_Model_Source_Storage
         // TODO: Get available storages from config file
 
         return array(
-            array('value' => '-',        'label'=>Mage::helper('adminhtml')->__('None')),
+            array('value' => '-',       'label'=>Mage::helper('adminhtml')->__('None')),
             array('value' => 'file',    'label'=>Mage::helper('adminhtml')->__('File')),
+            array('value' => 'git',     'label'=>Mage::helper('adminhtml')->__('GIT')),
         );
     }
 
