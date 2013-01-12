@@ -20,62 +20,9 @@
  */
 
 class FireGento_AlternativeContentStorage_Test_Model_Content_Cms_Page extends EcomDev_PHPUnit_Test_Case {
-	/**
-	 * @var FireGento_AlternativeContentStorage_Model_Content_Cms_Page
-	 */
-	protected $model = NULL;
-
-	/**
-	 * sets up the acs/observer
-	 */
-	protected function setUp() {
-		$this->model = Mage::getModel('acs/content_cms_page');
-	}
-
-	/**
-	 * gets a varien_object mock with mocked getData
-	 * @param $returnValue for getData method
-	 * @return PHPUnit_Framework_MockObject_MockObject
-	 */
-	private function getObjectMockGetData($returnValue) {
-		$mock = $this->getMock(
-			'Varien_Object',
-			array('getData')
-		);
-		$mock
-			->expects($this->once())
-			->method('getData')
-			->will($this->returnValue($returnValue));
-		return $mock;
-	}
-
-	/**
-	 * replaces a model resource collection
-	 * @param $classAlias
-	 * @param $iteratorValues
-	 */
-	private function replaceResourceCollectionModelMock($classAlias, $iteratorValues) {
-		$resourceCmsPageCollection = $this->getResourceModelMock(
-			$classAlias,
-			array(),
-			FALSE,
-			array(),
-			'',
-			FALSE
-		);
-		$resourceCmsPageCollection
-			->expects($this->any())
-			->method('getIterator')
-			->will(
-				$this->returnValue(
-					new ArrayIterator($iteratorValues)
-				)
-		);
-		$this->replaceByMock('resource_model', $classAlias, $resourceCmsPageCollection);
-	}
-
 	public function testDataStoredInStorages() {
 		$dataValues = array('11', '22');
+
 		$model = $this->getModelMock(
 			'acs/content_cms_page',
 			array('storeDataInStorages')
@@ -85,14 +32,13 @@ class FireGento_AlternativeContentStorage_Test_Model_Content_Cms_Page extends Ec
 			->method('storeDataInStorages')
 			->with($dataValues, 'cms_page');
 
-		$mockPage1 = $this->getObjectMockGetData($dataValues[0]);
-		$mockPage2 = $this->getObjectMockGetData($dataValues[1]);
-		$this->replaceResourceCollectionModelMock(
-			'cms/page_collection',
-			array(
-			     $mockPage1,
-			     $mockPage2)
+		$mocks = new FireGento_AlternativeContentStorage_Test_Model_Content_Abstract_Mocks($this);
+		$classAlias = 'cms/page_collection';
+		$resourceCmsPageCollection = $mocks->getResourceCollectionModelMock(
+			$classAlias,
+			$dataValues
 		);
+		$this->replaceByMock('resource_model', $classAlias, $resourceCmsPageCollection);
 
 		$model->storeData();
 	}

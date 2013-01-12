@@ -82,4 +82,53 @@ class FireGento_AlternativeContentStorage_Test_Model_Content_Abstract extends Ec
 			current($this->model->getStorages())
 		);
 	}
+
+	/**
+	 * @param $dataValues which are expected as first parameter on method storeData
+	 * @return PHPUnit_Framework_MockObject_MockObject
+	 */
+	private function getStorageModelMock($dataValues) {
+		$mock = $this->getMock('Varien_Object', array('storeData'));
+		$mock
+			->expects($this->once())
+			->method('storeData')
+			->with(
+				$dataValues,
+				'cms_page'
+			);
+		return $mock;
+	}
+
+	public function testStoreDataInStoragesIteration() {
+		$dataValues = array('11', '22');
+
+		// using a inherited class of Content_Abstract. protected storeDataInStorages is only called from them
+		$model = $this->getModelMock(
+			'acs/content_cms_page',
+			array('getStorages')
+		);
+		$model
+			->expects($this->once())
+			->method('getStorages')
+			->will(
+				$this->returnValue(
+					array(
+					     $this->getStorageModelMock($dataValues),
+					     $this->getStorageModelMock($dataValues),
+					)
+				)
+			);
+
+		$mocks = new FireGento_AlternativeContentStorage_Test_Model_Content_Abstract_Mocks($this);
+		$classAlias = 'cms/page_collection';
+		$resourceCmsPageCollection = $mocks->getResourceCollectionModelMock(
+			$classAlias,
+			$dataValues
+		);
+		$this->replaceByMock('resource_model', $classAlias, $resourceCmsPageCollection);
+
+		$this->assertNull(
+			$model->storeData()
+		);
+	}
 }
