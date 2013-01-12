@@ -28,17 +28,21 @@ class FireGento_AlternativeContentStorage_Model_Content_Cms_Page extends FireGen
 
     public function storeDataToFile()
     {
-        $fileData = array();
+        $data = array();
 
         $cmsPages = Mage::getResourceModel('cms/page_collection');
 
         foreach($cmsPages as $cmsPage) {
 
-            $fileData[] = $cmsPage->getData();
+            $data[] = $cmsPage->getData();
         }
 
-        $fileContent = Zend_Json::encode($fileData);
+        Mage::log($data);
+        return;
 
-        Mage::log($fileContent);
+        $this->storeDataInStorages(
+            $data,
+            'cms_page'
+        );
     }
 }

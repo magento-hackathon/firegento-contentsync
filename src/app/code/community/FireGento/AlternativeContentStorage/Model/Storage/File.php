@@ -49,4 +49,11 @@ class FireGento_AlternativeContentStorage_Model_Storage_File extends FireGento_A
 
         return $directoryPath;
     }
+
+    public function storeData($data, $entityType) {
+
+        $fileContent = Zend_Json::encode($data);
+
+        Mage::log($fileContent);
+    }
 }

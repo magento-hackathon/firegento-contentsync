@@ -32,20 +32,30 @@ abstract class FireGento_AlternativeContentStorage_Model_Content_Abstract
     }
 
     /**
-     * FireGento_AlternativeContentStorage_Model_Storage_Abstract[]
+     * @return FireGento_AlternativeContentStorage_Model_Storage_Abstract[]
      */
     public function getStorages()
     {
         $result = array();
         $storages = explode(',', $this->getConfig('storages') );
-        foreach(  $storeages AS $storeage_name )
+        foreach(  $storages AS $storage_name )
         {
-            $storeage = Mage::getModel('acs/storage_'.$storage_name);
+            $storage = Mage::getModel('acs/storage_'.$storage_name);
             if ( $storage ) {
-                $sresult[] = $storage;
+                $result[] = $storage;
             }
         }
-        return $storage;
+        return $result;
     }
 
+    /**
+     * @param string $data
+     * @param string $entityType
+     */
+    protected function storeDataInStorages($data, $entityType)
+    {
+        foreach($this->getStorages() as $storage) {
+            $storage->storeData($data, $entityType);
+        }
+    }
 }
