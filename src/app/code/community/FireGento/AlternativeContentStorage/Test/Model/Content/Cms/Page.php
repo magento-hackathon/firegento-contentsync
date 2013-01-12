@@ -61,16 +61,7 @@ class FireGento_AlternativeContentStorage_Test_Model_Content_Cms_Page extends Ec
 		$this->mockCmsPageMethods($cmsPageMock, 1, $dataValues[1]);
 		$this->replaceByMock('model', 'cms/page', $cmsPageMock);
 
-		$model = $this->getModelMock(
-			'acs/content_cms_page',
-			array('loadDataFromStorage')
-		);
-		$model
-			->expects($this->once())
-			->method('loadDataFromStorage')
-			->will(
-				$this->returnValue($dataValues)
-			);
+		$model = $this->getContentCmsPageModelMockLoadDataFromStorage($dataValues);
 		$model->loadData();
 	}
 
@@ -99,5 +90,37 @@ class FireGento_AlternativeContentStorage_Test_Model_Content_Cms_Page extends Ec
 		$cmsPageMock
 			->expects($this->at($numberIteration))
 			->method('save');
+	}
+
+	/**
+	 * gets a acs/content_cms_page mock with loadDataFromStorage method mocked
+	 * @param $returnValue
+	 * @return PHPUnit_Framework_MockObject_MockObject
+	 */
+	private function getContentCmsPageModelMockLoadDataFromStorage($returnValue) {
+		$model = $this->getModelMock(
+			'acs/content_cms_page',
+			array('loadDataFromStorage')
+		);
+		$model
+			->expects($this->once())
+			->method('loadDataFromStorage')
+			->will(
+				$this->returnValue($returnValue)
+			);
+		return $model;
+	}
+
+	public function testLoadDataDisablesObserver() {
+		$model = $this->getContentCmsPageModelMockLoadDataFromStorage(array());
+
+		$observerMock = $this->getModelMock('acs/observer', array('disableObservers'));
+		$observerMock
+			->expects($this->once())
+			->method('disableObservers');
+		$this->replaceByMock('singleton', 'acs/observer', $observerMock);
+
+		$model->loadData();
+
 	}
 }
