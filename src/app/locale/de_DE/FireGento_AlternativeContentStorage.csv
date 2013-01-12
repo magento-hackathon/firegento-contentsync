@@ -1,2 +1,4 @@
 "Storage: File","Speicherung: Dateisystem"
 "Storage Directory","Speicherungs-Verzeichnis"
+"Directory ""%s"" could not be created.","Das Verzeichnis ""%s"" konnte nicht erstellt werden."
+"Directory ""%s"" is not writable.","Das Verzeichnis ""%s"" ist nicht beschreibbar."
