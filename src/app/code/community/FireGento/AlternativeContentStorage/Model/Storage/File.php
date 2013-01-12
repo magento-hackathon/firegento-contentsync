@@ -1,0 +1,7 @@
+<?php
+
+class FireGento_AlternativeContentStorage_Model_Storage_File extends FireGento_AlternativeContentStorage_Model_Storage_Abstract {
+
+
+
+}
