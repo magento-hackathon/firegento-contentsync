@@ -65,11 +65,20 @@
     <default>
         <acs>
             <content_cms_block>
+                <trigger>2</trigger>
                 <storages>file</storages>
             </content_cms_block>
             <content_cms_page>
+                <trigger>2</trigger>
                 <storages>file</storages>
             </content_cms_page>
+            <content_email_trans>
+                <trigger>2</trigger>
+                <storages>file</storages>
+            </content_email_trans>
+            <storage_file>
+                <directory></directory>
+            </storage_file>
         </acs>
     </default>
     <phpunit>

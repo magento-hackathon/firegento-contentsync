@@ -20,6 +20,39 @@
  * @version   $Id:$
  * @since     0.1.0
  */
-class FireGento_AlternativeContentStorage_Helper_Data extends Mage_Core_Helper_Abstract {
+class FireGento_AlternativeContentStorage_Helper_Data extends Mage_Core_Helper_Abstract
+{
+
+
+    const XML_PAHT_ACS_CONTENT_CMS_BLOCK_TRIGGER = 'acs/content_cms_block/trigger';
+    const XML_PAHT_ACS_CONTENT_CMS_PAGE_TRIGGER = 'acs/content_cms_page/trigger';
+    const XML_PAHT_ACS_CONTENT_EMAIL_TRANS_TRIGGER = 'acs/content_email_trans/trigger';
+
+
+    /**
+     * @return int
+     */
+    public function getCmsBlockTrigger()
+    {
+        return Mage::getStoreConfig(self::XML_PAHT_ACS_CONTENT_CMS_BLOCK_TRIGGER);
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getCmsPageTrigger()
+    {
+        return Mage::getStoreConfig(self::XML_PAHT_ACS_CONTENT_CMS_PAGE_TRIGGER);
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getEmailTransTrigger()
+    {
+        return Mage::getStoreConfig(self::XML_PAHT_ACS_CONTENT_EMAIL_TRANS_TRIGGER);
+    }
 
 }
