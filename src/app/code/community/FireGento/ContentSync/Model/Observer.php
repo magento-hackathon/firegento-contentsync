@@ -56,46 +56,6 @@ class FireGento_ContentSync_Model_Observer
         $this->_isDisabled = true;
     }
 
-
-    /**
-     * @param Varien_Event_Observer $observer
-     */
-    public function afterCmsPageSave(Varien_Event_Observer $observer)
-    {
-        /** @var $cmsPage Mage_Cms_Model_Page */
-        $cmsPage = $observer->getObject();
-
-        if (!$cmsPage->hasDataChanges() || $this->_isDisabled()) {
-            return;
-        }
-
-        if ($this->getHelper()->getCmsPageTriggerAuto()) {
-            Mage::getSingleton('contentsync/content_cms_page')->storeData();
-        } elseif ($this->getHelper()->getCmsPageTriggerManually()) {
-            Mage::getSingleton('contentsync/notice')->showManuelCmsPageUpdateNotice();
-        }
-    }
-
-
-    /**
-     * @param Varien_Event_Observer $observer
-     */
-    public function afterCmsBlockSave(Varien_Event_Observer $observer)
-    {
-        /** @var $cmsBlock Mage_Cms_Model_Block */
-        $cmsBlock = $observer->getObject();
-
-        if (!$cmsBlock->hasDataChanges() || $this->_isDisabled()) {
-            return;
-        }
-
-        if ($this->getHelper()->getCmsBlockTriggerAuto()) {
-            Mage::getSingleton('contentsync/content_cms_block')->storeData();
-        } elseif ($this->getHelper()->getCmsBlockTriggerManually()) {
-            Mage::getSingleton('contentsync/notice')->showManuelCmsBlockUpdateNotice();
-        }
-    }
-
     /**
      * Listens to:
      * - model_save_before
@@ -111,7 +71,31 @@ class FireGento_ContentSync_Model_Observer
             $object->setData('contentsync_hash', $hash);
         }
     }
-    
+
+    /**
+     * Listens to:
+     * - model_save_after
+     *
+     * @param Varien_Event_Observer $observer
+     * @return void
+     */
+    public function afterObjectSave(Varien_Event_Observer $observer)
+    {
+        $object = $observer->getEvent()->getObject();
+        if ($object && $object instanceof Varien_Object && $this->_isObservedObjectType($object)) {
+            if (!$object->hasDataChanges() || $this->_isDisabled()) {
+                return;
+            }
+
+            $code = $this->_getCodeByClass(get_class($object));
+            if ($this->getHelper()->isTriggerAuto($code)) {
+                Mage::getSingleton('contentsync/content_' . $code)->storeData();
+            } elseif ($this->getHelper()->isTriggerManually($code)) {
+                FireGento_ContentSync_Model_Notice::showManualCmsBlockUpdateNotice();
+            }
+        }
+    }
+
     protected function _isObservedObjectType(Varien_Object $object)
     {
         $objectTypes = array(
@@ -127,5 +111,23 @@ class FireGento_ContentSync_Model_Observer
         }
 
         return false;
+    }
+
+    protected function _getCodeByClass($className)
+    {
+        switch($className) {
+
+            case 'Mage_Cms_Model_Page':
+                return 'cms_page';
+
+            case 'Mage_Cms_Model_Block':
+                return 'cms_block';
+
+            case 'Mage_Core_Model_Email_Template':
+                return 'email_template';
+
+            default:
+                return '';
+        }
     }
 }
