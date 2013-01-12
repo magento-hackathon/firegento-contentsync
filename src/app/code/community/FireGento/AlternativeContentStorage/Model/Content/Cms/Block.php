@@ -21,8 +21,8 @@
  * @since     0.1.0
  */
 
-class FireGento_AlternativeContentStorage_Model_Content_Cms_Block extends FireGento_AlternativeContentStorage_Model_Content_Abstract {
-
+class FireGento_AlternativeContentStorage_Model_Content_Cms_Block extends FireGento_AlternativeContentStorage_Model_Content_Abstract
+{
     protected $_configPath = 'cms_block';
 
     protected $_entityType = 'cms_block';
@@ -36,8 +36,11 @@ class FireGento_AlternativeContentStorage_Model_Content_Cms_Block extends FireGe
 
         foreach($cmsBlocks as $cmsBlock) {
 
-            /** @var $cmsBlock Mage_Cms_Model_Block */
-            $data[] = $cmsBlock->getData();
+            /** @var cmsBlock Mage_Cms_Model_Block */
+            $blockData = $cmsBlock->getData();
+            unset($blockData['creation_time']);
+            unset($blockData['update_time']);
+            $data[] = $blockData;
         }
 
         $this->storeDataInStorage(
@@ -48,18 +51,74 @@ class FireGento_AlternativeContentStorage_Model_Content_Cms_Block extends FireGe
 
     public function loadData()
     {
+        Mage::getSingleton('acs/observer')->disableObservers();
+
+        $importedBlockIds = array();
+
         /** @var $data array[] */
         $data = $this->loadDataFromStorage(
             $this->_entityType
         );
 
         foreach($data as $itemData) {
+
+            $isNew = false;
+
+            $importedBlockIds[] = $itemData['block_id'];
+
             /* @var $cmsBlock Mage_Cms_Model_Block */
             $cmsBlock = Mage::getModel('cms/block')->load($itemData['block_id']);
 
+            if (!$cmsBlock->getId()) {
+
+                // new block: insert with new id which will be changed later
+                $blockId = $itemData['block_id'];
+                unset($itemData['block_id']);
+                $isNew = true;
+            }
+
             $cmsBlock
-                ->addData($itemData)
+                ->setData($itemData)
                 ->save();
+
+            if ($isNew) {
+
+                $this->_updateBlockId($blockId, $cmsBlock->getId());
+            }
         }
+
+        $this->_deleteBlocksNotImported($importedBlockIds);
+    }
+
+    /**
+     * @param int[] $importedBlockIds
+     */
+    protected function _deleteBlocksNotImported($importedBlockIds)
+    {
+        $cmsBlocksToDelete = Mage::getResourceModel('cms/block_collection')
+            ->addFieldToFilter('block_id', array('nin' => $importedBlockIds));
+
+        foreach ($cmsBlocksToDelete as $block) {
+            $block->delete();
+        }
+    }
+
+    /**
+     * @param int $blockId
+     * @param int $newBlockId
+     */
+    protected function _updateBlockId($blockId, $newBlockId)
+    {
+        if ($blockId == $newBlockId) {
+            return;
+        }
+
+        /** @var $resource Mage_Core_Model_Resource */
+        $resource = Mage::getSingleton('core/resource');
+
+        /** @var $connection Varien_Db_Adapter_Pdo_Mysql */
+        $connection = $resource->getConnection('core/write');
+
+        $connection->update($resource->getTableName('cms/block'), array('block_id' => $blockId), 'block_id = ' . $newBlockId);
     }
 }
