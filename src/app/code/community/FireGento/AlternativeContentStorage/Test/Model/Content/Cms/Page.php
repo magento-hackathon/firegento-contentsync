@@ -21,16 +21,23 @@
 
 class FireGento_AlternativeContentStorage_Test_Model_Content_Cms_Page extends EcomDev_PHPUnit_Test_Case {
 	public function testDataStoredInStorage() {
-		$dataValues = array('11', '22');
+		$dataValues = array(
+			array(
+				'test'          => 'data',
+				'creation_time' => 11,
+				'update_time'   => 12,
+			),
+			array(
+				'foo'           => 'bar',
+				'creation_time' => 21,
+				'update_time'   => 22,
+			),
+		);
 
 		$model = $this->getModelMock(
 			'acs/content_cms_page',
 			array('storeDataInStorage')
 		);
-		$model
-			->expects($this->once())
-			->method('storeDataInStorage')
-			->with($dataValues, 'cms_page');
 
 		$mocks = new FireGento_AlternativeContentStorage_Test_Model_Content_Abstract_Mocks($this);
 		$classAlias = 'cms/page_collection';
@@ -40,45 +47,64 @@ class FireGento_AlternativeContentStorage_Test_Model_Content_Cms_Page extends Ec
 		);
 		$this->replaceByMock('resource_model', $classAlias, $resourceCmsPageCollection);
 
+		// we don't store creation_time and update_time
+		foreach ($dataValues as $k => $values) {
+			unset($dataValues[$k]['creation_time']);
+			unset($dataValues[$k]['update_time']);
+		}
+		$model
+			->expects($this->once())
+			->method('storeDataInStorage')
+			->with($dataValues, 'cms_page');
+
 		$model->storeData();
 	}
 
 	public function testLoadDataIteration() {
 		$dataValues = array(
 			array(
-				'page_id' => 1,
+				'test'          => 'data',
+				'page_id'       => 1,
 			),
 		    array(
-			    'page_id' => 2,
-		    )
+			    'foo'           => 'bar',
+			    'page_id'       => 2,
+	    )
 		);
 
 		$cmsPageMock = $this->getModelMock(
 			'cms/page',
-			array('load', 'setData', 'save')
+			array('load', 'getId', 'setData', 'save')
 		);
 		$this->mockCmsPageMethods($cmsPageMock, 0, $dataValues[0]);
 		$this->mockCmsPageMethods($cmsPageMock, 1, $dataValues[1]);
 		$this->replaceByMock('model', 'cms/page', $cmsPageMock);
 
 		$model = $this->getContentCmsPageModelMockLoadDataFromStorage($dataValues);
+
 		$model->loadData();
 	}
 
 	/**
-	 * mocks the load, setData and save method of the cmsPageMock
+	 * mocks the load, getId, setData and save method of the cmsPageMock
 	 * @param PHPUnit_Framework_MockObject_MockObject $cmsPageMock
 	 * @param                                         $numberIteration
 	 * @param                                         $data
 	 */
 	private function mockCmsPageMethods(PHPUnit_Framework_MockObject_MockObject $cmsPageMock, $numberIteration, $data) {
-		$numberIteration *= 3;
+		$numberIteration *= 4;
 		$cmsPageMock
 			->expects($this->at($numberIteration++))
 			->method('load')
 			->with($data['page_id'])
 			->will(
 				$this->returnSelf()
+			);
+		$cmsPageMock
+			->expects($this->at($numberIteration++))
+			->method('getId')
+			->will(
+				$this->returnValue(true)
 			);
 		$cmsPageMock
 			->expects($this->at($numberIteration++))

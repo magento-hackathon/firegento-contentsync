@@ -73,7 +73,16 @@ class FireGento_AlternativeContentStorage_Test_Model_Content_Abstract extends Ec
 	}
 
 	public function testStoreDataInStorage() {
-		$dataValues = array('11', '22');
+		$dataValues = array(
+			array(
+				'creation_date' => 11,
+				'update_date'   => 12,
+			),
+			array(
+				'creation_date' => 21,
+				'update_date'   => 22,
+			)
+		);
 
 		$mockStorage = $this->getMock('Varien_Object', array('storeData'));
 		$mockStorage

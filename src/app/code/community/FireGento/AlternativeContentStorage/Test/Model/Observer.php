@@ -30,6 +30,13 @@ class FireGento_AlternativeContentStorage_Test_Model_Observer extends EcomDev_PH
 	 */
 	protected function setUp() {
 		$this->model = Mage::getModel('acs/observer');
+
+		$helper = $this->getHelperMock('acs/data', array('getCmsPageTriggerAuto'));
+		$helper
+			->expects($this->any())
+			->method('getCmsPageTriggerAuto')
+			->will($this->returnValue(true));
+		$this->replaceByMock('helper', 'acs', $helper);
 	}
 
 	/**
