@@ -21,34 +21,39 @@
  * @since     0.1.0
  */
 
-class FireGento_AlternativeContentStorage_Model_Content_Cms_Page extends FireGento_AlternativeContentStorage_Model_Content_Cms_Abstract
+class FireGento_AlternativeContentStorage_Model_Content_Cms_Page extends FireGento_AlternativeContentStorage_Model_Content_Abstract
 {
     protected $_configPath = 'cms_page';
 
-    protected  $entityType = 'cms_page';
+    protected $_entityType = 'cms_page';
 
     public function storeData()
     {
         $data = array();
 
+        /* @var $cmsPages Mage_Cms_Model_Resource_Page_Collection */
         $cmsPages = Mage::getResourceModel('cms/page_collection');
 
         foreach($cmsPages as $cmsPage) {
 
+            /** @var cmsPage Mage_Cms_Model_Page */
             $data[] = $cmsPage->getData();
         }
 
         $this->storeDataInStorage(
             $data,
-            $this->entityType
+            $this->_entityType
         );
     }
 
     public function loadData()
     {
+        Mage::getSingleton('acs/observer')->disableObservers();
+        $importedPageIds = array();
+
         /** @var $data array[] */
         $data = $this->loadDataFromStorage(
-            $this->entityType
+            $this->_entityType
         );
 
         foreach($data as $itemData) {
@@ -56,8 +61,18 @@ class FireGento_AlternativeContentStorage_Model_Content_Cms_Page extends FireGen
             $cmsPage = Mage::getModel('cms/page')->load($itemData['page_id']);
 
             $cmsPage
-                ->addData($itemData)
+                ->setData($itemData)
                 ->save();
+
+            $importedPageIds[] = $itemData['page_id'];
+        }
+
+        $cmsPagesToDelete = Mage::getResourceModel('cms/page_collection')
+            ->addFieldToFilter('page_id', array('nin' => $importedPageIds));
+
+        foreach ($cmsPagesToDelete as $page)
+        {
+            $page->delete();
         }
     }
 }

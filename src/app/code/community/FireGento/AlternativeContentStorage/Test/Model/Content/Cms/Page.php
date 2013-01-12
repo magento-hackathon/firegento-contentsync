@@ -20,16 +20,16 @@
  */
 
 class FireGento_AlternativeContentStorage_Test_Model_Content_Cms_Page extends EcomDev_PHPUnit_Test_Case {
-	public function testDataStoredInStorages() {
+	public function testDataStoredInStorage() {
 		$dataValues = array('11', '22');
 
 		$model = $this->getModelMock(
 			'acs/content_cms_page',
-			array('storeDataInStorages')
+			array('storeDataInStorage')
 		);
 		$model
 			->expects($this->once())
-			->method('storeDataInStorages')
+			->method('storeDataInStorage')
 			->with($dataValues, 'cms_page');
 
 		$mocks = new FireGento_AlternativeContentStorage_Test_Model_Content_Abstract_Mocks($this);
