@@ -10,18 +10,43 @@ class FireGento_AlternativeContentStorage_Block_Notice extends Mage_Adminhtml_Bl
 {
 
 
-    protected function _construct()
+    /**
+     * @return array
+     */
+    public function getNotices()
     {
-        parent::_construct();
+        return FireGento_AlternativeContentStorage_Model_Notice::getManuelUpdateNoticeType();
+    }
 
-        $type = FireGento_AlternativeContentStorage_Model_Notice::getManuelUpdateNoticeType();
+
+    /**
+     * @param string $type
+     * @return mixed
+     */
+    public function getLabel($type)
+    {
+        return FireGento_AlternativeContentStorage_Model_Notice::getManuelUpdateNoticeTypeLabel($type);
+    }
 
 
-        $this->setLabel(FireGento_AlternativeContentStorage_Model_Notice::getManuelUpdateNoticeTypeLabel($type));
-        $this->setActionUrl(FireGento_AlternativeContentStorage_Model_Notice::getManuelUpdateNoticeTypeUrl($type));
+    /**
+     * @param string $type
+     * @return mixed
+     */
+    public function getExportUrl($type)
+    {
+        return FireGento_AlternativeContentStorage_Model_Notice::getManuelUpdateNoticeTypeUrl($type);
+    }
 
-        FireGento_AlternativeContentStorage_Model_Notice::unsetManuelUpdateNotice();
 
+    /**
+     * @param string $type
+     * @return mixed
+     */
+    public function getIgnoreUrl($type)
+    {
+        $backUrl = Mage::helper('core/url')->getCurrentBase64Url();
+        return Mage_Adminhtml_Helper_Data::getUrl('adminhtml/acs_export/close', array('content' => $type, 'back' => $backUrl));
     }
 
 

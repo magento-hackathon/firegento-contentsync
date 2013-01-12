@@ -81,6 +81,17 @@
             </cms_block_save_after>
         </events>
     </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <acs after="Mage_Adminhtml">FireGento_AlternativeContentStorage</acs>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
     <adminhtml>
         <translate>
             <modules>
@@ -109,10 +120,10 @@
                 <trigger>auto</trigger>
                 <storage>file</storage>
             </content_cms_page>
-            <content_email_trans>
+            <content_email_template>
                 <trigger>auto</trigger>
                 <storage>file</storage>
-            </content_email_trans>
+            </content_email_template>
         </acs>
     </default>
     <phpunit>
