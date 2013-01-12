@@ -3,6 +3,9 @@
 class FireGento_AlternativeContentStorage_Model_Source_Storage
 {
 
+    const TYPE_NONE = '-';
+    const TYPE_FILE = 'file';
+
     /**
      * Options getter
      *
@@ -13,8 +16,8 @@ class FireGento_AlternativeContentStorage_Model_Source_Storage
         // TODO: Get available storages from config file
 
         return array(
-            array('value' => '-',        'label'=>Mage::helper('adminhtml')->__('None')),
-            array('value' => 'file',    'label'=>Mage::helper('adminhtml')->__('File')),
+            array('value' => self::TYPE_NONE, 'label'=>Mage::helper('acs')->__('None')),
+            array('value' => self::TYPE_FILE, 'label'=>Mage::helper('acs')->__('File')),
         );
     }
 
