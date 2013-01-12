@@ -42,11 +42,31 @@ class FireGento_AlternativeContentStorage_Shell extends Mage_Shell_Abstract
     public function run()
     {
         if ($this->getArg('import')) {
-            Mage::getSingleton('acs/content_cms_page')->loadData();
-            echo "CMS Page data imported.\n";
+            try {
+                Mage::getSingleton('acs/content_cms_page')->loadData();
+                echo "CMS Page data imported.\n";
+            } catch (Exception $e) {
+                echo "Error: $e->getMessage().\n";
+            }
+            try {
+                Mage::getSingleton('acs/content_cms_block')->loadData();
+                echo "CMS Block data imported.\n";
+            } catch (Exception $e) {
+                echo "Error: $e->getMessage().\n";
+            }
         } else if ($this->getArg('export')) {
-            Mage::getSingleton('acs/content_cms_page')->storeData();
-            echo "CMS Page data exported.\n";
+            try {
+                Mage::getSingleton('acs/content_cms_page')->storeData();
+                echo "CMS Page data exported.\n";
+            } catch (Exception $e) {
+                echo "Error: $e->getMessage().\n";
+            }
+            try {
+                Mage::getSingleton('acs/content_cms_block')->storeData();
+                echo "CMS Block data exported.\n";
+            } catch (Exception $e) {
+                echo "Error: $e->getMessage().\n";
+            }
         } else {
             echo $this->usageHelp();
         }

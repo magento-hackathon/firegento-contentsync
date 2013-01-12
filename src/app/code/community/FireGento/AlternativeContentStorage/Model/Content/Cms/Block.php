@@ -25,5 +25,41 @@ class FireGento_AlternativeContentStorage_Model_Content_Cms_Block extends FireGe
 
     protected $_configPath = 'cms_block';
 
+    protected $_entityType = 'cms_block';
 
+    public function storeData()
+    {
+        $data = array();
+
+        /* @var $cmsBlocks Mage_Cms_Model_Resource_Block_Collection */
+        $cmsBlocks = Mage::getResourceModel('cms/block_collection');
+
+        foreach($cmsBlocks as $cmsBlock) {
+
+            /** @var $cmsBlock Mage_Cms_Model_Block */
+            $data[] = $cmsBlock->getData();
+        }
+
+        $this->storeDataInStorage(
+            $data,
+            $this->_entityType
+        );
+    }
+
+    public function loadData()
+    {
+        /** @var $data array[] */
+        $data = $this->loadDataFromStorage(
+            $this->_entityType
+        );
+
+        foreach($data as $itemData) {
+            /* @var $cmsBlock Mage_Cms_Model_Block */
+            $cmsBlock = Mage::getModel('cms/block')->load($itemData['block_id']);
+
+            $cmsBlock
+                ->addData($itemData)
+                ->save();
+        }
+    }
 }
