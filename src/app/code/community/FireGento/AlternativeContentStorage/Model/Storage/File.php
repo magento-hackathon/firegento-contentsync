@@ -21,8 +21,32 @@
  * @since     0.1.0
  */
 
-class FireGento_AlternativeContentStorage_Model_Storage_File extends FireGento_AlternativeContentStorage_Model_Storage_Abstract {
+class FireGento_AlternativeContentStorage_Model_Storage_File extends FireGento_AlternativeContentStorage_Model_Storage_Abstract
+{
+    /**
+     * Get directory to store files; create if necessary and test if it is writable.
+     *
+     * @return string
+     * @throws Mage_Core_Exception
+     */
+    protected function _getStorageDirectory()
+    {
+        $directoryPath = Mage::getStoreConfig('acs/storage_file/directory');
 
+        if (!is_dir($directoryPath)) {
+            if (!mkdir($directoryPath, 0777, true)) {
+                Mage::throwException(
+                    Mage::helper('acs')->__('Directory "%s" could not be created.')
+                );
+            }
+        }
 
+        if (!is_dir_writeable($directoryPath)) {
+            Mage::throwException(
+                Mage::helper('acs')->__('Directory "%s" is not writable.')
+            );
+        }
 
+        return $directoryPath;
+    }
 }
