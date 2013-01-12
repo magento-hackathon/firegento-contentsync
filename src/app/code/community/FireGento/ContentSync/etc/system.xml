@@ -118,7 +118,7 @@
                 </content_cms_page>
 
                 <content_email_template translate="label" module="contentsync">
-                    <label>Content: Email Templates</label>
+                    <label>Content: Email Template</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>400</sort_order>
                     <show_in_default>1</show_in_default>
