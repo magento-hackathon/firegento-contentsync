@@ -49,6 +49,15 @@
                     </acs>
                 </observers>
             </cms_page_save_after>
+            <cms_block_save_after>
+                <observers>
+                    <acs>
+                        <type>singleton</type>
+                        <class>acs/observer</class>
+                        <method>afterCmsBlockSave</method>
+                    </acs>
+                </observers>
+            </cms_block_save_after>
         </events>
     </global>
     <adminhtml>

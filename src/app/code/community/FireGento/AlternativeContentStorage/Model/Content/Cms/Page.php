@@ -21,26 +21,28 @@
  * @since     0.1.0
  */
 
-class FireGento_AlternativeContentStorage_Model_Content_Cms_Page extends FireGento_AlternativeContentStorage_Model_Content_Cms_Abstract
+class FireGento_AlternativeContentStorage_Model_Content_Cms_Page extends FireGento_AlternativeContentStorage_Model_Content_Abstract
 {
     protected $_configPath = 'cms_page';
 
-    protected  $entityType = 'cms_page';
+    protected $_entityType = 'cms_page';
 
     public function storeData()
     {
         $data = array();
 
+        /* @var $cmsPages Mage_Cms_Model_Resource_Page_Collection */
         $cmsPages = Mage::getResourceModel('cms/page_collection');
 
         foreach($cmsPages as $cmsPage) {
 
+            /** @var cmsPage Mage_Cms_Model_Page */
             $data[] = $cmsPage->getData();
         }
 
         $this->storeDataInStorage(
             $data,
-            $this->entityType
+            $this->_entityType
         );
     }
 
@@ -48,7 +50,7 @@ class FireGento_AlternativeContentStorage_Model_Content_Cms_Page extends FireGen
     {
         /** @var $data array[] */
         $data = $this->loadDataFromStorage(
-            $this->entityType
+            $this->_entityType
         );
 
         foreach($data as $itemData) {

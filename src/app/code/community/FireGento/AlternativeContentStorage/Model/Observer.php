@@ -37,4 +37,19 @@ class FireGento_AlternativeContentStorage_Model_Observer
 
         Mage::getSingleton('acs/content_cms_page')->storeData();
     }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     */
+    public function afterCmsBlockSave(Varien_Event_Observer $observer)
+    {
+        /** @var $cmsBlock Mage_Cms_Model_Block */
+        $cmsBlock = $observer->getObject();
+
+        if (!$cmsBlock->hasDataChanges()) {
+            return;
+        }
+
+        Mage::getSingleton('acs/content_cms_block')->storeData();
+    }
 }
