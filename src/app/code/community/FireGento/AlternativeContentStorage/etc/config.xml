@@ -50,6 +50,13 @@
                 </observers>
             </cms_page_save_after>
         </events>
+        <resources>
+            <acs_setup>
+                <setup>
+                    <module>FireGento_AlternativeContentStorage</module>
+                </setup>
+            </acs_setup>
+        </resources>
     </global>
     <adminhtml>
         <translate>
@@ -62,10 +69,17 @@
             </modules>
         </translate>
     </adminhtml>
+    <default>
+        <acs>
+            <storage_file>
+                <directory></directory>
+            </storage_file>
+        </acs>
+    </default>
     <phpunit>
         <suite>
             <modules>
-                <FireGento_AlternativeContentStorage />
+                <FireGento_AlternativeContentStorage/>
             </modules>
         </suite>
     </phpunit>
