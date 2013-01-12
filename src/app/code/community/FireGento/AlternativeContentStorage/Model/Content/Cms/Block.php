@@ -23,4 +23,7 @@
 
 class FireGento_AlternativeContentStorage_Model_Content_Cms_Block extends FireGento_AlternativeContentStorage_Model_Content_Cms_Abstract {
 
+    protected $_config_path = 'cms_block';
+
+
 }

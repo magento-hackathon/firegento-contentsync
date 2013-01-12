@@ -23,6 +23,9 @@
 
 class FireGento_AlternativeContentStorage_Model_Content_Cms_Page extends FireGento_AlternativeContentStorage_Model_Content_Cms_Abstract
 {
+
+    protected $_config_path = 'page_block';
+
     public function storeDataToFile()
     {
         $fileData = array();

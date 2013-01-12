@@ -62,6 +62,16 @@
             </modules>
         </translate>
     </adminhtml>
+    <default>
+        <acs>
+            <content_cms_block>
+                <storages>File</storages>
+            </content_cms_block>
+            <storage_file>
+                <directory></directory>
+            </storage_file>
+        </acs>
+    </default>
     <phpunit>
         <suite>
             <modules>
