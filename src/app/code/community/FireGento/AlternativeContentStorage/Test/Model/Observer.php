@@ -61,28 +61,28 @@ class FireGento_AlternativeContentStorage_Test_Model_Observer extends EcomDev_PH
 
 	/**
 	 * replaces singleton acs/content_cms_page with a mock
-	 * mocking storeDataToFile method with expected $invokeCount
+	 * mocking storeData method with expected $invokeCount
 	 * @param PHPUnit_Framework_MockObject_Matcher_InvokedCount $invokeCount
 	 */
-	private function replaceSingletonContentCmsPageByMockWithStoreDataToFile(PHPUnit_Framework_MockObject_Matcher_InvokedCount $invokeCount) {
+	private function replaceSingletonContentCmsPageByMockWithStoreData(PHPUnit_Framework_MockObject_Matcher_InvokedCount $invokeCount) {
 		$mockContentCmsPage = $this->getModelMock(
 			'acs/content_cms_page',
-			array('storeDataToFile')
+			array('storeData')
 		);
 		$mockContentCmsPage
 			->expects($invokeCount)
-			->method('storeDataToFile');
+			->method('storeData');
 		$this->replaceByMock('singleton', 'acs/content_cms_page', $mockContentCmsPage);
 	}
 
 	/**
 	 * asserts null on afterCmsPageSave method
 	 * @param                                                   $hasDataChanges for Varien_Object parameter on afterCmsPageSave method
-	 * @param PHPUnit_Framework_MockObject_Matcher_InvokedCount $invokeCountStoreDataToFile invoke count for storeDataToFile method on acs/content_cms_page singleton mock
+	 * @param PHPUnit_Framework_MockObject_Matcher_InvokedCount $invokeCountStoreData invoke count for storeData method on acs/content_cms_page singleton mock
 	 */
-	private function assertNullOnAfterCmsPageSave($hasDataChanges, PHPUnit_Framework_MockObject_Matcher_InvokedCount $invokeCountStoreDataToFile) {
+	private function assertNullOnAfterCmsPageSave($hasDataChanges, PHPUnit_Framework_MockObject_Matcher_InvokedCount $invokeCountStoreData) {
 		$mockEventObserver = $this->getMockEventObserver($hasDataChanges);
-		$this->replaceSingletonContentCmsPageByMockWithStoreDataToFile($invokeCountStoreDataToFile);
+		$this->replaceSingletonContentCmsPageByMockWithStoreData($invokeCountStoreData);
 
 		$this->assertNull(
 			$this->model->afterCmsPageSave($mockEventObserver)
@@ -92,22 +92,22 @@ class FireGento_AlternativeContentStorage_Test_Model_Observer extends EcomDev_PH
 	/**
 	 * test functionality on method afterCmsPageSave
 	 * - when data was not changed
-	 * - storeDataToFile is NOT called
+	 * - storeData is NOT called
 	 */
-	public function testAfterCmsPageSaveWithoutDataChangedStoresNotToFile() {
+	public function testAfterCmsPageSaveWithoutDataChangedStoresNot() {
 		$hasDataChanges = false;
-		$invokeCountStoreDataToFile = $this->never();
-		$this->assertNullOnAfterCmsPageSave($hasDataChanges, $invokeCountStoreDataToFile);
+		$invokeCountStoreData = $this->never();
+		$this->assertNullOnAfterCmsPageSave($hasDataChanges, $invokeCountStoreData);
 	}
 
 	/**
 	 * test functionality on method afterCmsPageSave
 	 * - when data was changed
-	 * - storeDataToFile is called
+	 * - storeData is called
 	 */
-	public function testAfterCmsPageSaveWithDataChangedStoresToFile() {
+	public function testAfterCmsPageSaveWithDataChangedStores() {
 		$hasDataChanges = TRUE;
-		$invokeCountStoreDataToFile = $this->once();
-		$this->assertNullOnAfterCmsPageSave($hasDataChanges, $invokeCountStoreDataToFile);
+		$invokeCountStoreData = $this->once();
+		$this->assertNullOnAfterCmsPageSave($hasDataChanges, $invokeCountStoreData);
 	}
 }
