@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * This file is part of the FIREGENTO project.
+ *
+ * FireGento_GermanSetup is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License version 3 as
+ * published by the Free Software Foundation.
+ *
+ * This script is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * PHP version 5
+ *
+ * @category  FireGento
+ * @package   FireGento_AlternativeContentStorage
+ * @author    FireGento Team <team@firegento.com>
+ * @copyright 2013 FireGento Team (http://www.firegento.de). All rights served.
+ * @license   http://opensource.org/licenses/gpl-3.0 GNU General Public License, version 3 (GPLv3)
+ * @version   $Id:$
+ * @since     0.1.0
+ */
+ -->
+<config>
+    <sections>
+        <acs translate="label" module="acs">
+            <label>Alternative Content Storage</label>
+            <tab>advanced</tab>
+            <sort_order>950</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>0</show_in_website>
+            <show_in_store>0</show_in_store>
+            <groups>
+                <storage_file translate="label" module="acs">
+                    <label>Storage: File</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <directory translate="label" module="acs">
+                            <label>Storage Directory</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </directory>
+                    </fields>
+                </storage_file>
+            </groups>
+        </acs>
+    </sections>
+</config>
