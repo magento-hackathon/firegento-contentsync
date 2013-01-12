@@ -36,8 +36,11 @@ class FireGento_AlternativeContentStorage_Model_Content_Cms_Page extends FireGen
 
         foreach($cmsPages as $cmsPage) {
 
-            /** @var cmsPage Mage_Cms_Model_Page */
-            $data[] = $cmsPage->getData();
+            /** @var $cmsPage Mage_Cms_Model_Page */
+            $pageData = $cmsPage->getData();
+            unset($pageData['creation_time']);
+            unset($pageData['update_time']);
+            $data[] = $pageData;
         }
 
         $this->storeDataInStorage(
@@ -49,6 +52,7 @@ class FireGento_AlternativeContentStorage_Model_Content_Cms_Page extends FireGen
     public function loadData()
     {
         Mage::getSingleton('acs/observer')->disableObservers();
+
         $importedPageIds = array();
 
         /** @var $data array[] */
@@ -57,22 +61,64 @@ class FireGento_AlternativeContentStorage_Model_Content_Cms_Page extends FireGen
         );
 
         foreach($data as $itemData) {
+
+            $isNew = false;
+
+            $importedPageIds[] = $itemData['page_id'];
+
             /* @var $cmsPage Mage_Cms_Model_Page */
             $cmsPage = Mage::getModel('cms/page')->load($itemData['page_id']);
+
+            if (!$cmsPage->getId()) {
+
+                // new page: insert with new id which will be changed later
+                $pageId = $itemData['page_id'];
+                unset($itemData['page_id']);
+                $isNew = true;
+            }
 
             $cmsPage
                 ->setData($itemData)
                 ->save();
 
-            $importedPageIds[] = $itemData['page_id'];
+            if ($isNew) {
+
+                $this->_updatePageId($pageId, $cmsPage->getId());
+            }
         }
 
+        $this->_deletePagesNotImported($importedPageIds);
+    }
+
+    /**
+     * @param int[] $importedPageIds
+     */
+    protected function _deletePagesNotImported($importedPageIds)
+    {
         $cmsPagesToDelete = Mage::getResourceModel('cms/page_collection')
             ->addFieldToFilter('page_id', array('nin' => $importedPageIds));
 
-        foreach ($cmsPagesToDelete as $page)
-        {
+        foreach ($cmsPagesToDelete as $page) {
             $page->delete();
         }
+    }
+
+    /**
+     * @param int $pageId
+     * @param int $newPageId
+     */
+    protected function _updatePageId($pageId, $newPageId)
+    {
+        if ($pageId == $newPageId) {
+            return;
+        }
+
+        /** @var $resource Mage_Core_Model_Resource */
+        $resource = Mage::getSingleton('core/resource');
+
+        /** @var $connection Varien_Db_Adapter_Pdo_Mysql */
+        $connection = $resource->getConnection('core/write');
+
+        $connection->update($resource->getTableName('cms/page'), array('page_id' => $pageId), 'page_id = ' . $newPageId);
     }
 }
