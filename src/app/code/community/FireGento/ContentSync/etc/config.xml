@@ -25,7 +25,7 @@
 <config>
     <modules>
         <FireGento_ContentSync>
-            <version>0.2.0</version>
+            <version>0.3.0</version>
         </FireGento_ContentSync>
     </modules>
     <global>
@@ -112,6 +112,14 @@
     </adminhtml>
     <default>
         <contentsync>
+            <content_core_website>
+                <trigger>auto</trigger>
+                <storage>file</storage>
+            </content_core_website>
+            <content_core_storegroup>
+                <trigger>auto</trigger>
+                <storage>file</storage>
+            </content_core_storegroup>
             <content_core_store>
                 <trigger>auto</trigger>
                 <storage>file</storage>
@@ -130,6 +138,18 @@
             </content_email_template>
         </contentsync>
         <contentsync_entities>
+            <core_website>
+                <label>Websites</label>
+                <model>core/website</model>
+                <class>Mage_Core_Model_Website</class>
+                <table_name>core/website</table_name>
+            </core_website>
+            <core_storegroup>
+                <label>Store Groups</label>
+                <model>core/store_group</model>
+                <class>Mage_Core_Model_Store_Group</class>
+                <table_name>core/store_group</table_name>
+            </core_storegroup>
             <core_store>
                 <label>Store Views</label>
                 <model>core/store</model>

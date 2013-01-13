@@ -96,6 +96,8 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
 
     public function storeDataForEntityType($entityType)
     {
+        Mage::getSingleton('contentsync/observer')->disableObservers();
+
         $data = array();
 
         /* @var $collection Mage_Core_Model_Resource_Db_Collection_Abstract */
@@ -105,10 +107,20 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
 
         foreach ($collection as $object) {
 
+            if (!$object->getData('contentsync_hash')) {
+                $hash = Mage::helper('contentsync/hash')->calculateObjectHash($object);
+                $object
+                    ->setData('contentsync_hash', $hash)
+                    ->save();
+            }
+
             /** @var $object Mage_Core_Model_Abstract */
             $objectData = $object->getData();
             foreach($objectData as $key => $value) {
-                if (in_array($key, Mage::helper('contentsync/hash')->getFieldBlacklist())) {
+                if (
+                    $key != 'contentsync_hash'
+                    && in_array($key, Mage::helper('contentsync/hash')->getFieldBlacklist())
+                ) {
                     unset($objectData[$key]);
                 }
             }
