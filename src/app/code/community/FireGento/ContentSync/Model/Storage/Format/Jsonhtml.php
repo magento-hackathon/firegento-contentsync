@@ -8,13 +8,13 @@ class FireGento_ContentSync_Model_Storage_Format_Jsonhtml extends FireGento_Cont
         $result = '';
         foreach( $data AS $item )
         {
-            $result .= $this->_exportItem($item);
+            $result .= $this->_encodeItem($item);
         }
 
         return $result;
     }
 
-    protected function _exportItem($item)
+    protected function _encodeItem($item)
     {
         $content = $item['content'];
         unset($item['content']);
@@ -24,21 +24,53 @@ class FireGento_ContentSync_Model_Storage_Format_Jsonhtml extends FireGento_Cont
         $result .= $this->_prettyPrint( Zend_Json::encode($item) )."\n";
         $result .= "############ CONTENT\n";
         $result .= $content;
+        $result .= "\n";
 
         return $result;
     }
 
     public function decode( $data )
     {
-        $newline_pos = strpos($data, "\n\n");
+        $result = array();
+        $data = explode("\n", $data);
+        $item = array();
+        foreach( $data AS $row ) {
 
-        $json = Zend_Json::decode( substr( $data, 0, $newline_pos ) );
-        $content = substr($data, $newline_pos);
+            if ( $row == '############ NEW_ENTRY' )
+            {
+                if ( count( $item ) ) {
+                    $result[] = $this->_decodeItem( join('', $item) );
+                }
 
-        $json['content'] = $content;
+                $item = array();
+            } else {
+                $item[] = $row;
+            }
 
+        }
+
+        if ( count( $item ) ) {
+            $result[] = $this->_decodeItem( join('', $item) );
+        }
+
+
+        return $result;
+    }
+
+    /**
+     * @param $data string
+     */
+    protected function _decodeItem($data)
+    {
+
+        list($json_str, $content) = explode('############ CONTENT', $data);
+        $json = Zend_Json::decode($json_str);
+        if ( $content ) {
+            $json['content'] = $content;
+        }
         return $json;
     }
+
 
     public function getFilename($entity_code)
     {
