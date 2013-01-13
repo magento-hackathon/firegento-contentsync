@@ -55,7 +55,9 @@ class FireGento_ContentSync_Model_Observer
         return $this->_helper;
     }
 
-
+    /**
+     * Observers won't be called after this method has been called
+     */
     public function disableObservers()
     {
         $this->_isDisabled = true;
@@ -103,7 +105,7 @@ class FireGento_ContentSync_Model_Observer
 
     /**
      * Listens to:
-     * - model_save_after
+     * - model_delete_after
      *
      * @param Varien_Event_Observer $observer
      * @return void
@@ -140,6 +142,10 @@ class FireGento_ContentSync_Model_Observer
         return false;
     }
 
+    /**
+     * @param string $className
+     * @return string
+     */
     protected function _getEntityTypeCodeByClass($className)
     {
         foreach ($this->_getEntityTypes() as $entityTypeCode => $entityTypeData) {
