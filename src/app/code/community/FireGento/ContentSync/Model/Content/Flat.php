@@ -31,6 +31,20 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
         return Mage::getStoreConfig('contentsync_entities');
     }
 
+
+    /**
+     * @param string $entityType
+     * @return FireGento_ContentSync_Model_Storage_Abstract
+     */
+    public function getStorage($entityType)
+    {
+        $model = $this->_getEntityTypeModel($entityType);
+
+        $storage = parent::getStorage($entityType);
+        $storage->setIdField( $model->getIdFieldName() );
+        return $storage;
+    }
+
     /**
      * @param string $entityType
      * @return string
