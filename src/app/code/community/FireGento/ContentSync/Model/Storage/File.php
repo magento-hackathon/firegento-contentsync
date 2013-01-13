@@ -23,6 +23,9 @@
 
 class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Model_Storage_Abstract
 {
+
+    const DIRECTORY_CONFIG_PATH = 'contentsync/storage_file/directory';
+
     /**
      * Get directory to store files; create if necessary and test if it is writable.
      *
@@ -31,7 +34,7 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
      */
     protected function _getStorageDirectory()
     {
-        $directoryPath = Mage::getStoreConfig('contentsync/storage_file/directory');
+        $directoryPath = Mage::getStoreConfig( self::DIRECTORY_CONFIG_PATH );
 
         if (!is_dir($directoryPath)) {
             if (!mkdir($directoryPath, 0777, true)) {
@@ -61,14 +64,23 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
     public function storeData($data, $entityType) {
 
         $fileContent = $this->_prettyPrint(Zend_Json::encode($data));
+        $fileName = $this->_getEntityFilename( $entityType );
 
-        $fileName = $this->_getStorageDirectory() . $entityType . '.json';
 
         if (file_put_contents($fileName, $fileContent) === false) {
             Mage::throwException(
                 Mage::helper('contentsync')->__('File "%s" could not be written.', $fileName)
             );
         };
+    }
+
+    /**
+     * @param $entityType
+     * @return string
+     */
+    protected function _getEntityFilename( $entityType )
+    {
+        return $this->_getStorageDirectory() . $entityType . '.json';
     }
 
     /**
