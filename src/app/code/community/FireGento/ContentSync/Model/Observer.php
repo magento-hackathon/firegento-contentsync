@@ -91,7 +91,7 @@ class FireGento_ContentSync_Model_Observer
             if ($this->getHelper()->isTriggerAuto($code)) {
                 Mage::getSingleton('contentsync/content_flat')->storeData($code);
             } elseif ($this->getHelper()->isTriggerManually($code)) {
-                Mage::getSingleton('contentsync/notice')->showManualCmsBlockUpdateNotice();
+                Mage::getSingleton('contentsync/notice')->setNoticeFlag($code);
             }
         }
     }

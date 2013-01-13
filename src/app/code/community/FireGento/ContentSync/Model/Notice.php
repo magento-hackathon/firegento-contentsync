@@ -25,12 +25,9 @@ class FireGento_ContentSync_Model_Notice
 {
 
 
+    const XML_PATH_CONTENTSYNC_ENTITIES = 'default/contentsync_entities';
     const NOTICE_REGISTER_KEY = 'notice_register_key';
 
-    const NOTICE_TYPE_CMS_BLOCK = 'cms_block';
-    const NOTICE_TYPE_CMS_PAGE = 'cms_page';
-    const NOTICE_TYPE_EMAIL_TRANS = 'email_trans';
-    const NOTICE_TYPE_CORE_CONFIG = 'core_config';
 
     /**
      * @var Mage_Core_Model_Flag
@@ -42,6 +39,11 @@ class FireGento_ContentSync_Model_Notice
      */
     protected $_flagData = null;
 
+    /**
+     * @var array
+     */
+    protected $_contentsyncEntitiesInfo = null;
+
 
     /**
      *
@@ -49,6 +51,20 @@ class FireGento_ContentSync_Model_Notice
     public function __construct()
     {
         $this->_flagModel = Mage::getModel('core/flag', array('flag_code' => self::NOTICE_REGISTER_KEY));
+
+        $entitiesNode = Mage::getConfig()->getNode(self::XML_PATH_CONTENTSYNC_ENTITIES);
+
+        if ($entitiesNode->hasChildren()) {
+
+            /** @var $stepNode Mage_Core_Model_Config_Element */
+            foreach ($entitiesNode->children() as $entityNode) {
+                $code = $entityNode->getName();
+
+                $this->_contentsyncEntitiesInfo[$code]['code'] = $code;
+                $this->_contentsyncEntitiesInfo[$code]['label'] = (string)$entityNode->label;
+            }
+
+        }
     }
 
 
@@ -139,62 +155,14 @@ class FireGento_ContentSync_Model_Notice
 
 
     /**
-     * @return FireGento_ContentSync_Model_Notice
-     */
-    public function showManualCmsBlockUpdateNotice()
-    {
-        $this->setNoticeFlag(self::NOTICE_TYPE_CMS_BLOCK);
-        return $this;
-    }
-
-
-    /**
-     * @return FireGento_ContentSync_Model_Notice
-     */
-    public function showManualCmsPageUpdateNotice()
-    {
-        $this->setNoticeFlag(self::NOTICE_TYPE_CMS_PAGE);
-        return $this;
-    }
-
-
-    /**
-     * @return FireGento_ContentSync_Model_Notice
-     */
-    public function showManualEmailTransUpdateNotice()
-    {
-        $this->setNoticeFlag(self::NOTICE_TYPE_EMAIL_TRANS);
-        return $this;
-    }
-
-
-    /**
-     * @return FireGento_ContentSync_Model_Notice
-     */
-    public function showManualCoreConfigUpdateNotice()
-    {
-        $this->setNoticeFlag(self::NOTICE_TYPE_CORE_CONFIG);
-        return $this;
-    }
-
-
-    /**
      * @param string $type
      * @return null|string
      */
     public function getManualUpdateNoticeTypeLabel($type)
     {
-        $helper = Mage::helper('contentsync');
 
-        $labels = array(
-            self::NOTICE_TYPE_CMS_BLOCK => $helper->__('Static Blocks'),
-            self::NOTICE_TYPE_CMS_PAGE => $helper->__('Pages'),
-            self::NOTICE_TYPE_EMAIL_TRANS => $helper->__('Transactional Emails'),
-            self::NOTICE_TYPE_CORE_CONFIG => $helper->__('Configuration'),
-        );
-
-        if (array_key_exists($type, $labels)) {
-            return $labels[$type];
+        if (array_key_exists($type, $this->_contentsyncEntitiesInfo)) {
+            return Mage::helper('contentsync')->__($this->_contentsyncEntitiesInfo[$type]['label']);
         }
 
         return null;
@@ -209,16 +177,11 @@ class FireGento_ContentSync_Model_Notice
     {
         $backUrl = Mage::helper('core/url')->getCurrentBase64Url();
 
-        $urls = array(
-            self::NOTICE_TYPE_CMS_BLOCK => Mage_Adminhtml_Helper_Data::getUrl('adminhtml/contentsync_export/export', array('content' => self::NOTICE_TYPE_CMS_BLOCK, 'back' => $backUrl)),
-            self::NOTICE_TYPE_CMS_PAGE => Mage_Adminhtml_Helper_Data::getUrl('adminhtml/contentsync_export/export', array('content' => self::NOTICE_TYPE_CMS_PAGE, 'back' => $backUrl)),
-            self::NOTICE_TYPE_EMAIL_TRANS => Mage_Adminhtml_Helper_Data::getUrl('adminhtml/contentsync_export/export', array('content' => self::NOTICE_TYPE_EMAIL_TRANS, 'back' => $backUrl)),
-            self::NOTICE_TYPE_CORE_CONFIG => Mage_Adminhtml_Helper_Data::getUrl('adminhtml/contentsync_export/export', array('content' => self::NOTICE_TYPE_CORE_CONFIG, 'back' => $backUrl)),
-        );
+        if (array_key_exists($type, $this->_contentsyncEntitiesInfo)) {
 
-        if (array_key_exists($type, $urls)) {
-            return $urls[$type];
+            return Mage_Adminhtml_Helper_Data::getUrl('adminhtml/contentsync_export/export', array('content' => $type, 'back' => $backUrl));
         }
+
 
         return null;
     }
