@@ -69,7 +69,7 @@ class FireGento_ContentSync_Test_Model_Content_Cms_Page extends EcomDev_PHPUnit_
 		    array(
 			    'foo'           => 'bar',
 			    'page_id'       => 2,
-	    )
+		    )
 		);
 
 		$cmsPageMock = $this->getModelMock(
@@ -85,13 +85,75 @@ class FireGento_ContentSync_Test_Model_Content_Cms_Page extends EcomDev_PHPUnit_
 		$model->loadData();
 	}
 
+	public function testLoadDataNewUpdatesTable() {
+		$dataValues = array(
+			array(
+				'test'          => 'data',
+				'page_id'       => 1,
+			),
+		);
+
+		$cmsPageMock = $this->getModelMock(
+			'cms/page',
+			array('load', 'getId', 'setData', 'save')
+		);
+		$this->mockCmsPageMethods($cmsPageMock, 0, $dataValues[0], FALSE);
+		$this->replaceByMock('model', 'cms/page', $cmsPageMock);
+
+		$model = $this->getContentCmsPageModelMockLoadDataFromStorage(
+			$dataValues,
+			array('loadDataFromStorage', '_deletePagesNotImported')
+		);
+
+		$cmsPageTableName = 'cmsPageTable';
+
+		$connectionMock = $this->getMock(
+			'Varien_Db_Adapter_Pdo_Mysql',
+			array('update'),
+			array(),
+			'',
+			FALSE
+		);
+		$connectionMock
+			->expects($this->once())
+			->method('update')
+			->with(
+				$cmsPageTableName,
+				array('page_id' => $dataValues[0]['page_id']),
+				'page_id = ' . $dataValues[0]['page_id'] . '1'
+			);
+
+		$coreResourceMock = $this->getModelMock(
+			'core/resource',
+			array(
+			    'getConnection',
+				'getTableName'
+			)
+		);
+		$coreResourceMock
+			->expects($this->once())
+			->method('getConnection')
+			->with('core/write')
+			->will($this->returnValue($connectionMock));
+		$coreResourceMock
+			->expects($this->once())
+			->method('getTableName')
+			->with('cms/page')
+			->will($this->returnValue($cmsPageTableName));
+		$this->replaceByMock('singleton', 'core/resource', $coreResourceMock);
+
+		$model->loadData();
+
+	}
+
 	/**
 	 * mocks the load, getId, setData and save method of the cmsPageMock
 	 * @param PHPUnit_Framework_MockObject_MockObject $cmsPageMock
 	 * @param                                         $numberIteration
 	 * @param                                         $data
+	 * @param                                         $returnGetId return value of getId method
 	 */
-	private function mockCmsPageMethods(PHPUnit_Framework_MockObject_MockObject $cmsPageMock, $numberIteration, $data) {
+	private function mockCmsPageMethods(PHPUnit_Framework_MockObject_MockObject $cmsPageMock, $numberIteration, $data, $returnGetId = true) {
 		$numberIteration *= 4;
 		$cmsPageMock
 			->expects($this->at($numberIteration++))
@@ -104,8 +166,12 @@ class FireGento_ContentSync_Test_Model_Content_Cms_Page extends EcomDev_PHPUnit_
 			->expects($this->at($numberIteration++))
 			->method('getId')
 			->will(
-				$this->returnValue(true)
+				$this->returnValue($returnGetId)
 			);
+		if (!$returnGetId) {
+			$dataPageId = $data['page_id'];
+			unset($data['page_id']);
+		}
 		$cmsPageMock
 			->expects($this->at($numberIteration++))
 			->method('setData')
@@ -114,19 +180,28 @@ class FireGento_ContentSync_Test_Model_Content_Cms_Page extends EcomDev_PHPUnit_
 				$this->returnSelf()
 			);
 		$cmsPageMock
-			->expects($this->at($numberIteration))
+			->expects($this->at($numberIteration++))
 			->method('save');
+		if (!$returnGetId) {
+			$cmsPageMock
+				->expects($this->at($numberIteration))
+				->method('getId')
+				->will(
+					$this->returnValue($dataPageId . '1')
+				);
+		}
 	}
 
 	/**
 	 * gets a contentsync/content_cms_page mock with loadDataFromStorage method mocked
-	 * @param $returnValue
+	 * @param $returnValue of loadDataFromStorage
+	 * @param $methods to mock
 	 * @return PHPUnit_Framework_MockObject_MockObject
 	 */
-	private function getContentCmsPageModelMockLoadDataFromStorage($returnValue) {
+	private function getContentCmsPageModelMockLoadDataFromStorage($returnValue, $methods = array('loadDataFromStorage')) {
 		$model = $this->getModelMock(
 			'contentsync/content_cms_page',
-			array('loadDataFromStorage')
+			$methods
 		);
 		$model
 			->expects($this->once())
