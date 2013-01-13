@@ -2,5 +2,5 @@ src/app/code/community/FireGento/ContentSync  app/code/community/FireGento/Conte
 src/app/etc/modules/*   app/etc/modules/
 src/lib/*   lib/
 src/shell/*   shell/
-src/app/design/adminhtml/default/default/template/firegento/contentsync   app/design/adminhtml/default/default/template/firegento/contentsync
-src/app/design/adminhtml/default/default/layout/firegento/contentsync.xml   app/design/adminhtml/default/default/template/firegento/contentsync.xml
+src/app/design/adminhtml/default/default/template/firegento/*   app/design/adminhtml/default/default/template/firegento/
+src/app/design/adminhtml/default/default/layout/firegento/*   app/design/adminhtml/default/default/template/firegento/
