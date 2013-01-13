@@ -1,0 +1,56 @@
+[
+	{
+		"block_id": "1",
+		"title": "Footer Links Backup",
+		"identifier": "footer_links_backup",
+		"content": "<ul>\r\n<li><a href=\"{{store direct_url=\"about-magento-demo-store\"}}\">About Us<\/a><\/li>\r\n<li><a href=\"{{store direct_url=\"customer-service\"}}\">Customer Service<\/a><\/li>\r\n<li class=\"last privacy\"><a href=\"{{store direct_url=\"privacy-policy-cookie-restriction-mode\"}}\">Privacy Policy<\/a><\/li>\r\n<\/ul>",
+		"is_active": "1",
+		"contentsync_hash": "b167029c0220d38975fc831f60f1c561d2df98ac",
+		"store_id": [
+			"1"
+		],
+		"stores": [
+			"1"
+		]
+	},
+	{
+		"block_id": "2",
+		"title": "AGB",
+		"identifier": "gs_business_terms",
+		"content": "<h2><em>F&uuml;gen Sie hier Ihre Allgemeinen Gesch&auml;ftsbedingungen ein.<\/em><\/h2>",
+		"is_active": "1",
+		"contentsync_hash": "c313063e3786f899f2b5e42e03b18a2fbc306211",
+		"store_id": [
+			"1"
+		],
+		"stores": [
+			"1"
+		]
+	},
+	{
+		"block_id": "3",
+		"title": "Widerrufsbelehrung",
+		"identifier": "gs_revocation",
+		"content": "<h2><i>F\u00fcgen Sie hier Ihre vollst\u00e4ndige Widerrufsbelehrung ein.<\/i><\/h2>\r\n",
+		"is_active": "1",
+		"contentsync_hash": "189c392e5f0b558c18548dd448b4ffc21577a46b",
+		"store_id": [
+		],
+		"stores": [
+		]
+	},
+	{
+		"block_id": "4",
+		"title": "Footer Links",
+		"identifier": "footer_links",
+		"content": "<ul>\r\n<li><a href=\"{{store url=\"agb\"}}\">AGB<\/a><\/li>\r\n<li><a href=\"{{store url=\"widerruf\"}}\">Widerruf<\/a><\/li>\r\n<li><a href=\"{{store url=\"lieferung\"}}\">Lieferung<\/a><\/li>\r\n<li><a href=\"{{store url=\"zahlung\"}}\">Zahlungsarten<\/a><\/li>\r\n<li><a href=\"{{store url=\"datenschutz\"}}\">Datenschutz<\/a><\/li>\r\n<li><a href=\"{{store url=\"bestellung\"}}\">Bestellvorgang<\/a><\/li>\r\n<li class=\"last\"><a href=\"{{store url=\"impressum\"}}\">Impressum<\/a><\/li>\r\n<\/ul>",
+		"is_active": "1",
+		"contentsync_hash": "f295cc85a941f8c9c8a3caeb2fed8cf5e0cb3280",
+		"store_id": [
+			"0"
+		],
+		"stores": [
+			"0"
+		]
+	}
+]

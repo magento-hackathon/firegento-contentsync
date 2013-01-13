@@ -1,0 +1,18 @@
+[
+	{
+		"group_id": "1",
+		"website_id": "1",
+		"name": "Beispielshop",
+		"root_category_id": "2",
+		"default_store_id": "1",
+		"contentsync_hash": "44f21d6b8ccca26dd7bb6c11086dc171be445fa9"
+	},
+	{
+		"group_id": "3",
+		"website_id": "2",
+		"name": "xyz",
+		"root_category_id": "2",
+		"default_store_id": "0",
+		"contentsync_hash": "dfdsfsd"
+	}
+]

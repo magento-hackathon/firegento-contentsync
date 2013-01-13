@@ -1,0 +1,20 @@
+[
+	{
+		"website_id": "1",
+		"code": "base",
+		"name": "Beispielshop",
+		"sort_order": "0",
+		"default_group_id": "1",
+		"is_default": "1",
+		"contentsync_hash": "36cf6bca19dde7a55e9ad2b04eb6347d7f178b50"
+	},
+	{
+		"website_id": "2",
+		"code": "w2t",
+		"name": "Website 2",
+		"sort_order": "20",
+		"default_group_id": "3",
+		"is_default": "0",
+		"contentsync_hash": "0d696200c0ebefa8941b38725e59bc100275f0b9"
+	}
+]

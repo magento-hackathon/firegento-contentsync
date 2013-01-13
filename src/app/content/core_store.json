@@ -1,0 +1,32 @@
+[
+	{
+		"store_id": "1",
+		"code": "de",
+		"website_id": "1",
+		"group_id": "1",
+		"name": "Deutsch",
+		"sort_order": "0",
+		"is_active": "1",
+		"contentsync_hash": "8b2591296f0af4e7c47df68c0c71c41d4848084c"
+	},
+	{
+		"store_id": "2",
+		"code": "en",
+		"website_id": "1",
+		"group_id": "1",
+		"name": "American English",
+		"sort_order": "20",
+		"is_active": "1",
+		"contentsync_hash": "12481594a41ed1d7bca3ae703511ceb48accfa6e"
+	},
+	{
+		"store_id": "3",
+		"code": "fr",
+		"website_id": "1",
+		"group_id": "1",
+		"name": "Francais",
+		"sort_order": "30",
+		"is_active": "1",
+		"contentsync_hash": "c842e868fb18b2bbf6bc28bb5cd21992f9157f4c"
+	}
+]
