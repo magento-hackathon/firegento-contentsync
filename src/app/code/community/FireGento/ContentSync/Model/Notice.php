@@ -141,7 +141,7 @@ class FireGento_ContentSync_Model_Notice
     /**
      * @return FireGento_ContentSync_Model_Notice
      */
-    public function showManuelCmsBlockUpdateNotice()
+    public function showManualCmsBlockUpdateNotice()
     {
         $this->setNoticeFlag(self::NOTICE_TYPE_CMS_BLOCK);
         return $this;
@@ -151,7 +151,7 @@ class FireGento_ContentSync_Model_Notice
     /**
      * @return FireGento_ContentSync_Model_Notice
      */
-    public function showManuelCmsPageUpdateNotice()
+    public function showManualCmsPageUpdateNotice()
     {
         $this->setNoticeFlag(self::NOTICE_TYPE_CMS_PAGE);
         return $this;
@@ -161,7 +161,7 @@ class FireGento_ContentSync_Model_Notice
     /**
      * @return FireGento_ContentSync_Model_Notice
      */
-    public function showManuelEmailTransUpdateNotice()
+    public function showManualEmailTransUpdateNotice()
     {
         $this->setNoticeFlag(self::NOTICE_TYPE_EMAIL_TRANS);
         return $this;
@@ -171,7 +171,7 @@ class FireGento_ContentSync_Model_Notice
     /**
      * @return FireGento_ContentSync_Model_Notice
      */
-    public function showManuelCoreConfigUpdateNotice()
+    public function showManualCoreConfigUpdateNotice()
     {
         $this->setNoticeFlag(self::NOTICE_TYPE_CORE_CONFIG);
         return $this;
@@ -182,7 +182,7 @@ class FireGento_ContentSync_Model_Notice
      * @param string $type
      * @return null|string
      */
-    public function getManuelUpdateNoticeTypeLabel($type)
+    public function getManualUpdateNoticeTypeLabel($type)
     {
         $helper = Mage::helper('contentsync');
 
@@ -205,7 +205,7 @@ class FireGento_ContentSync_Model_Notice
      * @param string $type
      * @return null|string Update action URL
      */
-    public function getManuelUpdateNoticeTypeUrl($type)
+    public function getManualUpdateNoticeTypeUrl($type)
     {
         $backUrl = Mage::helper('core/url')->getCurrentBase64Url();
 

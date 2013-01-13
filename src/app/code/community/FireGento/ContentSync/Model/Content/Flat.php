@@ -96,8 +96,6 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
 
     public function storeDataForEntityType($entityType)
     {
-        $entityTypeData = $this->_getEntityTypes();
-
         $data = array();
 
         /* @var $collection Mage_Core_Model_Resource_Db_Collection_Abstract */
