@@ -1,0 +1,40 @@
+<?php
+/**
+ * This file is part of the FIREGENTO project.
+ *
+ * FireGento_GermanSetup is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License version 3 as
+ * published by the Free Software Foundation.
+ *
+ * This script is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * PHP version 5
+ *
+ * @category  FireGento
+ * @package   FireGento_AlternativeContentStorage
+ * @author    FireGento Team <team@firegento.com>
+ * @copyright 2013 FireGento Team (http://www.firegento.de). All rights served.
+ * @license   http://opensource.org/licenses/gpl-3.0 GNU General Public License, version 3 (GPLv3)
+ * @version   $Id:$
+ * @since     0.1.0
+ */
+?>
+
+<?php /** @var $this FireGento_AlternativeContentStorage_Block_Notice */ ?>
+
+<?php foreach ($this->getNotices() as $noticeType) : ?>
+    <?php if ($this->getLabel($noticeType) && $this->getExportUrl($noticeType)) : ?>
+        <div class="notification-global">
+            <span class="f-left">
+                <strong class="label"><?php echo $this->__('Changes on %s', $this->getLabel($noticeType)) ?></strong>
+                <?php echo $this->__('Content Sync set on manuel trigger mode.') ?>
+                <a href="<?php echo $this->getExportUrl($noticeType) ?>"><?php echo $this->__('Start Export') ?></a>
+            </span>
+            <span class="f-right">
+                <a href="<?php echo $this->getIgnoreUrl($noticeType) ?>"><?php echo $this->__('Close') ?></a>
+            </span>
+        </div>
+    <?php endif; ?>
+<?php endforeach; ?>

@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * This file is part of the FIREGENTO project.
+ *
+ * FireGento_GermanSetup is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License version 3 as
+ * published by the Free Software Foundation.
+ *
+ * This script is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * PHP version 5
+ *
+ * @category  FireGento
+ * @package   FireGento_ContentSync
+ * @author    FireGento Team <team@firegento.com>
+ * @copyright 2013 FireGento Team (http://www.firegento.de). All rights served.
+ * @license   http://opensource.org/licenses/gpl-3.0 GNU General Public License, version 3 (GPLv3)
+ * @version   $Id:$
+ * @since     0.1.0
+ */
+ -->
+<config>
+    <modules>
+        <FireGento_ContentSync>
+            <version>0.2.0</version>
+        </FireGento_ContentSync>
+    </modules>
+    <global>
+        <models>
+            <contentsync>
+                <class>FireGento_ContentSync_Model</class>
+            </contentsync>
+        </models>
+        <helpers>
+            <contentsync>
+                <class>FireGento_ContentSync_Helper</class>
+            </contentsync>
+        </helpers>
+        <blocks>
+            <contentsync>
+                <class>FireGento_ContentSync_Block</class>
+            </contentsync>
+        </blocks>
+        <resources>
+            <contentsync_setup>
+                <setup>
+                    <module>FireGento_ContentSync</module>
+                </setup>
+            </contentsync_setup>
+        </resources>
+        <events>
+            <model_save_before>
+                <observers>
+                    <contentsync_observer>
+                        <type>singleton</type>
+                        <class>contentsync/observer</class>
+                        <method>beforeObjectSave</method>
+                    </contentsync_observer>
+                </observers>
+            </model_save_before>
+            <model_save_after>
+                <observers>
+                    <contentsync>
+                        <type>singleton</type>
+                        <class>contentsync/observer</class>
+                        <method>afterObjectSave</method>
+                    </contentsync>
+                </observers>
+            </model_save_after>
+        </events>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <contentsync after="Mage_Adminhtml">FireGento_ContentSync</contentsync>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <translate>
+            <modules>
+                <FireGento_ContentSync>
+                    <files>
+                        <default>FireGento_ContentSync.csv</default>
+                    </files>
+                </FireGento_ContentSync>
+            </modules>
+        </translate>
+        <layout>
+            <updates>
+                <contentsync>
+                    <file>firegento/contentsync.xml</file>
+                </contentsync>
+            </updates>
+        </layout>
+    </adminhtml>
+    <default>
+        <contentsync>
+            <content_cms_block>
+                <trigger>auto</trigger>
+                <storage>file</storage>
+            </content_cms_block>
+            <content_cms_page>
+                <trigger>auto</trigger>
+                <storage>file</storage>
+            </content_cms_page>
+            <content_email_template>
+                <trigger>auto</trigger>
+                <storage>file</storage>
+            </content_email_template>
+        </contentsync>
+        <contentsync_entities>
+            <email_template>
+                <label>Email Templates</label>
+                <model>core/email_template</model>
+                <table_name>core/email_template</table_name>
+            </email_template>
+            <cms_page>
+                <label>CMS Pages</label>
+                <model>cms/page</model>
+                <table_name>cms/page</table_name>
+            </cms_page>
+            <cms_block>
+                <label>CMS Blocks</label>
+                <model>cms/block</model>
+                <table_name>cms/block</table_name>
+            </cms_block>
+        </contentsync_entities>
+    </default>
+    <phpunit>
+        <suite>
+            <modules>
+                <FireGento_ContentSync />
+            </modules>
+        </suite>
+    </phpunit>
+</config>

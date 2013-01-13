@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <FireGento_ContentSync>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Cms/>
+            </depends>
+        </FireGento_ContentSync>
+    </modules>
+</config>
