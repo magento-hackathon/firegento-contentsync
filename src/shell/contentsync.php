@@ -43,14 +43,26 @@ class FireGento_ContentSync_Shell extends Mage_Shell_Abstract
     {
         if ($this->getArg('import')) {
             try {
-                Mage::getSingleton('contentsync/content_flat')->loadData();
+
+                if ( $this->getArg('entity_type') ) {
+                    Mage::getSingleton('contentsync/content_flat')->loadData( $this->getArg('entity_type') );
+                } else {
+                    Mage::getSingleton('contentsync/content_flat')->loadData();
+                }
+
                 echo "Data imported.\n";
             } catch (Exception $e) {
                 echo "Error: {$e->getMessage()}.\n";
             }
         } else if ($this->getArg('export')) {
             try {
-                Mage::getSingleton('contentsync/content_flat')->storeData();
+
+                if ( $this->getArg('entity_type') ) {
+                    Mage::getSingleton('contentsync/content_flat')->storeData( $this->getArg('entity_type') );
+                } else {
+                    Mage::getSingleton('contentsync/content_flat')->storeData();
+                }
+
                 echo "Data exported.\n";
             } catch (Exception $e) {
                 echo "Error: {$e->getMessage()}.\n";
@@ -72,6 +84,9 @@ Usage:  php -f contentsync.php -- [options]
   import            Import all data
   export            Export all data
   help              This help
+
+Options
+    --entity_type = Just lust/store this entity_type
 
 USAGE;
     }
