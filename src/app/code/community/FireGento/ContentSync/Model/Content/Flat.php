@@ -190,10 +190,14 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
                 $objectId = $itemData[$mainKey];
                 unset($itemData[$mainKey]);
                 $isNew = true;
+                $this->_createdtems[$entityType][] = $itemData[$mainKey];
+            } else {
+                $this->_updatedtems[$entityType][] = $itemData[$mainKey];
             }
 
             $object
-                ->setData($itemData)
+                ->setData($itemData);
+            $object
                 ->save();
 
             if ($isNew) {
@@ -220,6 +224,7 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
             ->addFieldToFilter($primaryKey, array('nin' => $importedObjectIds));
 
         foreach ($objectsToDelete as $object) {
+            $this->_deletedtems[$entityType][] = $object->getId();
             $object->delete();
         }
     }

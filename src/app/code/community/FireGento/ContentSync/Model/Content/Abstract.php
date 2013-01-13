@@ -23,6 +23,59 @@
 
 abstract class FireGento_ContentSync_Model_Content_Abstract
 {
+    protected $_createdItems = array();
+    protected $_updatedtems = array();
+    protected $_deletedtems = array();
+
+    public function getCreatedItems()
+    {
+        return $this->_createdItems;
+    }
+
+    public function getUpdatedItems()
+    {
+        return $this->_updatedtems;
+    }
+
+    public function getDeletedItems()
+    {
+        return $this->_deletedtems;
+    }
+
+    public function getOverview($linebreak = "\n")
+    {
+        $output = '';
+
+        if (sizeof($this->getCreatedItems())) {
+            $output .= Mage::helper('contentsync')->__('Created Items') . ': ';
+            $output .= $linebreak;
+            foreach($this->getCreatedItems() as $entityType => $items) {
+                $output .= '   ' . sizeof($items) . ' ' . Mage::helper('contentsync')->__(Mage::getStoreConfig('contentsync_entities/' . $entityType . '/label'));
+                $output .= $linebreak;
+            }
+        }
+
+        if (sizeof($this->getUpdatedItems())) {
+            $output .= Mage::helper('contentsync')->__('Updated Items') . ': ';
+            $output .= $linebreak;
+            foreach($this->getUpdatedItems() as $entityType => $items) {
+                $output .= '   ' . sizeof($items) . ' ' . Mage::helper('contentsync')->__(Mage::getStoreConfig('contentsync_entities/' . $entityType . '/label'));
+                $output .= $linebreak;
+            }
+        }
+
+        if (sizeof($this->getDeletedItems())) {
+            $output .= Mage::helper('contentsync')->__('Deleted Items') . ': ';
+            $output .= $linebreak;
+            foreach($this->getDeletedItems() as $entityType => $items) {
+                $output .= '   ' . sizeof($items) . ' ' . Mage::helper('contentsync')->__(Mage::getStoreConfig('contentsync_entities/' . $entityType . '/label'));
+                $output .= $linebreak;
+            }
+        }
+
+        return $output;
+    }
+
     /**
      * @param string $entityType
      * @return FireGento_ContentSync_Model_Storage_Abstract
