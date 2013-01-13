@@ -23,11 +23,16 @@
 
 class FireGento_ContentSync_Model_Observer
 {
-
-
     protected $_helper = null;
     protected $_isDisabled = false;
 
+    /**
+     * @return array
+     */
+    public function _getEntityTypes()
+    {
+        return Mage::getStoreConfig('contentsync_entities');
+    }
 
     /**
      * @return bool
@@ -87,7 +92,7 @@ class FireGento_ContentSync_Model_Observer
                 return;
             }
 
-            $code = $this->_getCodeByClass(get_class($object));
+            $code = $this->_getEntityTypeCodeByClass(get_class($object));
             if ($this->getHelper()->isTriggerAuto($code)) {
                 Mage::getSingleton('contentsync/content_flat')->storeData($code);
             } elseif ($this->getHelper()->isTriggerManually($code)) {
@@ -96,16 +101,38 @@ class FireGento_ContentSync_Model_Observer
         }
     }
 
+    /**
+     * Listens to:
+     * - model_save_after
+     *
+     * @param Varien_Event_Observer $observer
+     * @return void
+     */
+    public function afterObjectDelete(Varien_Event_Observer $observer)
+    {
+        $object = $observer->getEvent()->getObject();
+        if ($object && $object instanceof Varien_Object && $this->_isObservedObjectType($object)) {
+            if ($this->_isDisabled()) {
+                return;
+            }
+
+            $entityTypeCode = $this->_getEntityTypeCodeByClass(get_class($object));
+            if ($this->getHelper()->isTriggerAuto($entityTypeCode)) {
+                Mage::getSingleton('contentsync/content_flat')->storeData($entityTypeCode);
+            } elseif ($this->getHelper()->isTriggerManually($entityTypeCode)) {
+                Mage::getSingleton('contentsync/notice')->showManualCmsBlockUpdateNotice();
+            }
+        }
+    }
+
+    /**
+     * @param Varien_Object $object
+     * @return bool
+     */
     protected function _isObservedObjectType(Varien_Object $object)
     {
-        $objectTypes = array(
-            'Mage_Cms_Model_Page',
-            'Mage_Cms_Model_Block',
-            'Mage_Core_Model_Email_Template',
-        );
-
-        foreach ($objectTypes as $type) {
-            if ($object instanceof $type) {
+        foreach ($this->_getEntityTypes() as $entityTypeCode => $entityTypeData) {
+            if ($object instanceof $entityTypeData['class']) {
                 return true;
             }
         }
@@ -113,21 +140,14 @@ class FireGento_ContentSync_Model_Observer
         return false;
     }
 
-    protected function _getCodeByClass($className)
+    protected function _getEntityTypeCodeByClass($className)
     {
-        switch($className) {
-
-            case 'Mage_Cms_Model_Page':
-                return 'cms_page';
-
-            case 'Mage_Cms_Model_Block':
-                return 'cms_block';
-
-            case 'Mage_Core_Model_Email_Template':
-                return 'email_template';
-
-            default:
-                return '';
+        foreach ($this->_getEntityTypes() as $entityTypeCode => $entityTypeData) {
+            if ($className == $entityTypeData['class'] || is_subclass_of($className,  $entityTypeData['class'])) {
+                return $entityTypeCode;
+            }
         }
+
+        return '';
     }
 }
