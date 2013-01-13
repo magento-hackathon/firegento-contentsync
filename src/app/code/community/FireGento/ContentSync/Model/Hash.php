@@ -36,4 +36,9 @@ class FireGento_ContentSync_Model_Hash extends Mage_Core_Model_Abstract
     {
         $this->_init('contentsync/hash');
     }
+
+    public function loadByEntityType($entityType)
+    {
+        return $this->load($entityType, 'entity_type');
+    }
 }

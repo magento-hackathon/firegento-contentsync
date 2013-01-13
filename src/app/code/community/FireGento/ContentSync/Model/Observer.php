@@ -72,6 +72,10 @@ class FireGento_ContentSync_Model_Observer
      */
     public function beforeObjectSave(Varien_Event_Observer $observer)
     {
+        if ($this->_isDisabled()) {
+            return;
+        }
+
         $object = $observer->getEvent()->getObject();
         if ($object && $object instanceof Varien_Object && $this->_isObservedObjectType($object)) {
             $hash = Mage::helper('contentsync/hash')->calculateObjectHash($object);

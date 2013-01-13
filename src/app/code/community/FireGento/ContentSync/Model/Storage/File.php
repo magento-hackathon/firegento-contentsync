@@ -72,6 +72,25 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
                 Mage::helper('contentsync')->__('File "%s" could not be written.', $fileName)
             );
         };
+
+        // write hash file
+        $entityTypeModelName = Mage::getStoreConfig('contentsync_entities/' . $entityType . '/model');
+        $tableHash = Mage::helper('contentsync/hash')->calculateTableHash($entityTypeModelName);
+        $fileName = $this->_getEntityHashFilename( $entityType );
+
+        if (file_put_contents($fileName, $tableHash) === false) {
+            Mage::throwException(
+                Mage::helper('contentsync')->__('File "%s" could not be written.', $fileName)
+            );
+        };
+
+        /* @var $hash FireGento_ContentSync_Model_Hash */
+        $hash = Mage::getModel('contentsync/hash')->loadByEntityType($entityType);
+
+        $hash
+            ->setEntityType($entityType)
+            ->setEntityHash($tableHash)
+            ->save();
     }
 
     /**
@@ -84,12 +103,21 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
     }
 
     /**
+     * @param $entityType
+     * @return string
+     */
+    protected function _getEntityHashFilename( $entityType )
+    {
+        return $this->_getStorageDirectory() . $entityType . '.hash';
+    }
+
+    /**
      * @param string $entityType
      * @return array
      */
     public function loadData($entityType)
     {
-        $fileName = $this->_getStorageDirectory() . $entityType . '.json';
+        $fileName = $this->_getEntityFilename($entityType);
 
         if (!is_file($fileName)) {
             return array();
@@ -98,6 +126,23 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
         if (($fileContents = file_get_contents($fileName)) === false) {
             return array();
         }
+
+        $hashFileName = $this->_getEntityHashFilename($entityType);
+        $entityHashFromFile = file_get_contents($hashFileName);
+
+        /* @var $hashEntity FireGento_ContentSync_Model_Hash */
+        $hashEntity = Mage::getModel('contentsync/hash')->loadByEntityType($entityType);
+        $entityHashFromDatabase = $hashEntity->getEntityHash();
+
+        if ($entityHashFromDatabase && $entityHashFromDatabase == $entityHashFromFile) {
+            echo 'Import of ' . $entityType . ' skipped.' . "\n";
+            return array();
+        }
+
+        $hashEntity
+            ->setEntityType($entityType)
+            ->setEntityHash($entityHashFromFile)
+            ->save();
 
         return Zend_Json::decode($fileContents);
     }

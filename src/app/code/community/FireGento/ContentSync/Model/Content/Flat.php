@@ -179,16 +179,25 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
             /* @var $object Mage_Core_Model_Email_Template */
             $object = Mage::getModel($modelName)->load($itemData[$mainKey]);
 
+            // check if data is the same as before
+            if ($object->getData('contentsync_hash') == $itemData['contentsync_hash']) {
+                continue;
+            }
+
             if (!$object->getId()) {
 
                 // new object: insert with new id which will be changed later
                 $objectId = $itemData[$mainKey];
                 unset($itemData[$mainKey]);
                 $isNew = true;
+                $this->_createdtems[$entityType][] = $itemData[$mainKey];
+            } else {
+                $this->_updatedtems[$entityType][] = $itemData[$mainKey];
             }
 
             $object
-                ->setData($itemData)
+                ->setData($itemData);
+            $object
                 ->save();
 
             if ($isNew) {
@@ -215,6 +224,7 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
             ->addFieldToFilter($primaryKey, array('nin' => $importedObjectIds));
 
         foreach ($objectsToDelete as $object) {
+            $this->_deletedtems[$entityType][] = $object->getId();
             $object->delete();
         }
     }
