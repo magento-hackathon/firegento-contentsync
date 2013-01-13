@@ -25,6 +25,8 @@ class FireGento_ContentSync_Model_Storage_Git extends FireGento_ContentSync_Mode
 {
 
     const DIRECTORY_CONFIG_PATH = 'contentsync/storage_git/directory';
+    const FORMAT_CONFIG_PATH = 'contentsync/storage_git/format';
+
 
     /**
      * @param array $data
@@ -47,16 +49,28 @@ class FireGento_ContentSync_Model_Storage_Git extends FireGento_ContentSync_Mode
 
             foreach( explode("\n", $status_result) AS $status_line )
             {
-                $git_status = substr($status_line, 1,1 );
+                $git_status = trim( substr($status_line, 1,1 ) );
                 $git_file = substr($status_line, 3);
 
-                if (  in_array( $git_status, array('M','A') ) )
+                if ( basename( $git_file) == basename( $fileName ) )
                 {
 
-                    $commit = $git->getCommand('commit');
-                    $commit->setOption('message', 'current "'.$entityType.'" content' );
-                    $commit->addArgument( $fileName );
-                    $commit->execute();
+                    if ( $git_status == '?')
+                    {
+                        $add = $git->getCommand('add');
+                        $add->addArgument( $fileName );
+                        $add->execute();
+                    }
+
+                    if (  in_array( $git_status, array('M','A') ) )
+                    {
+
+                        $commit = $git->getCommand('commit');
+                        $commit->setOption('message', 'current "'.$entityType.'" content' );
+                        $commit->addArgument( $fileName );
+                        $commit->execute();
+
+                    }
 
                 }
 

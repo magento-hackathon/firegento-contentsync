@@ -25,6 +25,35 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
 {
 
     const DIRECTORY_CONFIG_PATH = 'contentsync/storage_file/directory';
+    const FORMAT_CONFIG_PATH = 'contentsync/storage_file/format';
+
+    /**
+     * @var FireGento_ContentSync_Model_Storage_Format_Interface
+     */
+    protected $_format;
+
+    /**
+     * @return FireGento_ContentSync_Model_Storage_Format_Interface
+     */
+    public function getFormat()
+    {
+        if ( !$this->_format ) {
+            $format = Mage::getStoreConfig(self::FORMAT_CONFIG_PATH);
+
+            /** @var $instance FireGento_ContentSync_Model_Storage_Format_Interface */
+            $instance = Mage::getModel('contentsync/storage_format_'.$format);
+
+            if ( $instance )
+            {
+                $this->_format = $instance;
+            } else {
+                throw new Exception("output format $format not found");
+            }
+
+        }
+
+        return $this->_format;
+    }
 
     /**
      * Get directory to store files; create if necessary and test if it is writable.
@@ -63,7 +92,7 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
      */
     public function storeData($data, $entityType) {
 
-        $fileContent = $this->_prettyPrint(Zend_Json::encode($data));
+        $fileContent = $this->getFormat()->encode($data);
         $fileName = $this->_getEntityFilename( $entityType );
 
 
@@ -80,7 +109,7 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
      */
     protected function _getEntityFilename( $entityType )
     {
-        return $this->_getStorageDirectory() . $entityType . '.json';
+        return $this->_getStorageDirectory() . $this->getFormat()->getFilename( $entityType );
     }
 
     /**
@@ -89,7 +118,7 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
      */
     public function loadData($entityType)
     {
-        $fileName = $this->_getStorageDirectory() . $entityType . '.json';
+        $fileName = $this->_getEntityFilename($entityType);
 
         if (!is_file($fileName)) {
             return array();
@@ -99,65 +128,9 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
             return array();
         }
 
-        return Zend_Json::decode($fileContents);
+        return $this->getFormat()->decode($fileContents);
     }
 
 
-    /**
-     * @param string $json
-     * @return string
-     */
-    protected function _prettyPrint($json)
-    {
-        $result = '';
-        $level = 0;
-        $prev_char = '';
-        $in_quotes = false;
-        $ends_line_level = NULL;
-        $json_length = strlen( $json );
 
-        for( $i = 0; $i < $json_length; $i++ ) {
-            $char = $json[$i];
-            $new_line_level = NULL;
-            $post = "";
-            if( $ends_line_level !== NULL ) {
-                $new_line_level = $ends_line_level;
-                $ends_line_level = NULL;
-            }
-            if( $char === '"' && $prev_char != '\\' ) {
-                $in_quotes = !$in_quotes;
-            } else if( ! $in_quotes ) {
-                switch( $char ) {
-                    case '}': case ']':
-                    $level--;
-                    $ends_line_level = NULL;
-                    $new_line_level = $level;
-                    break;
-
-                    case '{': case '[':
-                    $level++;
-                    case ',':
-                        $ends_line_level = $level;
-                        break;
-
-                    case ':':
-                        $post = " ";
-                        break;
-
-                    case " ": case "\t": case "\n": case "\r":
-                    $char = "";
-                    $ends_line_level = $new_line_level;
-                    $new_line_level = NULL;
-                    break;
-                }
-            }
-            if( $new_line_level !== NULL ) {
-                $result .= "\n".str_repeat( "\t", $new_line_level );
-            }
-            $result .= $char.$post;
-            $prev_char = $char;
-        }
-
-        return $result;
-    }
 }

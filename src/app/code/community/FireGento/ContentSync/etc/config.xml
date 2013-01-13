@@ -145,6 +145,12 @@
                 <trigger>auto</trigger>
                 <storage>file</storage>
             </content_email_template>
+            <storage_file>
+                <format>jsonhtml</format>
+            </storage_file>
+            <storage_git>
+                <format>jsonhtml</format>
+            </storage_git>
         </contentsync>
         <contentsync_entities>
             <core_website>
