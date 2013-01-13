@@ -139,7 +139,10 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
             return array();
         }
 
-        $hashEntity->setEntityHash($entityHashFromFile)->save();
+        $hashEntity
+            ->setEntityType($entityType)
+            ->setEntityHash($entityHashFromFile)
+            ->save();
 
         return Zend_Json::decode($fileContents);
     }
