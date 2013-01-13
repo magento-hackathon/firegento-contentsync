@@ -55,5 +55,7 @@ class FireGento_ContentSync_Test_Config_Main extends EcomDev_PHPUnit_Test_Case_C
     {
         $this->assertModuleVersionGreaterThanOrEquals('0.1.0');
         $this->assertModuleVersionGreaterThanOrEquals('0.2.0');
+        $this->assertModuleVersionGreaterThanOrEquals('0.3.0');
+        $this->assertModuleVersionGreaterThanOrEquals('0.4.0');
     }
 }
