@@ -71,6 +71,26 @@
                     </fields>
                 </storage_git>
 
+	            <storage_svn translate="label" module="contentsync">
+	                 <label>Storage: SVN</label>
+	                 <frontend_type>text</frontend_type>
+	                 <sort_order>100</sort_order>
+	                 <show_in_default>1</show_in_default>
+	                 <show_in_website>0</show_in_website>
+	                 <show_in_store>0</show_in_store>
+	                 <fields>
+	                     <directory translate="label" module="contentsync">
+	                         <label>Storage Directory</label>
+	                         <comment>Commits changes of files on every export</comment>
+	                         <frontend_type>text</frontend_type>
+	                         <sort_order>10</sort_order>
+	                         <show_in_default>1</show_in_default>
+	                         <show_in_website>0</show_in_website>
+	                         <show_in_store>0</show_in_store>
+	                     </directory>
+	                 </fields>
+	            </storage_svn>
+
                 <content_core_website translate="label" module="contentsync">
                     <label>Content: Website</label>
                     <frontend_type>text</frontend_type>
