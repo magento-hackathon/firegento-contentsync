@@ -90,6 +90,10 @@ class FireGento_ContentSync_Model_Observer
     {
         $object = $observer->getEvent()->getObject();
         if ($object && $object instanceof Varien_Object && $this->_isObservedObjectType($object)) {
+            if (!Mage::helper('contentsync')->getCmsPageTriggerAuto()) {
+                return;
+            }
+
             if (!$object->hasDataChanges() || $this->_isDisabled()) {
                 return;
             }

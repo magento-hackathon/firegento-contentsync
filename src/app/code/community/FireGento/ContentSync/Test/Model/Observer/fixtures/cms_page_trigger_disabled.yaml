@@ -1,0 +1,2 @@
+config:
+  default/contentsync/content_cms_page/trigger: disabled
