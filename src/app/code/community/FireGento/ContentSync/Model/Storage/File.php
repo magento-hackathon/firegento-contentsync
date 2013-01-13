@@ -72,6 +72,25 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
                 Mage::helper('contentsync')->__('File "%s" could not be written.', $fileName)
             );
         };
+
+        // write hash file
+        $entityTypeModelName = Mage::getStoreConfig('contentsync_entities/' . $entityType . '/model');
+        $tableHash = Mage::helper('contentsync/hash')->calculateTableHash($entityTypeModelName);
+        $fileName = $this->_getEntityHashFilename( $entityType );
+
+        if (file_put_contents($fileName, $tableHash) === false) {
+            Mage::throwException(
+                Mage::helper('contentsync')->__('File "%s" could not be written.', $fileName)
+            );
+        };
+
+        /* @var $hash FireGento_ContentSync_Model_Hash */
+        $hash = Mage::getModel('contentsync/hash')->loadByEntityType($entityType);
+
+        $hash
+            ->setEntityType($entityType)
+            ->setEntityHash($tableHash)
+            ->save();
     }
 
     /**
@@ -81,6 +100,15 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
     protected function _getEntityFilename( $entityType )
     {
         return $this->_getStorageDirectory() . $entityType . '.json';
+    }
+
+    /**
+     * @param $entityType
+     * @return string
+     */
+    protected function _getEntityHashFilename( $entityType )
+    {
+        return $this->_getStorageDirectory() . $entityType . '.hash';
     }
 
     /**

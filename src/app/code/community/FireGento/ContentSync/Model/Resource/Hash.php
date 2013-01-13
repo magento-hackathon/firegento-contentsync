@@ -40,7 +40,7 @@ class FireGento_ContentSync_Model_Resource_Hash extends Mage_Core_Model_Resource
     /**
      * Perform actions before object save
      *
-     * @param Varien_Object $object
+     * @param Mage_Core_Model_Abstract $object
      * @return Mage_Core_Model_Resource_Db_Abstract
      */
     protected function _beforeSave(Mage_Core_Model_Abstract $object)
