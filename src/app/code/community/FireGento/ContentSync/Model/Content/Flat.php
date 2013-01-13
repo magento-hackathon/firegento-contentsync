@@ -21,11 +21,8 @@
  * @since     0.1.0
  */
 
-class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Model_Content_Abstract {
-
-    protected $_configPath = 'email_template';
-    protected $_entityType = 'email_template';
-
+class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Model_Content_Abstract
+{
     /**
      * @return array
      */
@@ -56,6 +53,17 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
 
         $tableName = $entityTypeData[$entityType]['table_name'];
         return $tableName;
+    }
+
+    /**
+     * @param string $entityType
+     * @return bool
+     */
+    protected function _canDeleteEntities($entityType)
+    {
+        $entityTypeData = $this->_getEntityTypes();
+
+        return (bool)$entityTypeData[$entityType]['allow_delete'];
     }
 
     /**
@@ -189,7 +197,10 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
             }
         }
 
-        $this->_deleteObjectsNotImported($entityType, $importedObjectIds);
+        if ($this->_canDeleteEntities($entityType)) {
+
+            $this->_deleteObjectsNotImported($entityType, $importedObjectIds);
+        }
     }
 
     /**
