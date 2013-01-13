@@ -30,13 +30,6 @@ class FireGento_ContentSync_Test_Model_Observer extends EcomDev_PHPUnit_Test_Cas
 	 */
 	protected function setUp() {
 		$this->model = Mage::getModel('contentsync/observer');
-
-		$helper = $this->getHelperMock('contentsync/data', array('isTriggerAuto'));
-		$helper
-			->expects($this->any())
-			->method('isTriggerAuto')
-			->will($this->returnValue(true));
-		$this->replaceByMock('helper', 'contentsync', $helper);
 	}
 
 	/**
