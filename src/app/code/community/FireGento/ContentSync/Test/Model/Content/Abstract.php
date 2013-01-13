@@ -34,18 +34,6 @@ class FireGento_ContentSync_Test_Model_Content_Abstract extends EcomDev_PHPUnit_
 	}
 
 	/**
-	 * set getConfig method with one expected call, with "storage" as parameter
-	 * @param $returnValue which getConfig will return
-	 */
-	private function setConfigStorage($returnValue) {
-		$this->model
-			->expects($this->once())
-			->method('getConfig')
-			->with('storage')
-			->will($this->returnValue($returnValue));
-	}
-
-	/**
 	 * @param $type storage type
 	 */
 	private function setUpStorageMock($type) {
@@ -55,27 +43,25 @@ class FireGento_ContentSync_Test_Model_Content_Abstract extends EcomDev_PHPUnit_
 
 	/**
 	 * sets up the config and storage mocks
-	 * @param $configStorage value which will be returned by getConfig('storage')
 	 * @param $storageType storage type
 	 */
-	private function setUpStorage($configStorage, $storageType) {
-		$this->setConfigStorage($configStorage);
+	private function setUpStorage($storageType) {
 		$this->setUpStorageMock($storageType);
 	}
 
 	public function testGetStorageReturnInstance() {
-		$this->setUpStorage('foobar', 'foobar');
+		$this->setUpStorage('foobar');
 
 		$this->assertInstanceOf(
 			'FireGento_ContentSync_Model_Storage_Abstract',
-			$this->model->getStorage()
+			$this->model->getStorage('cms_page')
 		);
 	}
 
 	public function testGetStorageVoid() {
 		$this->assertInstanceOf(
 			'FireGento_ContentSync_Model_Storage_Void',
-			$this->model->getStorage()
+			$this->model->getStorage('foo')
 		);
 	}
 

@@ -25,14 +25,23 @@
 <config>
     <modules>
         <FireGento_ContentSync>
-            <version>0.3.0</version>
+            <version>0.5.0</version>
         </FireGento_ContentSync>
     </modules>
     <global>
         <models>
             <contentsync>
                 <class>FireGento_ContentSync_Model</class>
+                <resourceModel>contentsync_setup</resourceModel>
             </contentsync>
+            <contentsync_setup>
+                <class>FireGento_ContentSync_Model_Resource</class>
+                <entities>
+                    <hash>
+                        <table>contentsync_hash</table>
+                    </hash>
+                </entities>
+            </contentsync_setup>
         </models>
         <helpers>
             <contentsync>
