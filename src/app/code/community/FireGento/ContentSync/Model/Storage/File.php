@@ -117,7 +117,7 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
      */
     public function loadData($entityType)
     {
-        $fileName = $this->_getStorageDirectory() . $entityType . '.json';
+        $fileName = $this->_getEntityFilename($entityType);
 
         if (!is_file($fileName)) {
             return array();
@@ -126,6 +126,20 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
         if (($fileContents = file_get_contents($fileName)) === false) {
             return array();
         }
+
+        $hashFileName = $this->_getEntityHashFilename($entityType);
+        $entityHashFromFile = file_get_contents($hashFileName);
+
+        /* @var $hashEntity FireGento_ContentSync_Model_Hash */
+        $hashEntity = Mage::getModel('contentsync/hash')->loadByEntityType($entityType);
+        $entityHashFromDatabase = $hashEntity->getEntityHash();
+
+        if ($entityHashFromDatabase && $entityHashFromDatabase == $entityHashFromFile) {
+            echo 'Import of ' . $entityType . ' skipped.' . "\n";
+            return array();
+        }
+
+        $hashEntity->setEntityHash($entityHashFromFile)->save();
 
         return Zend_Json::decode($fileContents);
     }
