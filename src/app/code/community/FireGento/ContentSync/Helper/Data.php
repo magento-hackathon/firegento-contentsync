@@ -24,72 +24,24 @@ class FireGento_ContentSync_Helper_Data extends Mage_Core_Helper_Abstract
 {
 
 
-    const XML_PATH_CONTENTSYNC_CONTENT_CMS_BLOCK_TRIGGER = 'contentsync/content_cms_block/trigger';
-    const XML_PATH_CONTENTSYNC_CONTENT_CMS_PAGE_TRIGGER = 'contentsync/content_cms_page/trigger';
-    const XML_PATH_CONTENTSYNC_CONTENT_EMAIL_TRANS_TRIGGER = 'contentsync/content_email_trans/trigger';
-
-
     /**
-     * @return boolean
+     * @param string $code
+     * @return bool
      */
-    public function getCmsBlockTriggerAuto()
-    {
-        return (Mage::getStoreConfig(self::XML_PATH_CONTENTSYNC_CONTENT_CMS_BLOCK_TRIGGER) == FireGento_ContentSync_Model_Source_Trigger::TRIGGER_AUTO);
-    }
-
-
-    /**
-     * @return boolean
-     */
-    public function getCmsBlockTriggerManually()
-    {
-        return (Mage::getStoreConfig(self::XML_PATH_CONTENTSYNC_CONTENT_CMS_BLOCK_TRIGGER) == FireGento_ContentSync_Model_Source_Trigger::TRIGGER_MANUALLY);
-    }
-
     public function isTriggerManually($code)
     {
         return (Mage::getStoreConfig('contentsync/content_' . $code . '/trigger') == FireGento_ContentSync_Model_Source_Trigger::TRIGGER_MANUALLY);
     }
 
+
+    /**
+     * @param string $code
+     * @return bool
+     */
     public function isTriggerAuto($code)
     {
         return (Mage::getStoreConfig('contentsync/content_' . $code . '/trigger') == FireGento_ContentSync_Model_Source_Trigger::TRIGGER_AUTO);
     }
 
-
-    /**
-     * @return boolean
-     */
-    public function getCmsPageTriggerAuto()
-    {
-        return (Mage::getStoreConfig(self::XML_PATH_CONTENTSYNC_CONTENT_CMS_PAGE_TRIGGER) == FireGento_ContentSync_Model_Source_Trigger::TRIGGER_AUTO);
-    }
-
-
-    /**
-     * @return boolean
-     */
-    public function getCmsPageTriggerManually()
-    {
-        return (Mage::getStoreConfig(self::XML_PATH_CONTENTSYNC_CONTENT_CMS_PAGE_TRIGGER) == FireGento_ContentSync_Model_Source_Trigger::TRIGGER_MANUALLY);
-    }
-
-
-    /**
-     * @return boolean
-     */
-    public function getEmailTransTriggerAuto()
-    {
-        return (Mage::getStoreConfig(self::XML_PATH_CONTENTSYNC_CONTENT_EMAIL_TRANS_TRIGGER) == FireGento_ContentSync_Model_Source_Trigger::TRIGGER_AUTO);
-    }
-
-
-    /**
-     * @return boolean
-     */
-    public function getEmailTransTriggerManually()
-    {
-        return (Mage::getStoreConfig(self::XML_PATH_CONTENTSYNC_CONTENT_EMAIL_TRANS_TRIGGER) == FireGento_ContentSync_Model_Source_Trigger::TRIGGER_MANUALLY);
-    }
 
 }
