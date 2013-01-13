@@ -25,6 +25,7 @@ class FireGento_ContentSync_Model_Source_Storage
 {
 
     const TYPE_FILE = 'file';
+    const TYPE_GIT = 'git';
 
     /**
      * Options getter
@@ -37,6 +38,7 @@ class FireGento_ContentSync_Model_Source_Storage
 
         return array(
             array('value' => self::TYPE_FILE, 'label'=>Mage::helper('contentsync')->__('File')),
+            array('value' => self::TYPE_GIT, 'label'=>Mage::helper('contentsync')->__('Git')),
         );
     }
 
