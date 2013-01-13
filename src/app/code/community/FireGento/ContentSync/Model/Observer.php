@@ -92,11 +92,11 @@ class FireGento_ContentSync_Model_Observer
                 return;
             }
 
-            $code = $this->_getEntityTypeCodeByClass(get_class($object));
-            if ($this->getHelper()->isTriggerAuto($code)) {
-                Mage::getSingleton('contentsync/content_flat')->storeData($code);
-            } elseif ($this->getHelper()->isTriggerManually($code)) {
-                Mage::getSingleton('contentsync/notice')->setNoticeFlag($code);
+            $entityTypeCode = $this->_getEntityTypeCodeByClass(get_class($object));
+            if ($this->getHelper()->isTriggerAuto($entityTypeCode)) {
+                Mage::getSingleton('contentsync/content_flat')->storeData($entityTypeCode);
+            } elseif ($this->getHelper()->isTriggerManually($entityTypeCode)) {
+                Mage::getSingleton('contentsync/notice')->setNoticeFlag($entityTypeCode);
             }
         }
     }
@@ -120,7 +120,7 @@ class FireGento_ContentSync_Model_Observer
             if ($this->getHelper()->isTriggerAuto($entityTypeCode)) {
                 Mage::getSingleton('contentsync/content_flat')->storeData($entityTypeCode);
             } elseif ($this->getHelper()->isTriggerManually($entityTypeCode)) {
-                Mage::getSingleton('contentsync/notice')->showManualCmsBlockUpdateNotice();
+                Mage::getSingleton('contentsync/notice')->setNoticeFlag($entityTypeCode);
             }
         }
     }
