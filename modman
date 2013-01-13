@@ -1,3 +1,4 @@
 src/app/code/community/FireGento/ContentSync  app/code/community/FireGento/ContentSync
 src/app/etc/modules/*   app/etc/modules/
+src/lib/*   lib/
 src/shell/*   shell/
