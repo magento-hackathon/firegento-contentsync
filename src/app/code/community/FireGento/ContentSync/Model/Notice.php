@@ -173,18 +173,16 @@ class FireGento_ContentSync_Model_Notice
      * @param string $type
      * @return null|string Update action URL
      */
-    public function getManualUpdateNoticeTypeUrl($type)
+    public function getExportUrl($type)
     {
         $backUrl = Mage::helper('core/url')->getCurrentBase64Url();
 
         if (array_key_exists($type, $this->_contentsyncEntitiesInfo)) {
 
-            return Mage_Adminhtml_Helper_Data::getUrl('adminhtml/contentsync_export/export', array('content' => $type, 'back' => $backUrl));
+            return Mage::helper('adminhtml')->getUrl('adminhtml/contentsync/export', array('content' => $type, 'back' => $backUrl));
         }
 
 
         return null;
     }
-
-
 }

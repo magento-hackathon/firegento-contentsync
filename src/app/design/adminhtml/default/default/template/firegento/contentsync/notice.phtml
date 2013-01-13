@@ -22,18 +22,22 @@
  */
 ?>
 
-<?php /** @var $this FireGento_AlternativeContentStorage_Block_Notice */ ?>
+<?php /* @var $this FireGento_ContentSync_Block_Notice */ ?>
 
 <?php foreach ($this->getNotices() as $noticeType) : ?>
     <?php if ($this->getLabel($noticeType) && $this->getExportUrl($noticeType)) : ?>
         <div class="notification-global">
-            <span class="f-left">
-                <strong class="label"><?php echo $this->__('Changes on %s', $this->getLabel($noticeType)) ?></strong>
-                <?php echo $this->__('Content Sync set on manuel trigger mode.') ?>
-                <a href="<?php echo $this->getExportUrl($noticeType) ?>"><?php echo $this->__('Start Export') ?></a>
-            </span>
             <span class="f-right">
                 <a href="<?php echo $this->getIgnoreUrl($noticeType) ?>"><?php echo $this->__('Close') ?></a>
+            </span>
+            <span>
+                <strong class="label"><?php echo $this->__('Changes on %s', $this->getLabel($noticeType)) ?></strong>
+                <?php echo $this->__('Content Sync set to manual export.') ?>
+                <a href="<?php echo $this->getExportUrl($noticeType) ?>"><?php echo $this->__('Start Export') ?></a>
+            </span>
+            |
+            <span>
+                <a href="<?php echo $this->getManageUrl() ?>"><?php echo $this->__('Manage Content Sync') ?></a>
             </span>
         </div>
     <?php endif; ?>

@@ -21,15 +21,25 @@
  * @since     0.1.0
  */
 
-class FireGento_ContentSync_Contentsync_ExportController extends Mage_Adminhtml_Controller_Action
+class FireGento_ContentSync_ContentsyncController extends Mage_Adminhtml_Controller_Action
 {
 
 
     public function exportAction()
     {
-        $type = $this->getRequest()->getParam('content');
+        $entityType = $this->getRequest()->getParam('content');
 
-        // TODO : call export model depend on type
+        try {
+            Mage::getSingleton('contentsync/content_flat')->storeData($entityType);
+            Mage::getSingleton('adminhtml/session')->addSuccess(
+                $this->__('%s have been exported successfully.', Mage::getStoreConfig('contentsync_entities/' . $entityType . '/label'))
+            );
+        } catch (Exception $e) {
+            Mage::getSingleton('adminhtml/session')->addError(
+                $this->__('Error while exporting %s: %s', Mage::getStoreConfig('contentsync_entities/' . $entityType . '/label'), $e->getMessage())
+            );
+            Mage::logException($e);
+        }
         $this->_forward('close');
     }
 

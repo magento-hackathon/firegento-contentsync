@@ -35,9 +35,16 @@ class FireGento_ContentSync_Block_Notice extends Mage_Adminhtml_Block_Abstract
      */
     public function getExportUrl($code)
     {
-        return Mage::getSingleton('contentsync/notice')->getManualUpdateNoticeTypeUrl($code);
+            return Mage::getSingleton('contentsync/notice')->getExportUrl($code);
     }
 
+    /**
+     * @return null|string Update action URL
+     */
+    public function getManageUrl()
+    {
+        return Mage::helper('adminhtml')->getUrl('adminhtml/contentsync/manage');
+    }
 
     /**
      * @param string $code
@@ -46,7 +53,7 @@ class FireGento_ContentSync_Block_Notice extends Mage_Adminhtml_Block_Abstract
     public function getIgnoreUrl($code)
     {
         $backUrl = Mage::helper('core/url')->getCurrentBase64Url();
-        return Mage_Adminhtml_Helper_Data::getUrl('adminhtml/contentsync_export/close', array('content' => $code, 'back' => $backUrl));
+        return Mage::helper('adminhtml')->getUrl('adminhtml/contentsync/close', array('content' => $code, 'back' => $backUrl));
     }
 
 
