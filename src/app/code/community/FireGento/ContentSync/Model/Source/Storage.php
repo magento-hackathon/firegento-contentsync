@@ -26,6 +26,7 @@ class FireGento_ContentSync_Model_Source_Storage
 
     const TYPE_FILE = 'file';
     const TYPE_GIT = 'git';
+    const TYPE_IDFILE = 'idfile';
 
     /**
      * Options getter
@@ -39,6 +40,7 @@ class FireGento_ContentSync_Model_Source_Storage
         return array(
             array('value' => self::TYPE_FILE, 'label'=>Mage::helper('contentsync')->__('File')),
             array('value' => self::TYPE_GIT, 'label'=>Mage::helper('contentsync')->__('Git')),
+            array('value' => self::TYPE_IDFILE, 'label'=>Mage::helper('contentsync')->__('One file each entry')),
         );
     }
 
