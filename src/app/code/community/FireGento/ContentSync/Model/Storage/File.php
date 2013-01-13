@@ -36,14 +36,14 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
         if (!is_dir($directoryPath)) {
             if (!mkdir($directoryPath, 0777, true)) {
                 Mage::throwException(
-                    Mage::helper('contentsync')->__('Directory "%s" could not be created.')
+                    Mage::helper('contentsync')->__('Directory "%s" could not be created.', $directoryPath)
                 );
             }
         }
 
         if (!is_dir_writeable($directoryPath)) {
             Mage::throwException(
-                Mage::helper('contentsync')->__('Directory "%s" is not writable.')
+                Mage::helper('contentsync')->__('Directory "%s" is not writable.', $directoryPath)
             );
         }
 
@@ -66,7 +66,7 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
 
         if (file_put_contents($fileName, $fileContent) === false) {
             Mage::throwException(
-                Mage::helper('contentsync')->__('File "%s" could not be written.')
+                Mage::helper('contentsync')->__('File "%s" could not be written.', $fileName)
             );
         };
     }
