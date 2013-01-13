@@ -22,7 +22,7 @@
 	},
 	{
 		"page_id": "3",
-		"title": "About Us",
+		"title": "\u00dcber uns",
 		"root_template": "two_columns_right",
 		"meta_keywords": null,
 		"meta_description": null,
@@ -37,8 +37,9 @@
 		"custom_layout_update_xml": null,
 		"custom_theme_from": null,
 		"custom_theme_to": null,
-		"contentsync_hash": "b0be556f2e8b1e16ecfdde4448bd119c4993bae9",
+		"contentsync_hash": "e4662356b164e27cdb1cb9c9700c6006a8aeef64",
 		"store_id": [
+			"0"
 		]
 	},
 	{
