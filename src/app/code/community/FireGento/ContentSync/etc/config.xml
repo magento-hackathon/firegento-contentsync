@@ -70,6 +70,15 @@
                     </contentsync>
                 </observers>
             </model_save_after>
+            <model_delete_after>
+                <observers>
+                    <contentsync>
+                        <type>singleton</type>
+                        <class>contentsync/observer</class>
+                        <method>afterObjectDelete</method>
+                    </contentsync>
+                </observers>
+            </model_delete_after>
         </events>
     </global>
     <admin>
@@ -103,6 +112,10 @@
     </adminhtml>
     <default>
         <contentsync>
+            <content_core_store>
+                <trigger>auto</trigger>
+                <storage>file</storage>
+            </content_core_store>
             <content_cms_block>
                 <trigger>auto</trigger>
                 <storage>file</storage>
@@ -117,19 +130,28 @@
             </content_email_template>
         </contentsync>
         <contentsync_entities>
+            <core_store>
+                <label>Store Views</label>
+                <model>core/store</model>
+                <class>Mage_Core_Model_Store</class>
+                <table_name>core/store</table_name>
+            </core_store>
             <email_template>
                 <label>Email Templates</label>
                 <model>core/email_template</model>
+                <class>Mage_Core_Model_Email_Template</class>
                 <table_name>core/email_template</table_name>
             </email_template>
             <cms_page>
                 <label>CMS Pages</label>
                 <model>cms/page</model>
+                <class>Mage_Cms_Model_Page</class>
                 <table_name>cms/page</table_name>
             </cms_page>
             <cms_block>
                 <label>CMS Blocks</label>
                 <model>cms/block</model>
+                <class>Mage_Cms_Model_Block</class>
                 <table_name>cms/block</table_name>
             </cms_block>
         </contentsync_entities>
