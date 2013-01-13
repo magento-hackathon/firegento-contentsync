@@ -25,14 +25,23 @@
 <config>
     <modules>
         <FireGento_ContentSync>
-            <version>0.3.0</version>
+            <version>0.5.0</version>
         </FireGento_ContentSync>
     </modules>
     <global>
         <models>
             <contentsync>
                 <class>FireGento_ContentSync_Model</class>
+                <resourceModel>contentsync_setup</resourceModel>
             </contentsync>
+            <contentsync_setup>
+                <class>FireGento_ContentSync_Model_Resource</class>
+                <entities>
+                    <hash>
+                        <table>contentsync_hash</table>
+                    </hash>
+                </entities>
+            </contentsync_setup>
         </models>
         <helpers>
             <contentsync>
@@ -112,6 +121,14 @@
     </adminhtml>
     <default>
         <contentsync>
+            <content_core_website>
+                <trigger>auto</trigger>
+                <storage>file</storage>
+            </content_core_website>
+            <content_core_storegroup>
+                <trigger>auto</trigger>
+                <storage>file</storage>
+            </content_core_storegroup>
             <content_core_store>
                 <trigger>auto</trigger>
                 <storage>file</storage>
@@ -130,29 +147,47 @@
             </content_email_template>
         </contentsync>
         <contentsync_entities>
+            <core_website>
+                <label>Websites</label>
+                <model>core/website</model>
+                <class>Mage_Core_Model_Website</class>
+                <table_name>core/website</table_name>
+                <allow_delete>0</allow_delete>
+            </core_website>
+            <core_storegroup>
+                <label>Store Groups</label>
+                <model>core/store_group</model>
+                <class>Mage_Core_Model_Store_Group</class>
+                <table_name>core/store_group</table_name>
+                <allow_delete>0</allow_delete>
+            </core_storegroup>
             <core_store>
                 <label>Store Views</label>
                 <model>core/store</model>
                 <class>Mage_Core_Model_Store</class>
                 <table_name>core/store</table_name>
+                <allow_delete>0</allow_delete>
             </core_store>
             <email_template>
                 <label>Email Templates</label>
                 <model>core/email_template</model>
                 <class>Mage_Core_Model_Email_Template</class>
                 <table_name>core/email_template</table_name>
+                <allow_delete>1</allow_delete>
             </email_template>
             <cms_page>
                 <label>CMS Pages</label>
                 <model>cms/page</model>
                 <class>Mage_Cms_Model_Page</class>
                 <table_name>cms/page</table_name>
+                <allow_delete>1</allow_delete>
             </cms_page>
             <cms_block>
                 <label>CMS Blocks</label>
                 <model>cms/block</model>
                 <class>Mage_Cms_Model_Block</class>
                 <table_name>cms/block</table_name>
+                <allow_delete>1</allow_delete>
             </cms_block>
         </contentsync_entities>
     </default>

@@ -67,4 +67,30 @@ class FireGento_ContentSync_Helper_Hash extends Mage_Core_Helper_Abstract
         ksort($hashData);
         return hash($algo, serialize($hashData));
     }
+
+    /**
+     * Calculate aggregate hash for a given entity
+     * 
+     * Hashes of the single items are imploded in a single string,
+     * which is used as base for the calculation.
+     * 
+     * @param string $modelEntity For example cms/page
+     * @param string $algo Algorythm used for the calculation
+     * @return string Resulting hash
+     */
+    public function calculateTableHash($modelEntity, $algo = 'sha1')
+    {
+        $model = Mage::getResourceModel($modelEntity);
+        /* @var $model Mage_Core_Model_Resource_Db_Abstract */
+        $query = $model->getReadConnection()->select()
+                ->from($model->getMainTable(), 'contentsync_hash')
+                ->order($model->getIdFieldName());
+
+        $data = '';
+        foreach ($model->getReadConnection()->fetchCol($query) as $hash) {
+            $data .= (string) $hash;
+        }
+
+        return hash($algo, $data);
+    }
 }

@@ -88,11 +88,17 @@ class FireGento_ContentSync_Model_Observer
      */
     public function afterObjectSave(Varien_Event_Observer $observer)
     {
+        if ($this->_isDisabled()) {
+            return;
+        }
+
         $object = $observer->getEvent()->getObject();
-        if ($object && $object instanceof Varien_Object && $this->_isObservedObjectType($object)) {
-            if (!$object->hasDataChanges() || $this->_isDisabled()) {
-                return;
-            }
+        if (
+            $object &&
+            $object instanceof Varien_Object &&
+            $this->_isObservedObjectType($object) &&
+            $object->hasDataChanges()
+        ) {
 
             $entityTypeCode = $this->_getEntityTypeCodeByClass(get_class($object));
             if ($this->getHelper()->isTriggerAuto($entityTypeCode)) {

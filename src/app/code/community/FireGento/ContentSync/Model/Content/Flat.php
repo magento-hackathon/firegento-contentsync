@@ -21,11 +21,8 @@
  * @since     0.1.0
  */
 
-class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Model_Content_Abstract {
-
-    protected $_configPath = 'email_template';
-    protected $_entityType = 'email_template';
-
+class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Model_Content_Abstract
+{
     /**
      * @return array
      */
@@ -56,6 +53,17 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
 
         $tableName = $entityTypeData[$entityType]['table_name'];
         return $tableName;
+    }
+
+    /**
+     * @param string $entityType
+     * @return bool
+     */
+    protected function _canDeleteEntities($entityType)
+    {
+        $entityTypeData = $this->_getEntityTypes();
+
+        return (bool)$entityTypeData[$entityType]['allow_delete'];
     }
 
     /**
@@ -96,6 +104,8 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
 
     public function storeDataForEntityType($entityType)
     {
+        Mage::getSingleton('contentsync/observer')->disableObservers();
+
         $data = array();
 
         /* @var $collection Mage_Core_Model_Resource_Db_Collection_Abstract */
@@ -105,10 +115,20 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
 
         foreach ($collection as $object) {
 
+            if (!$object->getData('contentsync_hash')) {
+                $hash = Mage::helper('contentsync/hash')->calculateObjectHash($object);
+                $object
+                    ->setData('contentsync_hash', $hash)
+                    ->save();
+            }
+
             /** @var $object Mage_Core_Model_Abstract */
             $objectData = $object->getData();
             foreach($objectData as $key => $value) {
-                if (in_array($key, Mage::helper('contentsync/hash')->getFieldBlacklist())) {
+                if (
+                    $key != 'contentsync_hash'
+                    && in_array($key, Mage::helper('contentsync/hash')->getFieldBlacklist())
+                ) {
                     unset($objectData[$key]);
                 }
             }
@@ -177,7 +197,10 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
             }
         }
 
-        $this->_deleteObjectsNotImported($entityType, $importedObjectIds);
+        if ($this->_canDeleteEntities($entityType)) {
+
+            $this->_deleteObjectsNotImported($entityType, $importedObjectIds);
+        }
     }
 
     /**

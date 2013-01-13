@@ -30,13 +30,6 @@ class FireGento_ContentSync_Test_Model_Observer extends EcomDev_PHPUnit_Test_Cas
 	 */
 	protected function setUp() {
 		$this->model = Mage::getModel('contentsync/observer');
-
-		$helper = $this->getHelperMock('contentsync/data', array('isTriggerAuto'));
-		$helper
-			->expects($this->any())
-			->method('isTriggerAuto')
-			->will($this->returnValue(true));
-		$this->replaceByMock('helper', 'contentsync', $helper);
 	}
 
 	/**
@@ -50,7 +43,7 @@ class FireGento_ContentSync_Test_Model_Observer extends EcomDev_PHPUnit_Test_Cas
 			array('hasDataChanges')
 		);
 		$mockObject
-			->expects($this->once())
+			->expects($this->any())
 			->method('hasDataChanges')
 			->will($this->returnValue($hasDataChanges));
 
@@ -59,7 +52,7 @@ class FireGento_ContentSync_Test_Model_Observer extends EcomDev_PHPUnit_Test_Cas
 			array('getObject')
 		);
 		$mockEvent
-			->expects($this->once())
+			->expects($this->any())
 			->method('getObject')
 			->will($this->returnValue($mockObject));
 
@@ -110,6 +103,8 @@ class FireGento_ContentSync_Test_Model_Observer extends EcomDev_PHPUnit_Test_Cas
 	 * test functionality on method afterObjectSave
 	 * - when data was not changed
 	 * - storeData is NOT called
+     * 
+     * @loadFixture cms_page_trigger_auto
 	 */
 	public function testAfterObjectSaveWithoutDataChangedStoresNot() {
 		$hasDataChanges = false;
@@ -121,8 +116,49 @@ class FireGento_ContentSync_Test_Model_Observer extends EcomDev_PHPUnit_Test_Cas
 	 * test functionality on method afterObjectSave
 	 * - when data was changed
 	 * - storeData is called
+     * 
+     * @loadFixture cms_page_trigger_auto
 	 */
 	public function testAfterObjectSaveWithDataChangedStores() {
+		$hasDataChanges = TRUE;
+		$invokeCountStoreData = $this->once();
+		$this->assertNullOnAfterObjectSave($hasDataChanges, $invokeCountStoreData);
+	}
+
+	/**
+	 * test functionality on method afterObjectSave
+	 * - when data was changed
+	 * - storeData is called
+     * 
+     * @loadFixture cms_page_trigger_disabled
+	 */
+	public function testAfterCmsPageObserverNotExecutedIfTriggerDisabled() {
+		$hasDataChanges = TRUE;
+		$invokeCountStoreData = $this->never();
+		$this->assertNullOnAfterObjectSave($hasDataChanges, $invokeCountStoreData);
+	}
+
+	/**
+	 * test functionality on method afterObjectSave
+	 * - when data was changed
+	 * - storeData is called
+     * 
+     * @loadFixture cms_page_trigger_manual
+	 */
+	public function testAfterCmsPageObserverNotExecutedIfTriggerSetToManualMode() {
+		$hasDataChanges = TRUE;
+		$invokeCountStoreData = $this->never();
+		$this->assertNullOnAfterObjectSave($hasDataChanges, $invokeCountStoreData);
+	}
+
+	/**
+	 * test functionality on method afterObjectSave
+	 * - when data was changed
+	 * - storeData is called
+     * 
+     * @loadFixture cms_page_trigger_auto
+	 */
+	public function testAfterCmsPageObserverExecutedIfTriggerSetToAuto() {
 		$hasDataChanges = TRUE;
 		$invokeCountStoreData = $this->once();
 		$this->assertNullOnAfterObjectSave($hasDataChanges, $invokeCountStoreData);

@@ -23,20 +23,13 @@
 
 abstract class FireGento_ContentSync_Model_Content_Abstract
 {
-
-    protected $_configPath = '';
-
-    protected function getConfig($key)
-    {
-        return Mage::getStoreConfig('contentsync/content_'.$this->_configPath.'/'.$key);
-    }
-
     /**
+     * @param string $entityType
      * @return FireGento_ContentSync_Model_Storage_Abstract
      */
-    public function getStorage()
+    public function getStorage($entityType)
     {
-        $storageName = $this->getConfig('storage');
+        $storageName = Mage::getStoreConfig('contentsync/content_'.$entityType.'/storage');
         if (!$storageName) {
             return Mage::getModel('contentsync/storage_void');
         }
@@ -53,7 +46,7 @@ abstract class FireGento_ContentSync_Model_Content_Abstract
      */
     protected function storeDataInStorage($data, $entityType)
     {
-        $this->getStorage()->storeData($data, $entityType);
+        $this->getStorage($entityType)->storeData($data, $entityType);
     }
 
     /**
@@ -62,6 +55,6 @@ abstract class FireGento_ContentSync_Model_Content_Abstract
      */
     protected function loadDataFromStorage($entityType)
     {
-        return $this->getStorage()->loadData($entityType);
+        return $this->getStorage($entityType)->loadData($entityType);
     }
 }
