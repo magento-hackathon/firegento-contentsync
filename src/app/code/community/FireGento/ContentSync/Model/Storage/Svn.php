@@ -37,20 +37,22 @@ class FireGento_ContentSync_Model_Storage_Svn extends FireGento_ContentSync_Mode
 	    $svnStatus = VersionControl_SVN::factory('status');
 	    $status = $svnStatus->run(array($fileName));
 
-	    foreach ($status['target'][0]['entry'] as $entry) {
-		    switch ($entry['wc-status']['item']) {
-			    case 'unversioned':
-				    $svnAdd = VersionControl_SVN::factory('add');
-				    $svnAdd->run(array($fileName));
-			    case 'modified':
-			    case 'added':
-				    $svnCommit = VersionControl_SVN::factory('ci');
-				    $svnCommit->run(
-					    array($fileName),
-					    array(
-					         'm' => escapeshellarg('current "'.$entityType.'" content'),
-					    )
-				    );
+	    if (isset($status['target']) AND isset($status['target'][0]) AND isset($status['target'][0]['entry'])  AND is_array($status['target'][0]['entry'])) {
+		    foreach ($status['target'][0]['entry'] as $entry) {
+			    switch ($entry['wc-status']['item']) {
+				    case 'unversioned':
+					    $svnAdd = VersionControl_SVN::factory('add');
+					    $svnAdd->run(array($fileName));
+				    case 'modified':
+				    case 'added':
+					    $svnCommit = VersionControl_SVN::factory('ci');
+					    $svnCommit->run(
+						    array($fileName),
+						    array(
+						         'm' => escapeshellarg('current "'.$entityType.'" content'),
+						    )
+					    );
+			    }
 		    }
 	    }
     }
