@@ -42,20 +42,12 @@ class FireGento_ContentSync_Shell extends Mage_Shell_Abstract
     public function run()
     {
         if ($this->getArg('import')) {
-            try {
-                Mage::getSingleton('contentsync/content_flat')->loadData();
-                echo "Data imported.\n";
-                echo Mage::getSingleton('contentsync/content_flat')->getOverview();
-            } catch (Exception $e) {
-                echo "Error: {$e->getMessage()}.\n";
-            }
+            Mage::getSingleton('contentsync/content_flat')->loadData();
+            echo "Data imported.\n";
+            echo Mage::getSingleton('contentsync/content_flat')->getOverview();
         } else if ($this->getArg('export')) {
-            try {
-                Mage::getSingleton('contentsync/content_flat')->storeData();
-                echo "Data exported.\n";
-            } catch (Exception $e) {
-                echo "Error: {$e->getMessage()}.\n";
-            }
+            Mage::getSingleton('contentsync/content_flat')->storeData();
+            echo "Data exported.\n";
         } else {
             echo $this->usageHelp();
         }
