@@ -62,8 +62,10 @@ class FireGento_ContentSync_Shell extends Mage_Shell_Abstract
         return <<<USAGE
 Usage:  php -f contentsync.php -- [options]
 
-  import            Import all data
-  export            Export all data
+Synchronizes content between the Magento database and a secondary storage.
+
+  import            Import all data from the secondary storage
+  export            Export all data to the secondary storage
   help              This help
 
 USAGE;
