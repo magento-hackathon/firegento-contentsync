@@ -25,14 +25,13 @@ class FireGento_ContentSync_Block_Notice extends Mage_Adminhtml_Block_Abstract
         return Mage::getSingleton('contentsync/notice')->getManualUpdateNoticeTypeLabel($code);
     }
 
-
     /**
      * @param  string      $code
      * @return null|string
      */
     public function getExportUrl($code)
     {
-            return Mage::getSingleton('contentsync/notice')->getExportUrl($code);
+        return Mage::getSingleton('contentsync/notice')->getExportUrl($code);
     }
 
     /**

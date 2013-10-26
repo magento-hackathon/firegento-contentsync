@@ -47,9 +47,11 @@ class FireGento_ContentSync_Test_Block_Notice extends EcomDev_PHPUnit_Test_Case
         $method = $noticeMock
             ->expects($this->once())
             ->method($methodName);
+
         if (!is_null($with)) {
             $method = $method->with($with);
         }
+
         $method->will($this->returnValue($returnValue));
         $this->replaceByMock('singleton', 'contentsync/notice', $noticeMock);
     }
@@ -72,29 +74,19 @@ class FireGento_ContentSync_Test_Block_Notice extends EcomDev_PHPUnit_Test_Case
     }
 
     /**
-     * assert that a called model method returns the value of the defined contentsync/notice singleton
+     * Assert that a called model method returns the value of the defined contentsync/notice singleton
+     *
      * @param      $modelMethod
      * @param      $singletonMethod
      * @param null $param           for call modelMethod and singletonMethod
      */
     protected function assertModelReturnsSingletonNoticeMockValue($modelMethod, $singletonMethod, $param = NULL)
     {
-        $returnValue = 'foobar';
-        $this->replaceSingletonNoticeMock($singletonMethod, $returnValue, $param);
+        $this->replaceSingletonNoticeMock($singletonMethod, $param, $param);
 
         $this->assertEquals(
-            $returnValue,
+            $param,
             $this->model->$modelMethod($param)
-        );
-
-    }
-
-    public function testGetExportUrl()
-    {
-        $this->assertModelReturnsSingletonNoticeMockValue(
-            'getExportUrl',
-            'getManualUpdateNoticeTypeUrl',
-            'samplecode'
         );
     }
 }
