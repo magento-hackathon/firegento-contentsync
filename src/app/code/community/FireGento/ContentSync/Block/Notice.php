@@ -8,8 +8,6 @@
  */
 class FireGento_ContentSync_Block_Notice extends Mage_Adminhtml_Block_Abstract
 {
-
-
     /**
      * @return array
      */
@@ -18,9 +16,8 @@ class FireGento_ContentSync_Block_Notice extends Mage_Adminhtml_Block_Abstract
         return Mage::getSingleton('contentsync/notice')->getNoticeFlag();
     }
 
-
     /**
-     * @param string $code
+     * @param  string      $code
      * @return null|string
      */
     public function getLabel($code)
@@ -30,7 +27,7 @@ class FireGento_ContentSync_Block_Notice extends Mage_Adminhtml_Block_Abstract
 
 
     /**
-     * @param string $code
+     * @param  string      $code
      * @return null|string
      */
     public function getExportUrl($code)
@@ -47,7 +44,7 @@ class FireGento_ContentSync_Block_Notice extends Mage_Adminhtml_Block_Abstract
     }
 
     /**
-     * @param string $code
+     * @param  string $code
      * @return string
      */
     public function getIgnoreUrl($code)

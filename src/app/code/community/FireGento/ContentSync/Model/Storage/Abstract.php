@@ -24,13 +24,13 @@
 abstract class FireGento_ContentSync_Model_Storage_Abstract
 {
     /**
-     * @param array $data
+     * @param array  $data
      * @param string $entityType
      */
     abstract public function storeData($data, $entityType);
 
     /**
-     * @param string $entityType
+     * @param  string $entityType
      * @return array
      */
     abstract public function loadData($entityType);

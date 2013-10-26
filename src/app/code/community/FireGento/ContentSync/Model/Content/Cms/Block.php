@@ -34,7 +34,7 @@ class FireGento_ContentSync_Model_Content_Cms_Block extends FireGento_ContentSyn
         /* @var $cmsBlocks Mage_Cms_Model_Resource_Block_Collection */
         $cmsBlocks = Mage::getResourceModel('cms/block_collection');
 
-        foreach($cmsBlocks as $cmsBlock) {
+        foreach ($cmsBlocks as $cmsBlock) {
 
             /** @var cmsBlock Mage_Cms_Model_Block */
             $blockData = $cmsBlock->getData();
@@ -60,7 +60,7 @@ class FireGento_ContentSync_Model_Content_Cms_Block extends FireGento_ContentSyn
             $this->_entityType
         );
 
-        foreach($data as $itemData) {
+        foreach ($data as $itemData) {
 
             $isNew = false;
 

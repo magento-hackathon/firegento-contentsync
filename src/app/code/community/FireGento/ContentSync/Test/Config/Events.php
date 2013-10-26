@@ -19,9 +19,11 @@
  * @since     0.1.0
  */
 
-class FireGento_ContentSync_Test_Config_Events extends EcomDev_PHPUnit_Test_Case_Config {
-	public function testCmsPageSaveAfter() {
-		$this->assertEventObserverDefined('global', 'model_save_after', 'contentsync/observer', 'afterObjectSave', 'contentsync');
-		$this->assertEventObserverDefined('global', 'model_save_before', 'contentsync/observer', 'beforeObjectSave', 'contentsync_observer');
-	}
+class FireGento_ContentSync_Test_Config_Events extends EcomDev_PHPUnit_Test_Case_Config
+{
+    public function testCmsPageSaveAfter()
+    {
+        $this->assertEventObserverDefined('global', 'model_save_after', 'contentsync/observer', 'afterObjectSave', 'contentsync');
+        $this->assertEventObserverDefined('global', 'model_save_before', 'contentsync/observer', 'beforeObjectSave', 'contentsync_observer');
+    }
 }

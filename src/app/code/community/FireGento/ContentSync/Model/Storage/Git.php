@@ -27,7 +27,7 @@ class FireGento_ContentSync_Model_Storage_Git extends FireGento_ContentSync_Mode
     const DIRECTORY_CONFIG_PATH = 'contentsync/storage_git/directory';
 
     /**
-     * @param array $data
+     * @param array  $data
      * @param string $entityType
      */
     public function storeData($data, $entityType)
@@ -45,13 +45,11 @@ class FireGento_ContentSync_Model_Storage_Git extends FireGento_ContentSync_Mode
             $status->addArgument('--porcelain');
             $status_result = $status->execute();
 
-            foreach( explode("\n", $status_result) AS $status_line )
-            {
+            foreach ( explode("\n", $status_result) AS $status_line ) {
                 $git_status = substr($status_line, 1,1 );
                 $git_file = substr($status_line, 3);
 
-                if (  in_array( $git_status, array('M','A') ) )
-                {
+                if (  in_array( $git_status, array('M','A') ) ) {
 
                     $commit = $git->getCommand('commit');
                     $commit->setOption('message', 'current "'.$entityType.'" content' );
@@ -62,7 +60,7 @@ class FireGento_ContentSync_Model_Storage_Git extends FireGento_ContentSync_Mode
 
             }
 
-        } catch( VersionControl_Git_Exception $e ) {
+        } catch ( VersionControl_Git_Exception $e ) {
             //if ( strpos($e->getMessage(), 'nothing to commit') === false )
             //{
                 throw $e;

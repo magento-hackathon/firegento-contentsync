@@ -61,7 +61,7 @@ class FireGento_ContentSync_Model_Notice
                 $code = $entityNode->getName();
 
                 $this->_contentsyncEntitiesInfo[$code]['code'] = $code;
-                $this->_contentsyncEntitiesInfo[$code]['label'] = (string)$entityNode->label;
+                $this->_contentsyncEntitiesInfo[$code]['label'] = (string) $entityNode->label;
             }
 
         }
@@ -115,7 +115,7 @@ class FireGento_ContentSync_Model_Notice
 
 
     /**
-     * @param string $type
+     * @param  string                             $type
      * @return FireGento_ContentSync_Model_Notice
      */
     public function setNoticeFlag($type)
@@ -129,7 +129,7 @@ class FireGento_ContentSync_Model_Notice
 
 
     /**
-     * @param string $type
+     * @param  string $type
      * @return bool
      */
     public function hasNoticeFlag($type)
@@ -141,7 +141,7 @@ class FireGento_ContentSync_Model_Notice
 
 
     /**
-     * @param string $type
+     * @param  string                             $type
      * @return FireGento_ContentSync_Model_Notice
      */
     public function unsetNoticeFlag($type)
@@ -155,7 +155,7 @@ class FireGento_ContentSync_Model_Notice
 
 
     /**
-     * @param string $type
+     * @param  string      $type
      * @return null|string
      */
     public function getManualUpdateNoticeTypeLabel($type)
@@ -170,7 +170,7 @@ class FireGento_ContentSync_Model_Notice
 
 
     /**
-     * @param string $type
+     * @param  string      $type
      * @return null|string Update action URL
      */
     public function getExportUrl($type)

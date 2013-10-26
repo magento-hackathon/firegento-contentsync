@@ -19,148 +19,158 @@
  * @since     0.1.0
  */
 
-class FireGento_ContentSync_Test_Model_Observer extends EcomDev_PHPUnit_Test_Case {
-	/**
-	 * @var FireGento_ContentSync_Model_Observer
-	 */
-	protected $model = NULL;
+class FireGento_ContentSync_Test_Model_Observer extends EcomDev_PHPUnit_Test_Case
+{
+    /**
+     * @var FireGento_ContentSync_Model_Observer
+     */
+    protected $model = NULL;
 
-	/**
-	 * sets up the contentsync/observer
-	 */
-	protected function setUp() {
-		$this->model = Mage::getModel('contentsync/observer');
-	}
+    /**
+     * sets up the contentsync/observer
+     */
+    protected function setUp()
+    {
+        $this->model = Mage::getModel('contentsync/observer');
+    }
 
-	/**
-	 * get Varien_Event_Observer mocking hasDataChanges method
-	 * @param $hasDataChanges return value of hasDataChanges method
-	 * @return PHPUnit_Framework_MockObject_MockObject
-	 */
-	private function getMockEventObserver($hasDataChanges) {
-		$mockObject = $this->getMock(
-			'Mage_Cms_Model_Page',
-			array('hasDataChanges')
-		);
-		$mockObject
-			->expects($this->any())
-			->method('hasDataChanges')
-			->will($this->returnValue($hasDataChanges));
+    /**
+     * get Varien_Event_Observer mocking hasDataChanges method
+     * @param $hasDataChanges return value of hasDataChanges method
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getMockEventObserver($hasDataChanges)
+    {
+        $mockObject = $this->getMock(
+            'Mage_Cms_Model_Page',
+            array('hasDataChanges')
+        );
+        $mockObject
+            ->expects($this->any())
+            ->method('hasDataChanges')
+            ->will($this->returnValue($hasDataChanges));
 
-		$mockEvent = $this->getMock(
-			'Varien_Event',
-			array('getObject')
-		);
-		$mockEvent
-			->expects($this->any())
-			->method('getObject')
-			->will($this->returnValue($mockObject));
+        $mockEvent = $this->getMock(
+            'Varien_Event',
+            array('getObject')
+        );
+        $mockEvent
+            ->expects($this->any())
+            ->method('getObject')
+            ->will($this->returnValue($mockObject));
 
-		$mockEventObserver = $this->getMock(
-			'Varien_Event_Observer',
-			array('getEvent')
-		);
-		$mockEventObserver
-			->expects($this->once())
-			->method('getEvent')
-			->will($this->returnValue($mockEvent));
+        $mockEventObserver = $this->getMock(
+            'Varien_Event_Observer',
+            array('getEvent')
+        );
+        $mockEventObserver
+            ->expects($this->once())
+            ->method('getEvent')
+            ->will($this->returnValue($mockEvent));
 
-		return $mockEventObserver;
-	}
+        return $mockEventObserver;
+    }
 
-	/**
-	 * replaces singleton $classAlias with a mock
-	 * mocking storeData method with expected $invokeCount
-	 * @param $classAlias
-	 * @param PHPUnit_Framework_MockObject_Matcher_InvokedCount $invokeCount
-	 */
-	private function replaceSingletonByMockWithStoreData($classAlias, PHPUnit_Framework_MockObject_Matcher_InvokedCount $invokeCount) {
-		$mockContentCmsPage = $this->getModelMock(
-			$classAlias,
-			array('storeData')
-		);
-		$mockContentCmsPage
-			->expects($invokeCount)
-			->method('storeData');
-		$this->replaceByMock('singleton', $classAlias, $mockContentCmsPage);
-	}
+    /**
+     * replaces singleton $classAlias with a mock
+     * mocking storeData method with expected $invokeCount
+     * @param $classAlias
+     * @param PHPUnit_Framework_MockObject_Matcher_InvokedCount $invokeCount
+     */
+    private function replaceSingletonByMockWithStoreData($classAlias, PHPUnit_Framework_MockObject_Matcher_InvokedCount $invokeCount)
+    {
+        $mockContentCmsPage = $this->getModelMock(
+            $classAlias,
+            array('storeData')
+        );
+        $mockContentCmsPage
+            ->expects($invokeCount)
+            ->method('storeData');
+        $this->replaceByMock('singleton', $classAlias, $mockContentCmsPage);
+    }
 
-	/**
-	 * asserts null on afterObjectSave method
-	 * @param                                                   $hasDataChanges for Varien_Object parameter on afterObjectSave method
-	 * @param PHPUnit_Framework_MockObject_Matcher_InvokedCount $invokeCountStoreData invoke count for storeData method on contentsync/content_cms_page singleton mock
-	 */
-	private function assertNullOnAfterObjectSave($hasDataChanges, PHPUnit_Framework_MockObject_Matcher_InvokedCount $invokeCountStoreData) {
-		$mockEventObserver = $this->getMockEventObserver($hasDataChanges);
-		$this->replaceSingletonByMockWithStoreData('contentsync/content_flat', $invokeCountStoreData);
+    /**
+     * asserts null on afterObjectSave method
+     * @param                                                   $hasDataChanges       for Varien_Object parameter on afterObjectSave method
+     * @param PHPUnit_Framework_MockObject_Matcher_InvokedCount $invokeCountStoreData invoke count for storeData method on contentsync/content_cms_page singleton mock
+     */
+    private function assertNullOnAfterObjectSave($hasDataChanges, PHPUnit_Framework_MockObject_Matcher_InvokedCount $invokeCountStoreData)
+    {
+        $mockEventObserver = $this->getMockEventObserver($hasDataChanges);
+        $this->replaceSingletonByMockWithStoreData('contentsync/content_flat', $invokeCountStoreData);
 
-		$this->assertNull(
-			$this->model->afterObjectSave($mockEventObserver)
-		);
-	}
+        $this->assertNull(
+            $this->model->afterObjectSave($mockEventObserver)
+        );
+    }
 
-	/**
-	 * test functionality on method afterObjectSave
-	 * - when data was not changed
-	 * - storeData is NOT called
-     * 
+    /**
+     * test functionality on method afterObjectSave
+     * - when data was not changed
+     * - storeData is NOT called
+     *
      * @loadFixture cms_page_trigger_auto
-	 */
-	public function testAfterObjectSaveWithoutDataChangedStoresNot() {
-		$hasDataChanges = false;
-		$invokeCountStoreData = $this->never();
-		$this->assertNullOnAfterObjectSave($hasDataChanges, $invokeCountStoreData);
-	}
+     */
+    public function testAfterObjectSaveWithoutDataChangedStoresNot()
+    {
+        $hasDataChanges = false;
+        $invokeCountStoreData = $this->never();
+        $this->assertNullOnAfterObjectSave($hasDataChanges, $invokeCountStoreData);
+    }
 
-	/**
-	 * test functionality on method afterObjectSave
-	 * - when data was changed
-	 * - storeData is called
-     * 
+    /**
+     * test functionality on method afterObjectSave
+     * - when data was changed
+     * - storeData is called
+     *
      * @loadFixture cms_page_trigger_auto
-	 */
-	public function testAfterObjectSaveWithDataChangedStores() {
-		$hasDataChanges = TRUE;
-		$invokeCountStoreData = $this->once();
-		$this->assertNullOnAfterObjectSave($hasDataChanges, $invokeCountStoreData);
-	}
+     */
+    public function testAfterObjectSaveWithDataChangedStores()
+    {
+        $hasDataChanges = TRUE;
+        $invokeCountStoreData = $this->once();
+        $this->assertNullOnAfterObjectSave($hasDataChanges, $invokeCountStoreData);
+    }
 
-	/**
-	 * test functionality on method afterObjectSave
-	 * - when data was changed
-	 * - storeData is called
-     * 
+    /**
+     * test functionality on method afterObjectSave
+     * - when data was changed
+     * - storeData is called
+     *
      * @loadFixture cms_page_trigger_disabled
-	 */
-	public function testAfterCmsPageObserverNotExecutedIfTriggerDisabled() {
-		$hasDataChanges = TRUE;
-		$invokeCountStoreData = $this->never();
-		$this->assertNullOnAfterObjectSave($hasDataChanges, $invokeCountStoreData);
-	}
+     */
+    public function testAfterCmsPageObserverNotExecutedIfTriggerDisabled()
+    {
+        $hasDataChanges = TRUE;
+        $invokeCountStoreData = $this->never();
+        $this->assertNullOnAfterObjectSave($hasDataChanges, $invokeCountStoreData);
+    }
 
-	/**
-	 * test functionality on method afterObjectSave
-	 * - when data was changed
-	 * - storeData is called
-     * 
+    /**
+     * test functionality on method afterObjectSave
+     * - when data was changed
+     * - storeData is called
+     *
      * @loadFixture cms_page_trigger_manual
-	 */
-	public function testAfterCmsPageObserverNotExecutedIfTriggerSetToManualMode() {
-		$hasDataChanges = TRUE;
-		$invokeCountStoreData = $this->never();
-		$this->assertNullOnAfterObjectSave($hasDataChanges, $invokeCountStoreData);
-	}
+     */
+    public function testAfterCmsPageObserverNotExecutedIfTriggerSetToManualMode()
+    {
+        $hasDataChanges = TRUE;
+        $invokeCountStoreData = $this->never();
+        $this->assertNullOnAfterObjectSave($hasDataChanges, $invokeCountStoreData);
+    }
 
-	/**
-	 * test functionality on method afterObjectSave
-	 * - when data was changed
-	 * - storeData is called
-     * 
+    /**
+     * test functionality on method afterObjectSave
+     * - when data was changed
+     * - storeData is called
+     *
      * @loadFixture cms_page_trigger_auto
-	 */
-	public function testAfterCmsPageObserverExecutedIfTriggerSetToAuto() {
-		$hasDataChanges = TRUE;
-		$invokeCountStoreData = $this->once();
-		$this->assertNullOnAfterObjectSave($hasDataChanges, $invokeCountStoreData);
-	}
+     */
+    public function testAfterCmsPageObserverExecutedIfTriggerSetToAuto()
+    {
+        $hasDataChanges = TRUE;
+        $invokeCountStoreData = $this->once();
+        $this->assertNullOnAfterObjectSave($hasDataChanges, $invokeCountStoreData);
+    }
 }

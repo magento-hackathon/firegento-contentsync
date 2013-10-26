@@ -19,71 +19,82 @@
  * @since     0.1.0
  */
 
-class FireGento_ContentSync_Test_Block_Notice extends EcomDev_PHPUnit_Test_Case {
-	/**
-	 * @var FireGento_ContentSync_Block_Notice
-	 */
-	protected $model = NULL;
+class FireGento_ContentSync_Test_Block_Notice extends EcomDev_PHPUnit_Test_Case
+{
+    /**
+     * @var FireGento_ContentSync_Block_Notice
+     */
+    protected $model = NULL;
 
-	protected function setUp() {
-		$this->model = Mage::app()->getLayout()->createBlock('contentsync/notice');
-	}
+    /**
+     *
+     */
+    protected function setUp()
+    {
+        $this->model = Mage::getSingleton('core/layout')->createBlock('contentsync/notice');
+    }
 
-	/**
-	 * replaces singleton contentsync/notice with mock
-	 * @param $methodName mocked method
-	 * @param $returnValue return value of method
-	 * @param $with with parameter for mock
-	 */
-	private function replaceSingletonNoticeMock($methodName, $returnValue, $with = NULL) {
-		$noticeMock = $this->getModelMock('contentsync/notice', array($methodName));
-		$method = $noticeMock
-			->expects($this->once())
-			->method($methodName);
-		if (!is_null($with)) {
-			$method = $method->with($with);
-		}
-		$method->will($this->returnValue($returnValue));
-		$this->replaceByMock('singleton', 'contentsync/notice', $noticeMock);
-	}
+    /**
+     * replaces singleton contentsync/notice with mock
+     *
+     * @param $methodName mocked method
+     * @param $returnValue return value of method
+     * @param $with with parameter for mock
+     */
+    private function replaceSingletonNoticeMock($methodName, $returnValue, $with = NULL)
+    {
+        $noticeMock = $this->getModelMock('contentsync/notice', array($methodName));
+        $method = $noticeMock
+            ->expects($this->once())
+            ->method($methodName);
+        if (!is_null($with)) {
+            $method = $method->with($with);
+        }
+        $method->will($this->returnValue($returnValue));
+        $this->replaceByMock('singleton', 'contentsync/notice', $noticeMock);
+    }
 
-	public function testGetNotices() {
-		$this->assertModelReturnsSingletonNoticeMockValue(
-			'getNotices',
-			'getNoticeFlag'
-		);
-	}
+    public function testGetNotices()
+    {
+        $this->assertModelReturnsSingletonNoticeMockValue(
+            'getNotices',
+            'getNoticeFlag'
+        );
+    }
 
-	public function testGetLabel() {
-		$this->assertModelReturnsSingletonNoticeMockValue(
-			'getLabel',
-			'getManualUpdateNoticeTypeLabel',
-			'samplecode'
-		);
-	}
+    public function testGetLabel()
+    {
+        $this->assertModelReturnsSingletonNoticeMockValue(
+            'getLabel',
+            'getManualUpdateNoticeTypeLabel',
+            'samplecode'
+        );
+    }
 
-	/**
-	 * assert that a called model method returns the value of the defined contentsync/notice singleton
-	 * @param      $modelMethod
-	 * @param      $singletonMethod
-	 * @param null $param for call modelMethod and singletonMethod
-	 */
-	protected function assertModelReturnsSingletonNoticeMockValue($modelMethod, $singletonMethod, $param = NULL) {
-		$returnValue = 'foobar';
-		$this->replaceSingletonNoticeMock($singletonMethod, $returnValue, $param);
+    /**
+     * assert that a called model method returns the value of the defined contentsync/notice singleton
+     * @param      $modelMethod
+     * @param      $singletonMethod
+     * @param null $param           for call modelMethod and singletonMethod
+     */
+    protected function assertModelReturnsSingletonNoticeMockValue($modelMethod, $singletonMethod, $param = NULL)
+    {
+        $returnValue = 'foobar';
+        $this->replaceSingletonNoticeMock($singletonMethod, $returnValue, $param);
 
-		$this->assertEquals(
-			$returnValue,
-			$this->model->$modelMethod($param)
-		);
+        $this->assertEquals(
+            $returnValue,
+            $this->model->$modelMethod($param)
+        );
 
-	}
+    }
 
-	public function testGetExportUrl() {
-		$this->assertModelReturnsSingletonNoticeMockValue(
-			'getExportUrl',
-			'getManualUpdateNoticeTypeUrl',
-			'samplecode'
-		);
-	}
+    public function testGetExportUrl()
+    {
+        $this->assertModelReturnsSingletonNoticeMockValue(
+            'getExportUrl',
+            'getManualUpdateNoticeTypeUrl',
+            'samplecode'
+        );
+    }
 }

@@ -66,8 +66,8 @@ class FireGento_ContentSync_Model_Observer
     /**
      * Listens to:
      * - model_save_before
-     * 
-     * @param Varien_Event_Observer $observer
+     *
+     * @param  Varien_Event_Observer $observer
      * @return void
      */
     public function beforeObjectSave(Varien_Event_Observer $observer)
@@ -87,7 +87,7 @@ class FireGento_ContentSync_Model_Observer
      * Listens to:
      * - model_save_after
      *
-     * @param Varien_Event_Observer $observer
+     * @param  Varien_Event_Observer $observer
      * @return void
      */
     public function afterObjectSave(Varien_Event_Observer $observer)
@@ -117,7 +117,7 @@ class FireGento_ContentSync_Model_Observer
      * Listens to:
      * - model_delete_after
      *
-     * @param Varien_Event_Observer $observer
+     * @param  Varien_Event_Observer $observer
      * @return void
      */
     public function afterObjectDelete(Varien_Event_Observer $observer)
@@ -138,7 +138,7 @@ class FireGento_ContentSync_Model_Observer
     }
 
     /**
-     * @param Varien_Object $object
+     * @param  Varien_Object $object
      * @return bool
      */
     protected function _isObservedObjectType(Varien_Object $object)
@@ -153,7 +153,7 @@ class FireGento_ContentSync_Model_Observer
     }
 
     /**
-     * @param string $className
+     * @param  string $className
      * @return string
      */
     protected function _getEntityTypeCodeByClass($className)

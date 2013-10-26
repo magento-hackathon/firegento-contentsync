@@ -24,7 +24,7 @@
 class FireGento_ContentSync_Model_Storage_Void extends FireGento_ContentSync_Model_Storage_Abstract
 {
     /**
-     * @param array $data
+     * @param array  $data
      * @param string $entityType
      */
     public function storeData($data, $entityType)
@@ -32,7 +32,7 @@ class FireGento_ContentSync_Model_Storage_Void extends FireGento_ContentSync_Mod
     }
 
     /**
-     * @param string $entityType
+     * @param  string $entityType
      * @return array
      */
     public function loadData($entityType)

@@ -49,7 +49,7 @@ abstract class FireGento_ContentSync_Model_Content_Abstract
         if (sizeof($this->getCreatedItems())) {
             $output .= Mage::helper('contentsync')->__('Created Items') . ': ';
             $output .= $linebreak;
-            foreach($this->getCreatedItems() as $entityType => $items) {
+            foreach ($this->getCreatedItems() as $entityType => $items) {
                 $output .= '   ' . sizeof($items) . ' ' . Mage::helper('contentsync')->__(Mage::getStoreConfig('contentsync_entities/' . $entityType . '/label'));
                 $output .= $linebreak;
             }
@@ -58,7 +58,7 @@ abstract class FireGento_ContentSync_Model_Content_Abstract
         if (sizeof($this->getUpdatedItems())) {
             $output .= Mage::helper('contentsync')->__('Updated Items') . ': ';
             $output .= $linebreak;
-            foreach($this->getUpdatedItems() as $entityType => $items) {
+            foreach ($this->getUpdatedItems() as $entityType => $items) {
                 $output .= '   ' . sizeof($items) . ' ' . Mage::helper('contentsync')->__(Mage::getStoreConfig('contentsync_entities/' . $entityType . '/label'));
                 $output .= $linebreak;
             }
@@ -67,7 +67,7 @@ abstract class FireGento_ContentSync_Model_Content_Abstract
         if (sizeof($this->getDeletedItems())) {
             $output .= Mage::helper('contentsync')->__('Deleted Items') . ': ';
             $output .= $linebreak;
-            foreach($this->getDeletedItems() as $entityType => $items) {
+            foreach ($this->getDeletedItems() as $entityType => $items) {
                 $output .= '   ' . sizeof($items) . ' ' . Mage::helper('contentsync')->__(Mage::getStoreConfig('contentsync_entities/' . $entityType . '/label'));
                 $output .= $linebreak;
             }
@@ -77,7 +77,7 @@ abstract class FireGento_ContentSync_Model_Content_Abstract
     }
 
     /**
-     * @param string $entityType
+     * @param  string                                       $entityType
      * @return FireGento_ContentSync_Model_Storage_Abstract
      */
     public function getStorage($entityType)
@@ -94,7 +94,7 @@ abstract class FireGento_ContentSync_Model_Content_Abstract
     }
 
     /**
-     * @param array $data
+     * @param array  $data
      * @param string $entityType
      */
     protected function storeDataInStorage($data, $entityType)
@@ -103,7 +103,7 @@ abstract class FireGento_ContentSync_Model_Content_Abstract
     }
 
     /**
-     * @param string $entityType
+     * @param  string $entityType
      * @return array
      */
     protected function loadDataFromStorage($entityType)

@@ -32,7 +32,7 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
     }
 
     /**
-     * @param string $entityType
+     * @param  string $entityType
      * @return string
      */
     protected function _getEntityTypeModelName($entityType)
@@ -44,7 +44,7 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
     }
 
     /**
-     * @param string $entityType
+     * @param  string $entityType
      * @return string
      */
     protected function _getEntityTypeTableName($entityType)
@@ -56,18 +56,18 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
     }
 
     /**
-     * @param string $entityType
+     * @param  string $entityType
      * @return bool
      */
     protected function _canDeleteEntities($entityType)
     {
         $entityTypeData = $this->_getEntityTypes();
 
-        return (bool)$entityTypeData[$entityType]['allow_delete'];
+        return (bool) $entityTypeData[$entityType]['allow_delete'];
     }
 
     /**
-     * @param string $entityType
+     * @param  string                   $entityType
      * @return Mage_Core_Model_Abstract
      */
     protected function _getEntityTypeModel($entityType)
@@ -95,7 +95,7 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
             $this->storeDataForEntityType($entityType);
         } else {
 
-            foreach($this->_getEntityTypes() as $entityType => $entityTypeData) {
+            foreach ($this->_getEntityTypes() as $entityType => $entityTypeData) {
 
                 $this->storeDataForEntityType($entityType);
             }
@@ -124,7 +124,7 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
 
             /** @var $object Mage_Core_Model_Abstract */
             $objectData = $object->getData();
-            foreach($objectData as $key => $value) {
+            foreach ($objectData as $key => $value) {
                 if (
                     $key != 'contentsync_hash'
                     && in_array($key, Mage::helper('contentsync/hash')->getFieldBlacklist())
@@ -150,7 +150,7 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
             $this->loadDataForEntityType($entityType);
         } else {
 
-            foreach($this->_getEntityTypes() as $entityType => $entityTypeData) {
+            foreach ($this->_getEntityTypes() as $entityType => $entityTypeData) {
 
                 $this->loadDataForEntityType($entityType);
             }
@@ -214,7 +214,7 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
 
     /**
      * @param string $entityType
-     * @param int[] $importedObjectIds
+     * @param int[]  $importedObjectIds
      */
     protected function _deleteObjectsNotImported($entityType, $importedObjectIds)
     {
@@ -231,8 +231,8 @@ class FireGento_ContentSync_Model_Content_Flat extends FireGento_ContentSync_Mod
 
     /**
      * @param string $entityType
-     * @param int $objectId
-     * @param int $newObjectId
+     * @param int    $objectId
+     * @param int    $newObjectId
      */
     protected function _updateObjectId($entityType, $objectId, $newObjectId)
     {

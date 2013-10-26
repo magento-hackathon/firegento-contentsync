@@ -25,7 +25,7 @@ class FireGento_ContentSync_Helper_Data extends Mage_Core_Helper_Abstract
 
 
     /**
-     * @param string $code
+     * @param  string $code
      * @return bool
      */
     public function isTriggerManually($code)
@@ -35,7 +35,7 @@ class FireGento_ContentSync_Helper_Data extends Mage_Core_Helper_Abstract
 
 
     /**
-     * @param string $code
+     * @param  string $code
      * @return bool
      */
     public function isTriggerAuto($code)

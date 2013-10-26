@@ -34,7 +34,7 @@ class FireGento_ContentSync_Model_Content_Cms_Page extends FireGento_ContentSync
         /* @var $cmsPages Mage_Cms_Model_Resource_Page_Collection */
         $cmsPages = Mage::getResourceModel('cms/page_collection');
 
-        foreach($cmsPages as $cmsPage) {
+        foreach ($cmsPages as $cmsPage) {
 
             /** @var $cmsPage Mage_Cms_Model_Page */
             $pageData = $cmsPage->getData();
@@ -60,7 +60,7 @@ class FireGento_ContentSync_Model_Content_Cms_Page extends FireGento_ContentSync
             $this->_entityType
         );
 
-        foreach($data as $itemData) {
+        foreach ($data as $itemData) {
 
             $isNew = false;
 

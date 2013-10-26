@@ -2,17 +2,17 @@
 
 /**
  * This file is part of the FIREGENTO project.
- * 
+ *
  * FireGento_ContentSync is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 3 as
  * published by the Free Software Foundation.
- * 
+ *
  * This script is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+ *
  * PHP version 5
- * 
+ *
  * @category  FireGento
  * @package   FireGento_ContentSync
  * @author    FireGento Team <team@firegento.com>
@@ -24,7 +24,7 @@
 
 /**
  * Content Sync Hash Helper
- * 
+ *
  * @category  FireGento
  * @package   FireGento_ContentSync
  * @author    FireGento Team <team@firegento.com>
@@ -33,7 +33,7 @@ class FireGento_ContentSync_Helper_Hash extends Mage_Core_Helper_Abstract
 {
 
     /**
-     * 
+     *
      * @return array
      */
     public function getFieldBlacklist()
@@ -49,9 +49,9 @@ class FireGento_ContentSync_Helper_Hash extends Mage_Core_Helper_Abstract
 
     /**
      * Calculate object hash
-     * 
-     * @param Varien_Object $object
-     * @param string $algo
+     *
+     * @param  Varien_Object $object
+     * @param  string        $algo
      * @return string
      */
     public function calculateObjectHash(Varien_Object $object, $algo = 'sha1')
@@ -68,12 +68,12 @@ class FireGento_ContentSync_Helper_Hash extends Mage_Core_Helper_Abstract
 
     /**
      * Calculate aggregate hash for a given entity
-     * 
+     *
      * Hashes of the single items are imploded in a single string,
      * which is used as base for the calculation.
-     * 
-     * @param string $modelEntity For example cms/page
-     * @param string $algo Algorythm used for the calculation
+     *
+     * @param  string $modelEntity For example cms/page
+     * @param  string $algo        Algorythm used for the calculation
      * @return string Resulting hash
      */
     public function calculateTableHash($modelEntity, $algo = 'sha1')

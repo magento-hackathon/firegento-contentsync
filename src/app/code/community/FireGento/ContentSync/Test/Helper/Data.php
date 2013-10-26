@@ -19,57 +19,63 @@
  * @since     0.1.0
  */
 
-class FireGento_ContentSync_Test_Helper_Data extends EcomDev_PHPUnit_Test_Case {
-	/**
-	 * @var FireGento_ContentSync_Helper_Data
-	 */
-	protected $model = NULL;
+class FireGento_ContentSync_Test_Helper_Data extends EcomDev_PHPUnit_Test_Case
+{
+    /**
+     * @var FireGento_ContentSync_Helper_Data
+     */
+    protected $model = NULL;
 
-	protected function setUp() {
-		$this->model = Mage::helper('contentsync/data');
-	}
+    protected function setUp()
+    {
+        $this->model = Mage::helper('contentsync/data');
+    }
 
-	/**
-	 * @loadFixture triggerManually
-	 */
-	public function testIsTriggerManuallyIsTrue() {
-		$code = 'foobar';
+    /**
+     * @loadFixture triggerManually
+     */
+    public function testIsTriggerManuallyIsTrue()
+    {
+        $code = 'foobar';
 
-		$this->assertTrue(
-			$this->model->isTriggerManually($code)
-		);
-	}
+        $this->assertTrue(
+            $this->model->isTriggerManually($code)
+        );
+    }
 
-	/**
-	 * @loadFixture triggerAuto
-	 */
-	public function testIsTriggerManuallyIsFalse() {
-		$code = 'foobar';
+    /**
+     * @loadFixture triggerAuto
+     */
+    public function testIsTriggerManuallyIsFalse()
+    {
+        $code = 'foobar';
 
-		$this->assertFalse(
-			$this->model->isTriggerManually($code)
-		);
-	}
+        $this->assertFalse(
+            $this->model->isTriggerManually($code)
+        );
+    }
 
-	/**
-	 * @loadFixture triggerAuto
-	 */
-	public function testIsTriggerAutoIsTrue() {
-		$code = 'foobar';
+    /**
+     * @loadFixture triggerAuto
+     */
+    public function testIsTriggerAutoIsTrue()
+    {
+        $code = 'foobar';
 
-		$this->assertTrue(
-			$this->model->isTriggerAuto($code)
-		);
-	}
+        $this->assertTrue(
+            $this->model->isTriggerAuto($code)
+        );
+    }
 
-	/**
-	 * @loadFixture triggerManually
-	 */
-	public function testIsTriggerAutoIsFalse() {
-		$code = 'foobar';
+    /**
+     * @loadFixture triggerManually
+     */
+    public function testIsTriggerAutoIsFalse()
+    {
+        $code = 'foobar';
 
-		$this->assertFalse(
-			$this->model->isTriggerAuto($code)
-		);
-	}
+        $this->assertFalse(
+            $this->model->isTriggerAuto($code)
+        );
+    }
 }

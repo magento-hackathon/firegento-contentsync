@@ -58,11 +58,11 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
     }
 
     /**
-     * @param array $data
+     * @param array  $data
      * @param string $entityType
      */
-    public function storeData($data, $entityType) {
-
+    public function storeData($data, $entityType)
+    {
         $fileContent = $this->_prettyPrint(Zend_Json::encode($data));
         $fileName = $this->_getEntityFilename( $entityType );
 
@@ -112,7 +112,7 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
     }
 
     /**
-     * @param string $entityType
+     * @param  string $entityType
      * @return array
      */
     public function loadData($entityType)
@@ -149,7 +149,7 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
 
 
     /**
-     * @param string $json
+     * @param  string $json
      * @return string
      */
     protected function _prettyPrint($json)
@@ -161,18 +161,18 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
         $ends_line_level = NULL;
         $json_length = strlen( $json );
 
-        for( $i = 0; $i < $json_length; $i++ ) {
+        for ($i = 0; $i < $json_length; $i++) {
             $char = $json[$i];
             $new_line_level = NULL;
             $post = "";
-            if( $ends_line_level !== NULL ) {
+            if ($ends_line_level !== NULL) {
                 $new_line_level = $ends_line_level;
                 $ends_line_level = NULL;
             }
-            if( $char === '"' && $prev_char != '\\' ) {
+            if ($char === '"' && $prev_char != '\\') {
                 $in_quotes = !$in_quotes;
-            } else if( ! $in_quotes ) {
-                switch( $char ) {
+            } elseif (! $in_quotes) {
+                switch ($char) {
                     case '}': case ']':
                     $level--;
                     $ends_line_level = NULL;
@@ -196,7 +196,7 @@ class FireGento_ContentSync_Model_Storage_File extends FireGento_ContentSync_Mod
                     break;
                 }
             }
-            if( $new_line_level !== NULL ) {
+            if ($new_line_level !== NULL) {
                 $result .= "\n".str_repeat( "\t", $new_line_level );
             }
             $result .= $char.$post;
