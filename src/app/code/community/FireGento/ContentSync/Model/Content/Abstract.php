@@ -1,8 +1,8 @@
 <?php
 /**
- * This file is part of the FIREGENTO project.
+ * This file is part of a FireGento e.V. module.
  *
- * FireGento_GermanSetup is free software; you can redistribute it and/or
+ * This FireGento e.V. module is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 3 as
  * published by the Free Software Foundation.
  *
@@ -15,10 +15,15 @@
  * @category  FireGento
  * @package   FireGento_ContentSync
  * @author    FireGento Team <team@firegento.com>
- * @copyright 2013 FireGento Team (http://www.firegento.de). All rights served.
+ * @copyright 2013 FireGento Team (http://www.firegento.com)
  * @license   http://opensource.org/licenses/gpl-3.0 GNU General Public License, version 3 (GPLv3)
- * @version   $Id:$
- * @since     0.1.0
+ */
+/**
+ * Create and Update Items
+ *
+ * @category FireGento
+ * @package  FireGento_ContentSync
+ * @author   FireGento Team <team@firegento.com>
  */
 
 abstract class FireGento_ContentSync_Model_Content_Abstract
@@ -50,7 +55,9 @@ abstract class FireGento_ContentSync_Model_Content_Abstract
             $output .= Mage::helper('contentsync')->__('Created Items') . ': ';
             $output .= $linebreak;
             foreach ($this->getCreatedItems() as $entityType => $items) {
-                $output .= '   ' . sizeof($items) . ' ' . Mage::helper('contentsync')->__(Mage::getStoreConfig('contentsync_entities/' . $entityType . '/label'));
+                $output .= '   ' . sizeof($items) . ' ' .
+                    Mage::helper('contentsync')->__(Mage::getStoreConfig('contentsync_entities/' .
+                    $entityType . '/label'));
                 $output .= $linebreak;
             }
         }
@@ -59,7 +66,9 @@ abstract class FireGento_ContentSync_Model_Content_Abstract
             $output .= Mage::helper('contentsync')->__('Updated Items') . ': ';
             $output .= $linebreak;
             foreach ($this->getUpdatedItems() as $entityType => $items) {
-                $output .= '   ' . sizeof($items) . ' ' . Mage::helper('contentsync')->__(Mage::getStoreConfig('contentsync_entities/' . $entityType . '/label'));
+                $output .= '   ' . sizeof($items) . ' ' .
+                Mage::helper('contentsync')->__(Mage::getStoreConfig('contentsync_entities/' .
+                $entityType . '/label'));
                 $output .= $linebreak;
             }
         }
@@ -68,7 +77,9 @@ abstract class FireGento_ContentSync_Model_Content_Abstract
             $output .= Mage::helper('contentsync')->__('Deleted Items') . ': ';
             $output .= $linebreak;
             foreach ($this->getDeletedItems() as $entityType => $items) {
-                $output .= '   ' . sizeof($items) . ' ' . Mage::helper('contentsync')->__(Mage::getStoreConfig('contentsync_entities/' . $entityType . '/label'));
+                $output .= '   ' . sizeof($items) . ' ' .
+                Mage::helper('contentsync')->__(Mage::getStoreConfig('contentsync_entities/' .
+                $entityType . '/label'));
                 $output .= $linebreak;
             }
         }
@@ -77,7 +88,7 @@ abstract class FireGento_ContentSync_Model_Content_Abstract
     }
 
     /**
-     * @param  string                                       $entityType
+     * @param  string $entityType
      * @return FireGento_ContentSync_Model_Storage_Abstract
      */
     public function getStorage($entityType)

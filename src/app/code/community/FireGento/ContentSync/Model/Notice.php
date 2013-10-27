@@ -1,8 +1,8 @@
 <?php
 /**
- * This file is part of the FIREGENTO project.
+ * This file is part of a FireGento e.V. module.
  *
- * FireGento_GermanSetup is free software; you can redistribute it and/or
+ * This FireGento e.V. module is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 3 as
  * published by the Free Software Foundation.
  *
@@ -15,10 +15,15 @@
  * @category  FireGento
  * @package   FireGento_ContentSync
  * @author    FireGento Team <team@firegento.com>
- * @copyright 2013 FireGento Team (http://www.firegento.de). All rights served.
+ * @copyright 2013 FireGento Team (http://www.firegento.com)
  * @license   http://opensource.org/licenses/gpl-3.0 GNU General Public License, version 3 (GPLv3)
- * @version   $Id:$
- * @since     0.1.0
+ */
+/**
+ * Creates the Notices
+ *
+ * @category FireGento
+ * @package  FireGento_ContentSync
+ * @author   FireGento Team <team@firegento.com>
  */
 
 class FireGento_ContentSync_Model_Notice
@@ -115,7 +120,7 @@ class FireGento_ContentSync_Model_Notice
 
 
     /**
-     * @param  string                             $type
+     * @param  string $type
      * @return FireGento_ContentSync_Model_Notice
      */
     public function setNoticeFlag($type)
@@ -141,7 +146,7 @@ class FireGento_ContentSync_Model_Notice
 
 
     /**
-     * @param  string                             $type
+     * @param  string $type
      * @return FireGento_ContentSync_Model_Notice
      */
     public function unsetNoticeFlag($type)
@@ -155,7 +160,7 @@ class FireGento_ContentSync_Model_Notice
 
 
     /**
-     * @param  string      $type
+     * @param  string $type
      * @return null|string
      */
     public function getManualUpdateNoticeTypeLabel($type)
@@ -170,7 +175,7 @@ class FireGento_ContentSync_Model_Notice
 
 
     /**
-     * @param  string      $type
+     * @param  string $type
      * @return null|string Update action URL
      */
     public function getExportUrl($type)
@@ -179,7 +184,8 @@ class FireGento_ContentSync_Model_Notice
 
         if (array_key_exists($type, $this->_contentsyncEntitiesInfo)) {
 
-            return Mage::helper('adminhtml')->getUrl('adminhtml/contentsync/export', array('content' => $type, 'back' => $backUrl));
+            return Mage::helper('adminhtml')->getUrl('adminhtml/contentsync/export',
+                array('content' => $type, 'back' => $backUrl));
         }
 
 

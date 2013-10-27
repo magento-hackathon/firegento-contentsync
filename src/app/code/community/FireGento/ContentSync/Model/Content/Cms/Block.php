@@ -1,8 +1,8 @@
 <?php
 /**
- * This file is part of the FIREGENTO project.
+ * This file is part of a FireGento e.V. module.
  *
- * FireGento_GermanSetup is free software; you can redistribute it and/or
+ * This FireGento e.V. module is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 3 as
  * published by the Free Software Foundation.
  *
@@ -15,10 +15,15 @@
  * @category  FireGento
  * @package   FireGento_ContentSync
  * @author    FireGento Team <team@firegento.com>
- * @copyright 2013 FireGento Team (http://www.firegento.de). All rights served.
+ * @copyright 2013 FireGento Team (http://www.firegento.com)
  * @license   http://opensource.org/licenses/gpl-3.0 GNU General Public License, version 3 (GPLv3)
- * @version   $Id:$
- * @since     0.1.0
+ */
+/**
+ * Block Class
+ *
+ * @category FireGento
+ * @package  FireGento_ContentSync
+ * @author   FireGento Team <team@firegento.com>
  */
 
 class FireGento_ContentSync_Model_Content_Cms_Block extends FireGento_ContentSync_Model_Content_Abstract
@@ -119,6 +124,7 @@ class FireGento_ContentSync_Model_Content_Cms_Block extends FireGento_ContentSyn
         /** @var $connection Varien_Db_Adapter_Pdo_Mysql */
         $connection = $resource->getConnection('core/write');
 
-        $connection->update($resource->getTableName('cms/block'), array('block_id' => $blockId), 'block_id = ' . $newBlockId);
+        $connection->update($resource->getTableName('cms/block'), array('block_id' => $blockId),
+            'block_id = ' . $newBlockId);
     }
 }
