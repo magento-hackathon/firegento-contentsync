@@ -9,7 +9,13 @@ to the file system.
 Usage
 =====================
 
-php shell/contentsync.php
+php shell/contentsync.php --[options]
+
+Options:
+import  Import all data from the secondary storage
+export  Export all data to the secondary storage
+
+
 
 Status
 =====================
