@@ -24,7 +24,11 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once 'abstract.php';
+if (file_exists('abstract.php')) {
+    require_once 'abstract.php';
+} else {
+    require_once 'shell/abstract.php';
+}
 
 /**
  * Magento Log Shell Script
@@ -60,7 +64,7 @@ class FireGento_ContentSync_Shell extends Mage_Shell_Abstract
     public function usageHelp()
     {
         return <<<USAGE
-Usage:  php -f contentsync.php -- [options]
+Usage:  php -f contentsync.php --[options]
 
 Synchronizes content between the Magento database and a secondary storage.
 
