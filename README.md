@@ -7,13 +7,15 @@ This Magento module allows exporting and importing of content (for example CMS p
 to the file system.
 
 Usage
-=====================
+---
 
-php shell/contentsync.php --[options]
-
+``` sh
+  php shell/contentsync.php [options]
+```
 Options:
-import  Import all data from the secondary storage
-export  Export all data to the secondary storage
+
+- --import --> Import all data from the secondary storage
+- --export --> Export all data to the secondary storage
 
 
 
