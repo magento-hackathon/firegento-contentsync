@@ -28,4 +28,4 @@ This project isn't maintained any more as we didn't manage to get it stable with
 - http://magerun.net/harrisstreet-impex-for-magento/ - an extension for n98-magerun (which you should be using anyway if you are a Magento developer)
 - http://mageflow.com/ - I saw a demo about that at Meet Magento NY, which made a good impression.
 - http://mageploy.com/ - no personal experience.
-- https://genmato.com/setup-script-versioning - no personal experience, link broken ATM
+- https://genmato.com/setup-script-versioning - no personal experience, commercial extension
