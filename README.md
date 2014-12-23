@@ -29,3 +29,5 @@ This project isn't maintained any more as we didn't manage to get it stable with
 - http://mageflow.com/ - I saw a demo about that at Meet Magento NY, which made a good impression.
 - http://mageploy.com/ - no personal experience.
 - https://genmato.com/setup-script-versioning - no personal experience, commercial extension
+- https://github.com/ctidigital/magento-configurator
+- https://github.com/AOEpeople/EnvSettingsTool
